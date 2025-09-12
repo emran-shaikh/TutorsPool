@@ -1,0 +1,591 @@
+// API client for Tutorspool
+const API_BASE_URL = 'http://localhost:5174/api';
+
+class ApiClient {
+  private token: string | null = null;
+
+  constructor() {
+    // Get token from localStorage on initialization
+    this.token = localStorage.getItem('token');
+  }
+
+  setToken(token: string) {
+    this.token = token;
+    localStorage.setItem('token', token);
+  }
+
+  clearToken() {
+    this.token = null;
+    localStorage.removeItem('token');
+  }
+
+  async request(endpoint: string, options: RequestInit = {}) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(options.headers as Record<string, string>),
+    };
+
+    if (this.token) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(url, {
+      ...options,
+      headers,
+  });
+
+  if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Network error' }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  // Authentication methods
+  async register(userData: {
+    name: string;
+    email: string;
+    phone?: string;
+    country: string;
+    timezone?: string;
+    role: 'STUDENT' | 'TUTOR' | 'ADMIN';
+  }) {
+    const result = await this.request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+    
+    if (result.token) {
+      this.setToken(result.token);
+    }
+    
+    return result;
+  }
+
+  async login(email: string, password?: string) {
+    const result = await this.request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+    
+    if (result.token) {
+      this.setToken(result.token);
+    }
+    
+    return result;
+  }
+
+  async sendOTP(email: string) {
+    return this.request('/auth/otp', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
+  async verifyOTP(email: string, otp: string) {
+    const result = await this.request('/auth/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp }),
+    });
+    
+    if (result.token) {
+      this.setToken(result.token);
+    }
+    
+    return result;
+  }
+
+  async getCurrentUser() {
+    return this.request('/auth/me');
+  }
+
+  async logout() {
+    this.clearToken();
+  }
+
+  // Student methods
+  async createStudentProfile(profileData: {
+    gradeLevel: string;
+    learningGoals: string;
+    preferredMode: 'ONLINE' | 'OFFLINE';
+    budgetMin: number;
+    budgetMax: number;
+    specialRequirements?: string;
+    uploads?: any[];
+  }) {
+    return this.request('/students', {
+      method: 'POST',
+      body: JSON.stringify(profileData),
+    });
+  }
+
+  async getStudentProfile() {
+    return this.request('/students/profile');
+  }
+
+  async updateStudentProfile(profileData: {
+    gradeLevel?: string;
+    learningGoals?: string;
+    preferredMode?: 'ONLINE' | 'OFFLINE';
+    budgetMin?: number;
+    budgetMax?: number;
+    specialRequirements?: string;
+    uploads?: any[];
+  }) {
+    return this.request('/students/profile', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
+  }
+
+  async getStudentBookings() {
+    return this.request('/students/bookings');
+  }
+
+  async getStudentStats() {
+    return this.request('/students/stats');
+  }
+
+  // Learning Progress methods
+  async getLearningProgress(studentId: string) {
+    return this.request(`/students/learning-progress/${studentId}`);
+  }
+
+  async createLearningGoal(goalData: any) {
+    return this.request('/students/learning-goals', {
+      method: 'POST',
+      body: JSON.stringify(goalData)
+    });
+  }
+
+  async updateLearningGoal(goalId: string, updates: any) {
+    return this.request(`/students/learning-goals/${goalId}`, {
+      method: 'PUT',
+      body: JSON.stringify(updates)
+    });
+  }
+
+  async deleteLearningGoal(goalId: string) {
+    return this.request(`/students/learning-goals/${goalId}`, {
+      method: 'DELETE'
+    });
+  }
+
+  async addUpcomingSession(sessionData: any) {
+    return this.request('/students/upcoming-sessions', {
+      method: 'POST',
+      body: JSON.stringify(sessionData)
+    });
+  }
+
+  async completeSession(sessionId: string) {
+    return this.request(`/students/sessions/${sessionId}/complete`, {
+      method: 'PUT'
+    });
+  }
+
+
+  // Tutor API methods
+  async getTutorProfile(tutorId: string) {
+    return this.request(`/tutors/${tutorId}`);
+  }
+
+  async getTutorProfileByUserId() {
+    return this.request('/tutors/profile');
+  }
+
+
+  async getTutorReviews(tutorId: string) {
+    return this.request(`/tutors/${tutorId}/reviews`);
+  }
+
+  async getTutorBookings() {
+    return this.request('/tutors/bookings');
+  }
+
+  async getTutorStats() {
+    return this.request('/tutors/stats');
+  }
+
+  async updateTutorProfile(updates: {
+    headline?: string;
+    bio?: string;
+    hourlyRateCents?: number;
+    currency?: string;
+    yearsExperience?: number;
+    subjects?: string[];
+    levels?: string[];
+    availabilityBlocks?: Array<{
+      dayOfWeek: number;
+      startTimeUTC: string;
+      endTimeUTC: string;
+      isRecurring: boolean;
+    }>;
+  }) {
+    return this.request('/tutors/profile', {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  // Tutor methods
+  async createTutorProfile(profileData: {
+    headline: string;
+    bio: string;
+    hourlyRateCents: number;
+    currency: string;
+    yearsExperience: number;
+    subjects: string[];
+    levels: string[];
+    slug?: string;
+    certifications?: any[];
+    availabilityBlocks?: Array<{
+      dayOfWeek: number;
+      startTimeUTC: string;
+      endTimeUTC: string;
+      isRecurring: boolean;
+    }>;
+  }) {
+    return this.request('/tutors', {
+    method: 'POST',
+      body: JSON.stringify(profileData),
+    });
+  }
+
+  async searchTutors(params: {
+    q?: string;
+    priceMin?: number;
+    priceMax?: number;
+    ratingMin?: number;
+    page?: number;
+    limit?: number;
+  } = {}) {
+    const searchParams = new URLSearchParams();
+    
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, value.toString());
+      }
+    });
+
+    return this.request(`/tutors?${searchParams.toString()}`);
+  }
+
+  // Booking methods
+  async createBooking(bookingData: {
+    tutorId: string;
+    subjectId: string;
+    startAtUTC: string;
+    endAtUTC: string;
+    priceCents: number;
+    currency: string;
+  }) {
+    return this.request('/bookings', {
+    method: 'POST',
+      body: JSON.stringify(bookingData),
+    });
+  }
+
+  async getBookings() {
+    return this.request('/bookings');
+  }
+
+  async getBookingDetails(bookingId: string) {
+    return this.request(`/bookings/${bookingId}`);
+  }
+
+  // Student booking management
+  async cancelBooking(bookingId: string, reason?: string) {
+    return this.request(`/students/bookings/${bookingId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'CANCELLED', reason }),
+    });
+  }
+
+  // Tutor booking management
+  async updateTutorBookingStatus(bookingId: string, status: string, reason?: string) {
+    return this.request(`/tutors/bookings/${bookingId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, reason }),
+    });
+  }
+
+  // Subject methods
+  async getSubjects() {
+    return this.request('/subjects');
+  }
+
+  async getSubjectCategories() {
+    return this.request('/subjects/categories');
+  }
+
+  // Admin methods
+  async getAdminDashboard() {
+    return this.request('/admin/dashboard');
+  }
+
+  // User profile methods
+  async updateUserProfile(updates: {
+    avatarUrl?: string;
+    name?: string;
+    phone?: string;
+    country?: string;
+    timezone?: string;
+  }) {
+    return this.request('/users/profile', {
+      method: 'PUT',
+      body: JSON.stringify(updates)
+    });
+  }
+
+  async submitCustomSubjectRequest(request: {
+    subjectName: string;
+    description?: string;
+    level: string;
+    studentId?: string;
+  }) {
+    return this.request('/subjects/custom-request', {
+      method: 'POST',
+      body: JSON.stringify(request)
+    });
+  }
+
+  async submitReview(review: {
+    bookingId: string;
+    tutorId: string;
+    rating: number;
+    comment?: string;
+    wouldRecommend?: boolean;
+    sessionQuality?: number;
+    tutorCommunication?: number;
+    tutorKnowledge?: number;
+    tutorPatience?: number;
+    overallExperience?: number;
+  }) {
+    return this.request('/reviews', {
+      method: 'POST',
+      body: JSON.stringify(review)
+    });
+  }
+
+  async getStudentReviews(studentId: string) {
+    return this.request(`/students/${studentId}/reviews`);
+  }
+
+  async markNotificationAsRead(notificationId: string) {
+    return this.request(`/notifications/${notificationId}/read`, {
+      method: 'PUT'
+    });
+  }
+
+  async markAllNotificationsAsRead() {
+    return this.request('/notifications/read-all', {
+      method: 'PUT'
+    });
+  }
+
+  // Health check
+  async healthCheck() {
+    return this.request('/health');
+  }
+}
+
+// Create and export a singleton instance
+export const apiClient = new ApiClient();
+
+// Export individual methods for backward compatibility
+export const fetchTutors = (params?: { q?: string; subject?: string; priceMin?: number; priceMax?: number; ratingMin?: number }) => 
+  apiClient.searchTutors(params);
+
+export const submitTutorRegistration = (payload: { fullName: string; email: string; subjects?: string[]; bio?: string; userId?: string }) => 
+  apiClient.createTutorProfile({
+    headline: payload.fullName,
+    bio: payload.bio || '',
+    hourlyRateCents: 2500, // Default $25/hour
+    currency: 'USD',
+    yearsExperience: 1,
+    subjects: payload.subjects || [],
+    levels: ['High School (9-12)'],
+    slug: payload.fullName.toLowerCase().replace(/\s+/g, '-'),
+    certifications: []
+  });
+
+export const submitBooking = (payload: { tutorName: string; date: string; time: string }) => 
+  apiClient.createBooking({
+    tutorId: 'temp-tutor-id', // This would need to be resolved properly
+    subjectId: 'temp-subject-id', // This would need to be resolved properly
+    startAtUTC: new Date(`${payload.date}T${payload.time}`).toISOString(),
+    endAtUTC: new Date(`${payload.date}T${payload.time}`).toISOString(),
+    priceCents: 2500, // Default $25
+    currency: 'USD'
+  });
+
+export const fetchBookings = () => 
+  apiClient.getBookings();
+
+// Export types
+export interface User {
+  id: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  country?: string;
+  timezone?: string;
+  avatarUrl?: string;
+  role: 'STUDENT' | 'TUTOR' | 'ADMIN';
+  status?: 'PENDING' | 'ACTIVE' | 'REJECTED' | 'SUSPENDED';
+  createdAt: string;
+}
+
+export interface TutorProfile {
+  id: string;
+  userId: string;
+  headline?: string;
+  bio?: string;
+  hourlyRateCents?: number;
+  currency?: string;
+  yearsExperience?: number;
+  subjects?: string[];
+  levels?: string[];
+  ratingAvg?: number;
+  ratingCount?: number;
+  createdAt: string;
+  user?: User;
+}
+
+export interface StudentProfile {
+  id: string;
+  userId: string;
+  gradeLevel?: string;
+  learningGoals?: string;
+  preferredMode?: 'ONLINE' | 'OFFLINE';
+  budgetMin?: number;
+  budgetMax?: number;
+  specialRequirements?: string;
+  uploads?: any[];
+  createdAt: string;
+}
+
+export interface Booking {
+  id: string;
+  studentId: string;
+  tutorId: string;
+  subjectId: string;
+  startAtUTC: string;
+  endAtUTC: string;
+  status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED' | 'REFUNDED';
+  priceCents: number;
+  currency: string;
+  createdAt: string;
+}
+
+export interface Subject {
+  id: string;
+  name: string;
+  category: string;
+}
+
+export interface SubjectCategory {
+  id: string;
+  name: string;
+  subjects: string[];
+}
+
+export interface Review {
+  id: string;
+  tutorId: string;
+  studentId: string;
+  studentName?: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
+// Reviews and Ratings API
+export const reviewsApi = {
+  // Submit a review for a completed session
+  submitReview: (reviewData: {
+    tutorId: string;
+    bookingId: string;
+    rating: number;
+    comment?: string;
+  }) =>
+    apiClient.request('/reviews', {
+      method: 'POST',
+      body: JSON.stringify(reviewData)
+    }),
+
+  // Get reviews for a specific tutor
+  getTutorReviews: (tutorId: string) =>
+    apiClient.request(`/tutors/${tutorId}/reviews`),
+
+  // Get reviews by a specific student
+  getStudentReviews: (studentId: string) =>
+    apiClient.request(`/students/${studentId}/reviews`),
+
+  // Get all reviews (admin only)
+  getAllReviews: (status?: string) =>
+    apiClient.request(`/admin/reviews${status ? `?status=${status}` : ''}`),
+
+  // Update review status (admin only)
+  updateReviewStatus: (reviewId: string, status: 'APPROVED' | 'REJECTED') =>
+    apiClient.request(`/admin/reviews/${reviewId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status })
+    }),
+
+  // Delete review (admin only)
+  deleteReview: (reviewId: string) =>
+    apiClient.request(`/admin/reviews/${reviewId}`, {
+      method: 'DELETE'
+    }),
+
+  // Get tutor rating statistics
+  getTutorRatingStats: (tutorId: string) =>
+    apiClient.request(`/tutors/${tutorId}/rating-stats`),
+};
+
+// Admin API methods
+export const adminApi = {
+  // Dashboard stats
+  getDashboard: () => apiClient.request('/admin/dashboard'),
+  
+  // User management
+  getUsers: () => apiClient.request('/admin/users'),
+  getPendingUsers: () => apiClient.request('/admin/users/pending'),
+  getTutors: () => apiClient.request('/admin/tutors'),
+  approveUser: (userId: string) => 
+    apiClient.request(`/admin/users/${userId}/approve`, { method: 'POST' }),
+  rejectUser: (userId: string, reason?: string) =>
+    apiClient.request(`/admin/users/${userId}/reject`, { 
+      method: 'POST', 
+      body: JSON.stringify({ reason }) 
+    }),
+  suspendUser: (userId: string, reason?: string) =>
+    apiClient.request(`/admin/users/${userId}/suspend`, { 
+      method: 'POST', 
+      body: JSON.stringify({ reason }) 
+    }),
+  activateUser: (userId: string) =>
+    apiClient.request(`/admin/users/${userId}/activate`, { method: 'POST' }),
+  deleteUser: (userId: string) =>
+    apiClient.request(`/admin/users/${userId}`, { method: 'DELETE' }),
+  
+  // Booking management
+  getBookings: () => apiClient.request('/admin/bookings'),
+  updateBookingStatus: (bookingId: string, status: string, reason?: string) =>
+    apiClient.request(`/admin/bookings/${bookingId}/status`, { 
+      method: 'PUT', 
+      body: JSON.stringify({ status, reason }) 
+    }),
+};
+
+// Chat API
+export const chatApi = {
+  getMessages: (userId1: string, userId2: string) => apiClient.request(`/chat/messages/${userId1}/${userId2}`),
+  getConversations: () => apiClient.request('/chat/conversations'),
+  markMessagesAsRead: (senderId: string) => apiClient.request('/chat/messages/read', { method: 'PUT', body: JSON.stringify({ senderId }) }),
+  getUnreadCount: () => apiClient.request('/chat/unread-count'),
+};

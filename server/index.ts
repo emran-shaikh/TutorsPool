@@ -1,0 +1,2781 @@
+import express from 'express';
+import cors from 'cors';
+import { z } from 'zod';
+import { createServer } from 'http';
+import { Server as SocketIOServer } from 'socket.io';
+import { dataManager } from './dataManager';
+import errorLogger from './errorLogger.js';
+
+// Extend Express Request type to include user
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        userId: string;
+        email: string;
+        role: string;
+        exp: number;
+      };
+    }
+  }
+}
+
+const app = express();
+const PORT = process.env.PORT ? Number(process.env.PORT) : 5174;
+
+app.use(cors());
+app.use(express.json());
+
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+  if (req.path.includes('/auth/login')) {
+    console.log('[MIDDLEWARE] Login request:', req.method, req.path, req.body);
+  }
+  next();
+});
+
+// Initialize sample data
+dataManager.initializeSampleData();
+
+// Simple JWT-like token generation (for development)
+const generateToken = (userId: string, email: string, role: string) => {
+  return Buffer.from(JSON.stringify({ userId, email, role, exp: Date.now() + 7 * 24 * 60 * 60 * 1000 })).toString('base64');
+};
+
+const verifyToken = (token: string) => {
+  try {
+    const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
+    if (decoded.exp < Date.now()) {
+      throw new Error('Token expired');
+    }
+    return decoded;
+  } catch (error) {
+    throw new Error('Invalid token');
+  }
+};
+
+// Middleware for authentication
+const authenticateToken = (req: any, res: any, next: any) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Access token required' });
+  }
+
+  try {
+    const decoded = verifyToken(token);
+    console.log(`[AUTH] Decoded token:`, decoded);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.log(`[AUTH] Token verification failed:`, error.message);
+    return res.status(403).json({ error: 'Invalid token' });
+  }
+};
+
+// Middleware to check user status (ACTIVE users only)
+const requireActiveUser = (req: any, res: any, next: any) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  
+  const user = dataManager.getUserById(req.user.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+  
+  if (user.status !== 'ACTIVE') {
+    return res.status(403).json({ 
+      error: 'Account not approved', 
+      status: user.status,
+      message: user.status === 'PENDING' ? 'Your account is pending approval' :
+               user.status === 'REJECTED' ? 'Your account has been rejected' :
+               user.status === 'SUSPENDED' ? 'Your account has been suspended' :
+               'Your account is not active'
+    });
+  }
+  
+  next();
+};
+
+// Middleware to check user role
+const requireRole = (roles: string | string[]) => {
+  return (req: any, res: any, next: any) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const allowedRoles = Array.isArray(roles) ? roles : [roles];
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ 
+        error: 'Insufficient permissions',
+        required: allowedRoles,
+        current: req.user.role
+      });
+    }
+
+    next();
+  };
+};
+
+// Health check
+app.get('/api/health', (_req, res) => {
+  res.json({ ok: true, timestamp: new Date().toISOString() });
+});
+
+// Error monitoring endpoints
+app.get('/api/logs/errors', (req, res) => {
+  try {
+    const { type, limit = 50 } = req.query;
+    let errors = errorLogger.getAllErrors();
+    
+    if (type) {
+      errors = errors.filter(error => error.type === type);
+    }
+    
+    errors = errors
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .slice(0, parseInt(limit as string) || 50);
+    
+    res.json({
+      success: true,
+      errors,
+      total: errorLogger.getAllErrors().length,
+      filtered: errors.length
+    });
+  } catch (error) {
+    console.error('Error fetching error logs:', error);
+    res.status(500).json({ error: 'Failed to fetch error logs' });
+  }
+});
+
+app.delete('/api/logs/errors', (req, res) => {
+  try {
+    errorLogger.clearErrors();
+    res.json({ success: true, message: 'All error logs cleared' });
+  } catch (error) {
+    console.error('Error clearing error logs:', error);
+    res.status(500).json({ error: 'Failed to clear error logs' });
+  }
+});
+
+// Authentication endpoints
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { name, email, phone, country, timezone, role = 'STUDENT' } = req.body;
+    
+    if (!name || !email) {
+      return res.status(400).json({ error: 'Name and email are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = dataManager.getUserByEmail(email);
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+
+    const user = {
+      name,
+      email,
+      phone,
+      country,
+      timezone,
+      role,
+    };
+
+    dataManager.addUser(user);
+    const addedUser = dataManager.getUserByEmail(email);
+    const token = generateToken(addedUser.id, addedUser.email, addedUser.role);
+
+    res.status(201).json({ 
+      success: true, 
+      user: { ...addedUser, password: undefined },
+      token 
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(400).json({ error: 'Registration failed' });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    console.log('[LOGIN] Request body:', req.body);
+    const { email, password } = req.body;
+    
+    console.log('[LOGIN] Looking for user with email:', email);
+    const user = dataManager.getUserByEmail(email);
+    console.log('[LOGIN] User found:', !!user, user?.id);
+
+    if (!user) {
+      console.log('[LOGIN] User not found, returning 401');
+      errorLogger.logAuthError(email, 'User not found', { 
+        endpoint: '/api/auth/login',
+        method: 'POST',
+        userAgent: req.get('User-Agent'),
+        ip: req.ip
+      });
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = generateToken(user.id, user.email, user.role);
+    console.log('[LOGIN] Generated token for user:', user.id);
+
+    res.json({ 
+      success: true, 
+      user: { ...user, password: undefined },
+      token 
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/auth/login',
+      method: 'POST',
+      body: req.body
+    });
+    res.status(400).json({ error: 'Login failed' });
+  }
+});
+
+app.post('/api/auth/otp', async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    // Generate OTP (in production, send via email/SMS)
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store OTP temporarily (in production, use Redis or similar)
+    console.log(`OTP for ${email}: ${otp}`);
+    
+    res.json({ success: true, message: 'OTP sent' });
+  } catch (error) {
+    console.error('OTP error:', error);
+    res.status(400).json({ error: 'Failed to send OTP' });
+  }
+});
+
+app.post('/api/auth/verify-otp', async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    
+    // In production, verify OTP from storage
+    // For demo purposes, accept any 6-digit OTP
+    if (!/^\d{6}$/.test(otp)) {
+      return res.status(400).json({ error: 'Invalid OTP format' });
+    }
+
+    let user = dataManager.getUserByEmail(email);
+
+    if (!user) {
+      // Create user if they don't exist
+      const newUser = {
+    email,
+        role: 'STUDENT',
+      };
+      dataManager.addUser(newUser);
+      user = dataManager.getUserByEmail(email);
+    }
+
+    const token = generateToken(user.id, user.email, user.role);
+
+    res.json({ 
+      success: true, 
+      user: { ...user, password: undefined },
+      token 
+    });
+  } catch (error) {
+    console.error('OTP verification error:', error);
+    res.status(400).json({ error: 'OTP verification failed' });
+  }
+});
+
+app.get('/api/auth/me', authenticateToken, async (req, res) => {
+  try {
+    const user = dataManager.getUserById(req.user?.userId || '');
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ ...user, password: undefined });
+  } catch (error) {
+    console.error('Auth check error:', error);
+    res.status(400).json({ error: 'Authentication failed' });
+  }
+});
+
+// User profile endpoints
+app.post('/api/students', authenticateToken, async (req, res) => {
+  try {
+    const { gradeLevel, learningGoals, preferredMode, budgetMin, budgetMax, specialRequirements, uploads } = req.body;
+
+    const profile = {
+      userId: req.user?.userId,
+      gradeLevel,
+      learningGoals,
+      preferredMode,
+      budgetMin,
+      budgetMax,
+      specialRequirements,
+      uploads,
+    };
+
+    dataManager.addStudent(profile);
+    const addedProfile = dataManager.getStudentByUserId(req.user?.userId || '');
+
+    res.status(201).json({ success: true, profile: addedProfile });
+  } catch (error) {
+    console.error('Student profile creation error:', error);
+    res.status(400).json({ error: 'Failed to create student profile' });
+  }
+});
+
+// Get student profile
+app.get('/api/students/profile', authenticateToken, async (req, res) => {
+  try {
+    const profile = dataManager.getStudentByUserId(req.user?.userId || '');
+    if (!profile) {
+      return res.status(404).json({ error: 'Student profile not found' });
+    }
+    res.json({ success: true, profile });
+  } catch (error) {
+    console.error('Student profile fetch error:', error);
+    res.status(400).json({ error: 'Failed to fetch student profile' });
+  }
+});
+
+// Update student profile
+app.put('/api/students/profile', authenticateToken, async (req, res) => {
+  try {
+    const { gradeLevel, learningGoals, preferredMode, budgetMin, budgetMax, specialRequirements, uploads } = req.body;
+    
+    const profile = dataManager.getStudentByUserId(req.user?.userId || '');
+    if (!profile) {
+      return res.status(404).json({ error: 'Student profile not found' });
+    }
+
+    const updates = {
+      gradeLevel: gradeLevel || profile.gradeLevel,
+      learningGoals: learningGoals || profile.learningGoals,
+      preferredMode: preferredMode || profile.preferredMode,
+      budgetMin: budgetMin || profile.budgetMin,
+      budgetMax: budgetMax || profile.budgetMax,
+      specialRequirements: specialRequirements || profile.specialRequirements,
+      uploads: uploads || profile.uploads,
+      updatedAt: new Date().toISOString(),
+    };
+
+    dataManager.updateStudent(profile.id, updates);
+    const updatedProfile = dataManager.getStudentById(profile.id);
+
+    res.json({ success: true, profile: updatedProfile });
+  } catch (error) {
+    console.error('Student profile update error:', error);
+    res.status(400).json({ error: 'Failed to update student profile' });
+  }
+});
+
+// Get student bookings
+app.get('/api/students/bookings', authenticateToken, async (req, res) => {
+  try {
+    const studentBookings = dataManager.getBookingsByStudentId(req.user?.userId || '');
+    res.json({ success: true, bookings: studentBookings, total: studentBookings.length });
+  } catch (error) {
+    console.error('Student bookings fetch error:', error);
+    res.status(400).json({ error: 'Failed to fetch student bookings' });
+  }
+});
+
+// Get student stats
+app.get('/api/students/stats', authenticateToken, async (req, res) => {
+  try {
+    const studentBookings = dataManager.getBookingsByStudentId(req.user?.userId || '');
+    const completedBookings = studentBookings.filter(booking => booking.status === 'COMPLETED');
+    const pendingBookings = studentBookings.filter(booking => booking.status === 'PENDING');
+    const cancelledBookings = studentBookings.filter(booking => booking.status === 'CANCELLED');
+    
+    const totalSpent = completedBookings.reduce((sum, booking) => sum + (booking.priceCents || 0), 0);
+    
+    const stats = {
+      totalBookings: studentBookings.length,
+      completedBookings: completedBookings.length,
+      pendingBookings: pendingBookings.length,
+      cancelledBookings: cancelledBookings.length,
+      totalSpentCents: totalSpent,
+      averageSessionPrice: completedBookings.length > 0 ? totalSpent / completedBookings.length : 0,
+    };
+
+    res.json({ success: true, stats });
+  } catch (error) {
+    console.error('Student stats fetch error:', error);
+    res.status(400).json({ error: 'Failed to fetch student stats' });
+  }
+});
+
+app.post('/api/tutors', authenticateToken, async (req, res) => {
+  try {
+    const { headline, bio, hourlyRateCents, currency, yearsExperience, subjects, levels, slug, certifications, availabilityBlocks } = req.body;
+
+    const profile = {
+      userId: req.user?.userId,
+      headline,
+      bio,
+      hourlyRateCents,
+      currency,
+      yearsExperience,
+      subjects,
+      levels,
+      slug,
+      certifications,
+      availabilityBlocks: availabilityBlocks || [],
+      ratingAvg: 0,
+      ratingCount: 0,
+    };
+
+    dataManager.addTutor(profile);
+    const addedProfile = dataManager.getTutorByUserId(req.user?.userId || '');
+
+    res.status(201).json({ success: true, profile: addedProfile });
+  } catch (error) {
+    console.error('Tutor profile creation error:', error);
+    res.status(400).json({ error: 'Failed to create tutor profile' });
+  }
+});
+
+// Tutor search and discovery
+app.get('/api/tutors', async (req, res) => {
+  try {
+    const { q, priceMin, priceMax, ratingMin, page = 1, limit = 20 } = req.query;
+    
+    let filteredTutors = [...dataManager.getAllTutors()];
+
+    // Apply filters
+    if (q) {
+      const query = q.toString().toLowerCase();
+      filteredTutors = filteredTutors.filter(tutor => {
+        const user = dataManager.getUserById(tutor.userId);
+        return (
+          tutor.headline?.toLowerCase().includes(query) ||
+          tutor.bio?.toLowerCase().includes(query) ||
+          user?.name?.toLowerCase().includes(query)
+        );
+      });
+    }
+
+    if (priceMin) {
+      filteredTutors = filteredTutors.filter(tutor => tutor.hourlyRateCents >= parseInt(priceMin.toString()));
+    }
+
+    if (priceMax) {
+      filteredTutors = filteredTutors.filter(tutor => tutor.hourlyRateCents <= parseInt(priceMax.toString()));
+    }
+
+    if (ratingMin) {
+      filteredTutors = filteredTutors.filter(tutor => tutor.ratingAvg >= parseFloat(ratingMin.toString()));
+    }
+
+    // Add user data to tutors
+    const tutorsWithUsers = filteredTutors.map(tutor => {
+      const user = dataManager.getUserById(tutor.userId);
+      return {
+        ...tutor,
+        user: user ? {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatarUrl: user.avatarUrl,
+          country: user.country
+        } : null
+      };
+    });
+
+    // Pagination
+    const startIndex = (parseInt(page.toString()) - 1) * parseInt(limit.toString());
+    const endIndex = startIndex + parseInt(limit.toString());
+    const paginatedTutors = tutorsWithUsers.slice(startIndex, endIndex);
+
+    res.json({ 
+      items: paginatedTutors, 
+      total: tutorsWithUsers.length, 
+      page: parseInt(page.toString()), 
+      limit: parseInt(limit.toString()) 
+    });
+  } catch (error) {
+    console.error('Tutor search error:', error);
+    res.status(400).json({ error: 'Search failed' });
+  }
+});
+
+// Booking endpoints
+app.post('/api/bookings', authenticateToken, requireActiveUser, async (req, res) => {
+  try {
+    const { tutorId, subjectId, startAtUTC, endAtUTC, priceCents, currency } = req.body;
+
+    console.log('Booking request body:', req.body);
+    console.log('User ID:', req.user?.userId);
+
+    const booking = {
+      studentId: req.user?.userId || '',
+      tutorId,
+      subjectId,
+      startAtUTC,
+      endAtUTC,
+      status: 'PENDING',
+      priceCents,
+      currency,
+    };
+
+    console.log('Booking object:', booking);
+
+    // Use the notification-enabled booking method
+    const addedBooking = dataManager.addBookingWithNotification(booking);
+
+    res.status(201).json({ success: true, booking: addedBooking });
+  } catch (error) {
+    console.error('Booking creation error:', error);
+    res.status(400).json({ error: 'Failed to create booking' });
+  }
+});
+
+app.get('/api/bookings', authenticateToken, async (req, res) => {
+  try {
+    const userBookings = dataManager.getAllBookings().filter(booking => 
+      booking.studentId === (req.user?.userId || '') || booking.tutorId === (req.user?.userId || '')
+    );
+
+    res.json({ items: userBookings, total: userBookings.length });
+  } catch (error) {
+    console.error('Bookings fetch error:', error);
+    res.status(400).json({ error: 'Failed to fetch bookings' });
+  }
+});
+
+// Subject endpoints
+app.get('/api/subjects', async (req, res) => {
+  try {
+    const subjects = [
+      { id: 'math', name: 'Mathematics', category: 'STEM' },
+      { id: 'physics', name: 'Physics', category: 'STEM' },
+      { id: 'chemistry', name: 'Chemistry', category: 'STEM' },
+      { id: 'biology', name: 'Biology', category: 'STEM' },
+      { id: 'english', name: 'English', category: 'Languages' },
+      { id: 'history', name: 'History', category: 'Social Sciences' },
+      { id: 'economics', name: 'Economics', category: 'Social Sciences' },
+    ];
+
+    res.json({ items: subjects, total: subjects.length });
+  } catch (error) {
+    console.error('Subjects fetch error:', error);
+    res.status(400).json({ error: 'Failed to fetch subjects' });
+  }
+});
+
+app.get('/api/subjects/categories', async (req, res) => {
+  try {
+    const categories = [
+      { id: 'stem', name: 'STEM', subjects: ['Mathematics', 'Physics', 'Chemistry', 'Biology'] },
+      { id: 'languages', name: 'Languages', subjects: ['English', 'Spanish', 'French', 'German'] },
+      { id: 'social', name: 'Social Sciences', subjects: ['History', 'Economics', 'Geography'] },
+    ];
+
+    res.json({ items: categories, total: categories.length });
+  } catch (error) {
+    console.error('Categories fetch error:', error);
+    res.status(400).json({ error: 'Failed to fetch categories' });
+  }
+});
+
+// Admin endpoints
+// Admin Dashboard - Get comprehensive stats and data
+
+// Enhanced admin user management endpoints
+app.get('/api/admin/users', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const users = dataManager.getAllUsers();
+    const tutors = dataManager.getAllTutors();
+    const students = dataManager.getAllStudents();
+    
+    const usersWithProfiles = users.map(user => {
+      const tutorProfile = tutors.find(t => t.userId === user.id);
+      const studentProfile = students.find(s => s.userId === user.id);
+      
+      return {
+        ...user,
+        profile: tutorProfile || studentProfile,
+        lastLogin: user.lastLogin || null,
+        status: user.status || 'PENDING'
+      };
+    });
+
+    res.json(usersWithProfiles);
+  } catch (error) {
+    console.error('Admin users error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/users',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get pending users for approval
+app.get('/api/admin/users/pending', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const pendingUsers = dataManager.getPendingUsers();
+    const tutors = dataManager.getAllTutors();
+    const students = dataManager.getAllStudents();
+    
+    const pendingUsersWithProfiles = pendingUsers.map(user => {
+      const tutorProfile = tutors.find(t => t.userId === user.id);
+      const studentProfile = students.find(s => s.userId === user.id);
+      
+      return {
+        ...user,
+        profile: tutorProfile || studentProfile,
+        daysPending: Math.floor((Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24))
+      };
+    });
+
+    res.json(pendingUsersWithProfiles);
+  } catch (error) {
+    console.error('Pending users error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/users/pending',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// User approval/rejection endpoints
+app.post('/api/admin/users/:userId/approve', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = dataManager.getUserById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Approve user using the new method
+    dataManager.approveUser(userId, req.user?.userId || '');
+    
+    // If it's a tutor, also update tutor status
+    const tutor = dataManager.getTutorByUserId(userId);
+    if (tutor) {
+      dataManager.updateTutor(tutor.id, { ...tutor, status: 'ACTIVE' });
+    }
+
+    errorLogger.logInfo(`User ${userId} approved by admin ${req.user?.userId}`, {
+      endpoint: '/api/admin/users/:userId/approve',
+      method: 'POST',
+      adminId: req.user?.userId,
+      targetUserId: userId
+    });
+
+    res.json({ success: true, message: 'User approved successfully' });
+  } catch (error) {
+    console.error('User approval error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/users/:userId/approve',
+      method: 'POST',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/admin/users/:userId/reject', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { reason } = req.body;
+    const user = dataManager.getUserById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Reject user using the new method
+    dataManager.rejectUser(userId, req.user?.userId || '', reason);
+
+    errorLogger.logInfo(`User ${userId} rejected by admin ${req.user?.userId}`, {
+      endpoint: '/api/admin/users/:userId/reject',
+      method: 'POST',
+      adminId: req.user?.userId,
+      targetUserId: userId,
+      reason
+    });
+
+    res.json({ success: true, message: 'User rejected successfully' });
+  } catch (error) {
+    console.error('User rejection error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/users/:userId/reject',
+      method: 'POST',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/admin/users/:userId/suspend', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { reason } = req.body;
+    const user = dataManager.getUserById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Suspend user using the new method
+    dataManager.suspendUser(userId, req.user?.userId || '', reason);
+
+    errorLogger.logInfo(`User ${userId} suspended by admin ${req.user?.userId}`, {
+      endpoint: '/api/admin/users/:userId/suspend',
+      method: 'POST',
+      adminId: req.user?.userId,
+      targetUserId: userId,
+      reason
+    });
+
+    res.json({ success: true, message: 'User suspended successfully' });
+  } catch (error) {
+    console.error('User suspension error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/users/:userId/suspend',
+      method: 'POST',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/admin/users/:userId/activate', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = dataManager.getUserById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const updatedUser = { ...user, status: 'ACTIVE' };
+    dataManager.updateUser(userId, updatedUser);
+
+    errorLogger.logInfo(`User ${userId} activated by admin ${req.user?.userId}`, {
+      endpoint: '/api/admin/users/:userId/activate',
+      method: 'POST',
+      adminId: req.user?.userId,
+      targetUserId: userId
+    });
+
+    res.json({ success: true, message: 'User activated successfully' });
+  } catch (error) {
+    console.error('User activation error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/users/:userId/activate',
+      method: 'POST',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Enhanced bookings endpoint for admin
+app.get('/api/admin/bookings', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const bookings = dataManager.getAllBookings();
+    const users = dataManager.getAllUsers();
+    
+    const bookingsWithUsers = bookings.map(booking => {
+      const student = users.find(u => u.id === booking.studentId);
+      const tutor = users.find(u => {
+        const tutorProfile = dataManager.getTutorByUserId(u.id);
+        return tutorProfile?.id === booking.tutorId;
+      });
+      
+      return {
+        ...booking,
+        student,
+        tutor
+      };
+    });
+
+    res.json(bookingsWithUsers);
+  } catch (error) {
+    console.error('Admin bookings error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/bookings',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin reports endpoints
+app.get('/api/admin/reports/users', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const users = dataManager.getAllUsers();
+    const tutors = dataManager.getAllTutors();
+    const students = dataManager.getAllStudents();
+    
+    const report = {
+      totalUsers: users.length,
+      totalTutors: tutors.length,
+      totalStudents: students.length,
+      activeUsers: users.filter(u => u.status === 'ACTIVE').length,
+      pendingUsers: users.filter(u => u.status === 'PENDING').length,
+      suspendedUsers: users.filter(u => u.status === 'SUSPENDED').length,
+      rejectedUsers: users.filter(u => u.status === 'REJECTED').length,
+      usersByRole: {
+        STUDENT: users.filter(u => u.role === 'STUDENT').length,
+        TUTOR: users.filter(u => u.role === 'TUTOR').length,
+        ADMIN: users.filter(u => u.role === 'ADMIN').length
+      },
+      recentRegistrations: users
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .slice(0, 10)
+    };
+
+    res.json(report);
+  } catch (error) {
+    console.error('User report error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/reports/users',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/admin/reports/revenue', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const bookings = dataManager.getAllBookings();
+    const completedBookings = bookings.filter(b => b.status === 'COMPLETED');
+    
+    const report = {
+      totalRevenue: completedBookings.reduce((sum, b) => sum + b.priceCents, 0),
+      totalBookings: bookings.length,
+      completedBookings: completedBookings.length,
+      cancelledBookings: bookings.filter(b => b.status === 'CANCELLED').length,
+      pendingBookings: bookings.filter(b => b.status === 'PENDING').length,
+      averageBookingValue: completedBookings.length > 0 ? 
+        completedBookings.reduce((sum, b) => sum + b.priceCents, 0) / completedBookings.length : 0,
+      revenueByMonth: {}, // This would be calculated from booking dates
+      topTutors: [], // This would be calculated from tutor earnings
+      revenueGrowth: 0 // This would be calculated from historical data
+    };
+
+    res.json(report);
+  } catch (error) {
+    console.error('Revenue report error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/reports/revenue',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+// Admin - Get all tutors with details
+app.get('/api/admin/tutors', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const allTutors = dataManager.getAllTutors();
+    const allUsers = dataManager.getAllUsers();
+
+    const tutorsWithDetails = allTutors.map(tutor => {
+      const user = allUsers.find(u => u.id === tutor.userId);
+      const bookings = dataManager.getAllBookings().filter(b => b.tutorId === tutor.id);
+      
+      return {
+        ...tutor,
+        user,
+        totalBookings: bookings.length,
+        completedBookings: bookings.filter(b => b.status === 'COMPLETED').length,
+        pendingBookings: bookings.filter(b => b.status === 'PENDING').length
+      };
+    });
+
+    res.json({ tutors: tutorsWithDetails });
+  } catch (error) {
+    console.error('Admin tutors error:', error);
+    res.status(400).json({ error: 'Failed to fetch tutors' });
+  }
+});
+
+// Admin - Get all students with details
+app.get('/api/admin/students', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const allStudents = dataManager.getAllStudents();
+    const allUsers = dataManager.getAllUsers();
+
+    const studentsWithDetails = allStudents.map(student => {
+      const user = allUsers.find(u => u.id === student.userId);
+      const bookings = dataManager.getAllBookings().filter(b => b.studentId === student.userId);
+      
+      return {
+        ...student,
+        user,
+        totalBookings: bookings.length,
+        completedBookings: bookings.filter(b => b.status === 'COMPLETED').length,
+        pendingBookings: bookings.filter(b => b.status === 'PENDING').length
+      };
+    });
+
+    res.json({ students: studentsWithDetails });
+  } catch (error) {
+    console.error('Admin students error:', error);
+    res.status(400).json({ error: 'Failed to fetch students' });
+  }
+});
+
+// Admin - Get all bookings with details
+app.get('/api/admin/bookings', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const allBookings = dataManager.getAllBookings();
+    const allUsers = dataManager.getAllUsers();
+    const allTutors = dataManager.getAllTutors();
+
+    const bookingsWithDetails = allBookings.map(booking => ({
+      ...booking,
+      student: allUsers.find(u => u.id === booking.studentId),
+      tutor: allTutors.find(t => t.id === booking.tutorId)
+    }));
+
+    res.json({ bookings: bookingsWithDetails });
+  } catch (error) {
+    console.error('Admin bookings error:', error);
+    res.status(400).json({ error: 'Failed to fetch bookings' });
+  }
+});
+
+// Admin - Update user status (approve/disable)
+app.put('/api/admin/users/:userId/status', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { status } = req.body; // 'active', 'disabled', 'pending'
+
+    // For now, we'll just return success since we don't have status field in user model
+    // In a real app, you'd update the user status in the database
+    res.json({ success: true, message: `User ${userId} status updated to ${status}` });
+  } catch (error) {
+    console.error('Admin user status update error:', error);
+    res.status(400).json({ error: 'Failed to update user status' });
+  }
+});
+
+// Admin - Delete user
+app.delete('/api/admin/users/:userId', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    // In a real app, you'd implement proper user deletion
+    // For now, we'll just return success
+    res.json({ success: true, message: `User ${userId} deleted successfully` });
+  } catch (error) {
+    console.error('Admin user deletion error:', error);
+    res.status(400).json({ error: 'Failed to delete user' });
+  }
+});
+
+// Booking status management endpoints
+app.put('/api/admin/bookings/:bookingId/status', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const { status, reason } = req.body;
+    
+    const booking = dataManager.getBookingById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    // Update booking status
+    dataManager.updateBooking(bookingId, { 
+      status, 
+      updatedAt: new Date().toISOString(),
+      statusReason: reason || null
+    });
+
+    errorLogger.logInfo(`Booking ${bookingId} status updated to ${status} by admin ${req.user?.userId}`, {
+      endpoint: '/api/admin/bookings/:bookingId/status',
+      method: 'PUT',
+      adminId: req.user?.userId,
+      bookingId,
+      newStatus: status,
+      reason
+    });
+
+    res.json({ success: true, message: `Booking status updated to ${status}` });
+  } catch (error) {
+    console.error('Booking status update error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/bookings/:bookingId/status',
+      method: 'PUT',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Tutor booking management endpoints
+app.put('/api/tutors/bookings/:bookingId/status', authenticateToken, async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const { status, reason } = req.body;
+    
+    const booking = dataManager.getBookingById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    // Verify the tutor owns this booking
+    const user = dataManager.getUserById(req.user?.userId || '');
+    const tutor = dataManager.getTutorByUserId(user?.id || '');
+    if (!tutor || booking.tutorId !== tutor.id) {
+      return res.status(403).json({ error: 'Unauthorized to modify this booking' });
+    }
+
+    // Update booking status with notifications
+    const success = dataManager.updateBookingWithNotification(bookingId, { 
+      status, 
+      updatedAt: new Date().toISOString(),
+      statusReason: reason || null
+    }, req.user?.userId || '');
+
+    if (!success) {
+      return res.status(400).json({ error: 'Failed to update booking status' });
+    }
+
+    errorLogger.logInfo(`Booking ${bookingId} status updated to ${status} by tutor ${req.user?.userId}`, {
+      endpoint: '/api/tutors/bookings/:bookingId/status',
+      method: 'PUT',
+      tutorId: req.user?.userId,
+      bookingId,
+      newStatus: status,
+      reason
+    });
+
+    res.json({ success: true, message: `Booking status updated to ${status}` });
+  } catch (error) {
+    console.error('Tutor booking status update error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/tutors/bookings/:bookingId/status',
+      method: 'PUT',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Student booking management endpoints
+app.put('/api/students/bookings/:bookingId/status', authenticateToken, async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const { status, reason } = req.body;
+    
+    const booking = dataManager.getBookingById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    // Verify the student owns this booking
+    if (booking.studentId !== req.user?.userId) {
+      return res.status(403).json({ error: 'Unauthorized to modify this booking' });
+    }
+
+    // Students can only cancel their own bookings
+    if (status !== 'CANCELLED') {
+      return res.status(400).json({ error: 'Students can only cancel bookings' });
+    }
+
+    // Update booking status with notifications
+    const success = dataManager.updateBookingWithNotification(bookingId, { 
+      status, 
+      updatedAt: new Date().toISOString(),
+      statusReason: reason || null
+    }, req.user?.userId || '');
+
+    if (!success) {
+      return res.status(400).json({ error: 'Failed to cancel booking' });
+    }
+
+    errorLogger.logInfo(`Booking ${bookingId} cancelled by student ${req.user?.userId}`, {
+      endpoint: '/api/students/bookings/:bookingId/status',
+      method: 'PUT',
+      studentId: req.user?.userId,
+      bookingId,
+      newStatus: status,
+      reason
+    });
+
+    res.json({ success: true, message: 'Booking cancelled successfully' });
+  } catch (error) {
+    console.error('Student booking status update error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/students/bookings/:bookingId/status',
+      method: 'PUT',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Notification endpoints
+app.get('/api/notifications', authenticateToken, async (req, res) => {
+  try {
+    const { unreadOnly } = req.query;
+    const notifications = dataManager.getNotificationsByUserId(
+      req.user?.userId || '', 
+      unreadOnly === 'true'
+    );
+    
+    res.json({ 
+      success: true, 
+      notifications,
+      unreadCount: dataManager.getUnreadNotificationCount(req.user?.userId || '')
+    });
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ error: 'Failed to fetch notifications' });
+  }
+});
+
+app.put('/api/notifications/:notificationId/read', authenticateToken, async (req, res) => {
+  try {
+    const { notificationId } = req.params;
+    const success = dataManager.markNotificationAsRead(notificationId);
+    
+    if (success) {
+      res.json({ success: true, message: 'Notification marked as read' });
+    } else {
+      res.status(404).json({ error: 'Notification not found' });
+    }
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+    res.status(500).json({ error: 'Failed to mark notification as read' });
+  }
+});
+
+app.put('/api/notifications/read-all', authenticateToken, async (req, res) => {
+  try {
+    dataManager.markAllNotificationsAsRead(req.user?.userId || '');
+    res.json({ success: true, message: 'All notifications marked as read' });
+  } catch (error) {
+    console.error('Error marking all notifications as read:', error);
+    res.status(500).json({ error: 'Failed to mark all notifications as read' });
+  }
+});
+
+// Get booking details with status history
+app.get('/api/bookings/:bookingId', authenticateToken, async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const booking = dataManager.getBookingById(bookingId);
+    
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    // Check if user has access to this booking
+    const user = dataManager.getUserById(req.user?.userId || '');
+    const tutor = dataManager.getTutorByUserId(user?.id || '');
+    
+    if (booking.studentId !== req.user?.userId && 
+        (!tutor || booking.tutorId !== tutor.id) && 
+        user?.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Unauthorized to view this booking' });
+    }
+
+    // Get related data
+    const student = dataManager.getUserById(booking.studentId);
+    const tutorProfile = dataManager.getTutorById(booking.tutorId);
+    const tutorUser = tutorProfile ? dataManager.getUserById(tutorProfile.userId) : null;
+
+    const bookingDetails = {
+      ...booking,
+      student,
+      tutor: tutorProfile ? {
+        ...tutorProfile,
+        user: tutorUser
+      } : null,
+      statusHistory: [
+        {
+          status: 'PENDING',
+          timestamp: booking.createdAt,
+          reason: 'Booking created'
+        },
+        ...(booking.updatedAt ? [{
+          status: booking.status,
+          timestamp: booking.updatedAt,
+          reason: booking.statusReason || 'Status updated'
+        }] : [])
+      ]
+    };
+
+    res.json(bookingDetails);
+  } catch (error) {
+    console.error('Booking details error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/bookings/:bookingId',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Add some sample data for testing
+const initializeSampleData = () => {
+  // Add sample users
+  const sampleUsers = [
+    {
+      id: 'user-1',
+      name: 'John Doe',
+      email: 'john@example.com',
+      role: 'TUTOR',
+      country: 'United States',
+    createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'user-2',
+      name: 'Jane Smith',
+      email: 'jane@example.com',
+      role: 'STUDENT',
+      country: 'Canada',
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'user-3',
+      name: 'Mike Johnson',
+      email: 'mike@example.com',
+      role: 'TUTOR',
+      country: 'United Kingdom',
+      createdAt: new Date().toISOString(),
+    }
+  ];
+
+  // Add sample tutors
+  const sampleTutors = [
+    {
+      id: 'tutor-1',
+      userId: 'user-1',
+      headline: 'Experienced Math Tutor',
+      bio: 'I have been teaching mathematics for over 5 years. I specialize in algebra, calculus, and statistics.',
+      hourlyRateCents: 2500, // $25/hour
+      currency: 'USD',
+      yearsExperience: 5,
+      subjects: ['Mathematics', 'Statistics'],
+      levels: ['High School (9-12)', 'College/University'],
+      ratingAvg: 4.8,
+      ratingCount: 12,
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'tutor-2',
+      userId: 'user-3',
+      headline: 'Physics and Chemistry Expert',
+      bio: 'PhD in Physics with extensive experience in teaching both physics and chemistry at university level.',
+      hourlyRateCents: 3000, // $30/hour
+      currency: 'USD',
+      yearsExperience: 8,
+      subjects: ['Physics', 'Chemistry'],
+      levels: ['College/University', 'Graduate School'],
+      ratingAvg: 4.9,
+      ratingCount: 8,
+      createdAt: new Date().toISOString(),
+    }
+  ];
+
+  // Add sample bookings
+  const sampleBookings = [
+    {
+      id: 'booking-1',
+      studentId: 'user-2', // Student user
+      tutorId: 'tutor-1', // Math tutor
+      subjectId: 'math-algebra',
+      startAtUTC: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
+      endAtUTC: new Date(Date.now() + 24 * 60 * 60 * 1000 + 60 * 60 * 1000).toISOString(), // Tomorrow + 1 hour
+      status: 'PENDING',
+      priceCents: 2500, // $25
+      currency: 'USD',
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'booking-2',
+      studentId: 'user-3', // Another student
+      tutorId: 'tutor-2', // Science tutor
+      subjectId: 'science-physics',
+      startAtUTC: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // Day after tomorrow
+      endAtUTC: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000).toISOString(), // Day after tomorrow + 1 hour
+      status: 'CONFIRMED',
+      priceCents: 3000, // $30
+      currency: 'USD',
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'booking-3',
+      studentId: 'user-2', // Student user
+      tutorId: 'tutor-1', // Math tutor
+      subjectId: 'math-calculus',
+      startAtUTC: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days from now
+      endAtUTC: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000).toISOString(), // 3 days from now + 1 hour
+      status: 'COMPLETED',
+      priceCents: 2500, // $25
+      currency: 'USD',
+    createdAt: new Date().toISOString(),
+    }
+  ];
+};
+
+// Tutor profile endpoints
+app.get('/api/tutors/profile', authenticateToken, (req, res) => {
+  try {
+    const userId = (req as any).user.userId;
+    const tutor = dataManager.getTutorByUserId(userId);
+    
+    if (!tutor) {
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const user = dataManager.getUserById(tutor.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      ...tutor,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+        country: user.country,
+        phone: user.phone,
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching tutor profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Tutor bookings endpoint - simplified version
+app.get('/api/tutors/bookings', authenticateToken, async (req, res) => {
+  try {
+    console.log(`[TUTOR BOOKINGS] Starting request for user: ${req.user?.userId}`);
+    
+    const user = dataManager.getUserById(req.user?.userId || '');
+    console.log(`[TUTOR BOOKINGS] User found: ${!!user}, ID: ${user?.id}`);
+    
+    if (!user) {
+      console.log(`[TUTOR BOOKINGS] User not found for ID: ${req.user?.userId}`);
+      errorLogger.logApiError('/api/tutors/bookings', 'GET', 404, 
+        new Error('User not found'), { userId: req.user?.userId });
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const tutor = dataManager.getTutorByUserId(user.id);
+    console.log(`[TUTOR BOOKINGS] Tutor found: ${!!tutor}, ID: ${tutor?.id}`);
+    
+    if (!tutor) {
+      console.log(`[TUTOR BOOKINGS] Tutor profile not found for user: ${user.id}`);
+      errorLogger.logApiError('/api/tutors/bookings', 'GET', 404, 
+        new Error('Tutor profile not found'), { userId: req.user?.userId, userRole: user.role });
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const tutorBookings = dataManager.getBookingsByTutorId(tutor.id);
+    console.log(`[TUTOR BOOKINGS] Found ${tutorBookings.length} bookings for tutor: ${tutor.id}`);
+    res.json(tutorBookings);
+  } catch (error) {
+    console.error('Error fetching tutor bookings:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/tutors/bookings',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Tutor stats endpoint - simplified version
+app.get('/api/tutors/stats', authenticateToken, async (req, res) => {
+  try {
+    const user = dataManager.getUserById(req.user?.userId || '');
+    
+    if (!user) {
+      errorLogger.logApiError('/api/tutors/stats', 'GET', 404, 
+        new Error('User not found'), { userId: req.user?.userId });
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const tutor = dataManager.getTutorByUserId(user.id);
+    
+    if (!tutor) {
+      errorLogger.logApiError('/api/tutors/stats', 'GET', 404, 
+        new Error('Tutor profile not found'), { userId: req.user?.userId, userRole: user.role });
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const tutorBookings = dataManager.getBookingsByTutorId(tutor.id);
+    const completedBookings = tutorBookings.filter(b => b.status === 'COMPLETED');
+    const pendingBookings = tutorBookings.filter(b => b.status === 'PENDING');
+    const cancelledBookings = tutorBookings.filter(b => b.status === 'CANCELLED');
+    
+    const totalEarnings = completedBookings.reduce((sum, booking) => sum + booking.priceCents, 0);
+    const averageSessionPrice = completedBookings.length > 0 
+      ? totalEarnings / completedBookings.length 
+      : 0;
+
+    const stats = {
+      totalBookings: tutorBookings.length,
+      completedBookings: completedBookings.length,
+      pendingBookings: pendingBookings.length,
+      cancelledBookings: cancelledBookings.length,
+      totalEarnings,
+      averageSessionPrice,
+      studentsTaught: new Set(tutorBookings.map(b => b.studentId)).size,
+      sessionsCompleted: completedBookings.length,
+    };
+
+    res.json(stats);
+  } catch (error) {
+    console.error('Error fetching tutor stats:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/tutors/stats',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/tutors/:tutorId', (req, res) => {
+  try {
+    const { tutorId } = req.params;
+    const tutor = dataManager.getAllTutors().find(t => t.id === tutorId);
+    
+    if (!tutor) {
+      return res.status(404).json({ error: 'Tutor not found' });
+    }
+
+    const user = dataManager.getUserById(tutor.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      ...tutor,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+        country: user.country,
+        phone: user.phone,
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching tutor profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+// Tutor profile update endpoint
+app.put('/api/tutors/profile', authenticateToken, (req, res) => {
+  try {
+    const userId = (req as any).user.userId;
+    const tutor = dataManager.getAllTutors().find(t => t.userId === userId);
+    
+    if (!tutor) {
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const updates = req.body;
+    const updatedTutor = { ...tutor, ...updates, updatedAt: new Date().toISOString() };
+    
+    dataManager.updateTutor(tutor.id, updates);
+
+    res.json({ success: true, profile: updatedTutor });
+  } catch (error) {
+    console.error('Error updating tutor profile:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Learning Progress endpoints with real data
+app.get('/api/students/learning-progress/:studentId', authenticateToken, async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const learningProgress = dataManager.getLearningProgress(studentId);
+    res.json(learningProgress);
+  } catch (error) {
+    console.error('Learning progress fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch learning progress' });
+  }
+});
+
+app.post('/api/students/learning-goals', authenticateToken, async (req, res) => {
+  try {
+    const { title, description, category, priority, targetDate } = req.body;
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const newGoal = {
+      id: `goal-${Date.now()}`,
+      title,
+      description,
+      category,
+      priority,
+      targetDate,
+      progress: 0,
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString()
+    };
+    
+    dataManager.addLearningGoal(userId, newGoal);
+    res.status(201).json({ success: true, goal: newGoal });
+  } catch (error) {
+    console.error('Learning goal creation error:', error);
+    res.status(500).json({ error: 'Failed to create learning goal' });
+  }
+});
+
+app.put('/api/students/learning-goals/:goalId', authenticateToken, async (req, res) => {
+  try {
+    const { goalId } = req.params;
+    const { progress, status } = req.body;
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const updatedGoal = dataManager.updateLearningGoal(userId, goalId, { progress, status });
+    if (updatedGoal) {
+      res.json({ success: true, goal: updatedGoal });
+    } else {
+      res.status(404).json({ error: 'Goal not found' });
+    }
+  } catch (error) {
+    console.error('Learning goal update error:', error);
+    res.status(500).json({ error: 'Failed to update learning goal' });
+  }
+});
+
+app.delete('/api/students/learning-goals/:goalId', authenticateToken, async (req, res) => {
+  try {
+    const { goalId } = req.params;
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const deleted = dataManager.deleteLearningGoal(userId, goalId);
+    if (deleted) {
+      res.json({ success: true, message: 'Goal deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Goal not found' });
+    }
+  } catch (error) {
+    console.error('Learning goal deletion error:', error);
+    res.status(500).json({ error: 'Failed to delete learning goal' });
+  }
+});
+
+app.post('/api/students/upcoming-sessions', authenticateToken, async (req, res) => {
+  try {
+    const { tutor, subject, date, time, duration } = req.body;
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const newSession = {
+      id: `session-${Date.now()}`,
+      tutor,
+      subject,
+      date,
+      time,
+      duration: duration || 60
+    };
+    
+    dataManager.addUpcomingSession(userId, newSession);
+    res.status(201).json({ success: true, session: newSession });
+  } catch (error) {
+    console.error('Session creation error:', error);
+    res.status(500).json({ error: 'Failed to create session' });
+  }
+});
+
+app.put('/api/students/sessions/:sessionId/complete', authenticateToken, async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const completed = dataManager.completeSession(userId, sessionId);
+    if (completed) {
+      res.json({ success: true, message: 'Session marked as completed' });
+    } else {
+      res.status(404).json({ error: 'Session not found' });
+    }
+  } catch (error) {
+    console.error('Session completion error:', error);
+    res.status(500).json({ error: 'Failed to complete session' });
+  }
+});
+
+// Simple test endpoint without authentication
+app.get('/api/test/tutor-lookup/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const tutor = dataManager.getTutorByUserId(userId);
+    
+    if (!tutor) {
+      return res.status(404).json({ error: 'Tutor not found' });
+    }
+    
+    res.json({ success: true, tutor });
+  } catch (error) {
+    console.error('Test error:', error);
+    res.status(500).json({ error: 'Test failed' });
+  }
+});
+
+// Test authenticated endpoint
+app.get('/api/test/auth', authenticateToken, (req, res) => {
+  try {
+    res.json({
+      success: true,
+      user: req.user,
+      userId: req.user?.userId,
+      message: 'Authentication working'
+    });
+  } catch (error) {
+    console.error('Auth test error:', error);
+    res.status(500).json({ error: 'Auth test failed' });
+  }
+});
+
+// Tutor bookings endpoint - simplified version
+app.get('/api/tutors/bookings', authenticateToken, async (req, res) => {
+  try {
+    console.log(`[TUTOR BOOKINGS] Starting request for user: ${req.user?.userId}`);
+    
+    const user = dataManager.getUserById(req.user?.userId || '');
+    console.log(`[TUTOR BOOKINGS] User found: ${!!user}, ID: ${user?.id}`);
+    
+    if (!user) {
+      console.log(`[TUTOR BOOKINGS] User not found for ID: ${req.user?.userId}`);
+      errorLogger.logApiError('/api/tutors/bookings', 'GET', 404, 
+        new Error('User not found'), { userId: req.user?.userId });
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const tutor = dataManager.getTutorByUserId(user.id);
+    console.log(`[TUTOR BOOKINGS] Tutor found: ${!!tutor}, ID: ${tutor?.id}`);
+    
+    if (!tutor) {
+      console.log(`[TUTOR BOOKINGS] Tutor profile not found for user: ${user.id}`);
+      errorLogger.logApiError('/api/tutors/bookings', 'GET', 404, 
+        new Error('Tutor profile not found'), { userId: req.user?.userId, userRole: user.role });
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const tutorBookings = dataManager.getBookingsByTutorId(tutor.id);
+    console.log(`[TUTOR BOOKINGS] Found ${tutorBookings.length} bookings for tutor: ${tutor.id}`);
+    res.json(tutorBookings);
+  } catch (error) {
+    console.error('Error fetching tutor bookings:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/tutors/bookings',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Tutor stats endpoint - simplified version
+app.get('/api/tutors/stats', authenticateToken, async (req, res) => {
+  try {
+    const user = dataManager.getUserById(req.user?.userId || '');
+    
+    if (!user) {
+      errorLogger.logApiError('/api/tutors/stats', 'GET', 404, 
+        new Error('User not found'), { userId: req.user?.userId });
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const tutor = dataManager.getTutorByUserId(user.id);
+    
+    if (!tutor) {
+      errorLogger.logApiError('/api/tutors/stats', 'GET', 404, 
+        new Error('Tutor profile not found'), { userId: req.user?.userId, userRole: user.role });
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const tutorBookings = dataManager.getBookingsByTutorId(tutor.id);
+    const completedBookings = tutorBookings.filter(b => b.status === 'COMPLETED');
+    const pendingBookings = tutorBookings.filter(b => b.status === 'PENDING');
+    const cancelledBookings = tutorBookings.filter(b => b.status === 'CANCELLED');
+    
+    const totalEarnings = completedBookings.reduce((sum, booking) => sum + booking.priceCents, 0);
+    const averageSessionPrice = completedBookings.length > 0 
+      ? totalEarnings / completedBookings.length 
+      : 0;
+
+    const stats = {
+      totalBookings: tutorBookings.length,
+      completedBookings: completedBookings.length,
+      pendingBookings: pendingBookings.length,
+      cancelledBookings: cancelledBookings.length,
+      totalEarnings,
+      averageSessionPrice,
+      studentsTaught: new Set(tutorBookings.map(b => b.studentId)).size,
+      sessionsCompleted: completedBookings.length,
+    };
+
+    res.json(stats);
+  } catch (error) {
+    console.error('Error fetching tutor stats:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/tutors/stats',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Test endpoint to debug tutor lookup
+app.get('/api/debug/tutor-lookup/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    console.log(`[DEBUG] Looking up tutor for userId: ${userId}`);
+    
+    const allTutors = dataManager.getAllTutors();
+    console.log(`[DEBUG] All tutors:`, allTutors.map(t => ({ id: t.id, userId: t.userId })));
+    
+    const tutor = dataManager.getTutorByUserId(userId);
+    console.log(`[DEBUG] Tutor found:`, tutor);
+    
+    res.json({
+      userId,
+      allTutors: allTutors.map(t => ({ id: t.id, userId: t.userId })),
+      tutorFound: !!tutor,
+      tutor: tutor
+    });
+  } catch (error) {
+    console.error('Debug error:', error);
+    res.status(500).json({ error: 'Debug failed' });
+  }
+});
+
+// Error logging endpoints
+app.post('/api/logs/client-errors', (req, res) => {
+  try {
+    const { errors, sessionId, userId } = req.body;
+    
+    // Log each error to console with structured format
+    errors.forEach((error: any) => {
+      console.error(`[CLIENT ERROR] ${error.type.toUpperCase()} - ${error.component || 'Unknown'}:`, {
+        id: error.id,
+        message: error.message,
+        component: error.component,
+        action: error.action,
+        url: error.url,
+        userId: userId || 'anonymous',
+        sessionId: sessionId,
+        timestamp: error.timestamp,
+        metadata: error.metadata,
+        stack: error.stack,
+      });
+    });
+
+    // In a real application, you would save these to a database
+    // For now, we'll just log them to console and return success
+    res.json({ success: true, logged: errors.length });
+  } catch (error) {
+    console.error('Error processing client error logs:', error);
+    res.status(500).json({ error: 'Failed to process error logs' });
+  }
+});
+
+// Server-side error logging endpoint
+app.post('/api/logs/server-error', (req, res) => {
+  try {
+    const { error, context, userId, sessionId } = req.body;
+    
+    console.error(`[SERVER ERROR] ${context || 'Unknown Context'}:`, {
+      message: error.message,
+      stack: error.stack,
+      userId: userId || 'anonymous',
+      sessionId: sessionId,
+      timestamp: new Date().toISOString(),
+      context: context,
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error processing server error log:', error);
+    res.status(500).json({ error: 'Failed to process server error log' });
+  }
+});
+
+// Get error logs (for admin dashboard)
+app.get('/api/logs/errors', authenticateToken, requireRole(['ADMIN']), (req, res) => {
+  try {
+    // In a real application, you would fetch from database
+    // For now, return mock data
+    const mockErrors = [
+      {
+        id: 'error_1',
+        timestamp: new Date().toISOString(),
+        type: 'error',
+        level: 'client',
+        message: 'Failed to load tutor profile',
+        component: 'TutorProfile',
+        action: 'load_profile',
+        url: '/tutor/123',
+        userId: 'user_1',
+        sessionId: 'session_1',
+        count: 5,
+      },
+      {
+        id: 'error_2',
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+        type: 'warning',
+        level: 'client',
+        message: 'Slow API response',
+        component: 'SearchPage',
+        action: 'search_tutors',
+        url: '/search',
+        userId: 'user_2',
+        sessionId: 'session_2',
+        count: 3,
+      },
+    ];
+
+    res.json({ errors: mockErrors });
+  } catch (error) {
+    console.error('Error fetching error logs:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin profile management endpoints
+app.get('/api/admin/profile', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const user = dataManager.getUserById(req.user?.userId || '');
+    if (!user) {
+      return res.status(404).json({ error: 'Admin profile not found' });
+    }
+
+    const profile = {
+      ...user,
+      preferences: {
+        emailNotifications: true,
+        smsNotifications: false,
+        weeklyReports: true,
+        securityAlerts: true
+      },
+      security: {
+        twoFactorEnabled: false,
+        lastPasswordChange: user.createdAt,
+        loginAttempts: 0
+      }
+    };
+
+    res.json(profile);
+  } catch (error) {
+    console.error('Admin profile error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/profile',
+      method: 'GET',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/api/admin/profile', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
+    const userId = req.user?.userId || '';
+
+    const user = dataManager.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Admin profile not found' });
+    }
+
+    dataManager.updateUser(userId, {
+      name,
+      email,
+      phone,
+      updatedAt: new Date().toISOString()
+    });
+
+    const updatedUser = dataManager.getUserById(userId);
+
+    errorLogger.logInfo(`Admin profile updated by ${userId}`, {
+      endpoint: '/api/admin/profile',
+      method: 'PUT',
+      adminId: userId,
+      changes: { name, email, phone }
+    });
+
+    res.json({ success: true, profile: updatedUser });
+  } catch (error) {
+    console.error('Admin profile update error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/profile',
+      method: 'PUT',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/api/admin/profile/password', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user?.userId || '';
+
+    // In a real app, you would verify the current password
+    // For now, we'll just update it
+    const user = dataManager.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Admin profile not found' });
+    }
+
+    dataManager.updateUser(userId, {
+      password: newPassword, // In real app, this should be hashed
+      lastPasswordChange: new Date().toISOString()
+    });
+
+    errorLogger.logInfo(`Admin password updated by ${userId}`, {
+      endpoint: '/api/admin/profile/password',
+      method: 'PUT',
+      adminId: userId
+    });
+
+    res.json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Admin password update error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/profile/password',
+      method: 'PUT',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/api/admin/profile/preferences', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const preferences = req.body;
+    const userId = req.user?.userId || '';
+
+    // In a real app, you would store preferences in a separate table
+    // For now, we'll just log the update
+    errorLogger.logInfo(`Admin preferences updated by ${userId}`, {
+      endpoint: '/api/admin/profile/preferences',
+      method: 'PUT',
+      adminId: userId,
+      preferences
+    });
+
+    res.json({ success: true, message: 'Preferences updated successfully' });
+  } catch (error) {
+    console.error('Admin preferences update error:', error);
+    errorLogger.logError(error, { 
+      endpoint: '/api/admin/profile/preferences',
+      method: 'PUT',
+      userId: req.user?.userId
+    });
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ==================== REVIEWS & RATINGS ENDPOINTS ====================
+
+// Submit a review for a completed session
+app.post('/api/reviews', authenticateToken, async (req, res) => {
+  try {
+    const { tutorId, bookingId, rating, comment } = req.body;
+    const studentId = req.user?.userId;
+
+    if (!studentId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    // Validate required fields
+    if (!tutorId || !bookingId || !rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ error: 'Invalid review data' });
+    }
+
+    // Check if booking exists and is completed
+    const booking = dataManager.getBookingById(bookingId);
+    if (!booking || booking.status !== 'COMPLETED') {
+      return res.status(400).json({ error: 'Can only review completed sessions' });
+    }
+
+    // Check if student already reviewed this session
+    const existingReview = dataManager.getAllReviews().find(r => 
+      r.studentId === studentId && r.bookingId === bookingId
+    );
+    if (existingReview) {
+      return res.status(400).json({ error: 'You have already reviewed this session' });
+    }
+
+    const review = {
+      tutorId,
+      studentId,
+      bookingId,
+      rating: parseInt(rating),
+      comment: comment || '',
+      studentName: dataManager.getUserById(studentId)?.name || 'Anonymous'
+    };
+
+    const newReview = dataManager.addReview(review);
+    res.status(201).json({ success: true, review: newReview });
+  } catch (error) {
+    console.error('Review submission error:', error);
+    res.status(500).json({ error: 'Failed to submit review' });
+  }
+});
+
+// Get reviews for a specific tutor
+app.get('/api/tutors/:tutorId/reviews', async (req, res) => {
+  try {
+    const { tutorId } = req.params;
+    const reviews = dataManager.getReviewsByTutor(tutorId);
+    const ratingStats = dataManager.getTutorRatingStats(tutorId);
+    
+    res.json({
+      reviews,
+      ratingStats
+    });
+  } catch (error) {
+    console.error('Reviews fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch reviews' });
+  }
+});
+
+// Get reviews by a specific student
+app.get('/api/students/:studentId/reviews', authenticateToken, async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const userId = req.user?.userId;
+
+    // Students can only view their own reviews
+    if (userId !== studentId) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const reviews = dataManager.getReviewsByStudent(studentId);
+    res.json(reviews);
+  } catch (error) {
+    console.error('Student reviews fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch reviews' });
+  }
+});
+
+// Get all reviews (admin only)
+app.get('/api/admin/reviews', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const { status } = req.query;
+    const reviews = dataManager.getAllReviews(status ? String(status) : undefined);
+    res.json(reviews);
+  } catch (error) {
+    console.error('Admin reviews fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch reviews' });
+  }
+});
+
+// Update review status (admin only)
+app.put('/api/admin/reviews/:reviewId/status', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const { status } = req.body;
+    const adminId = req.user?.userId;
+
+    if (!adminId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    if (!['APPROVED', 'REJECTED'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const updatedReview = dataManager.updateReviewStatus(reviewId, status, adminId);
+    if (updatedReview) {
+      res.json({ success: true, review: updatedReview });
+    } else {
+      res.status(404).json({ error: 'Review not found' });
+    }
+  } catch (error) {
+    console.error('Review status update error:', error);
+    res.status(500).json({ error: 'Failed to update review status' });
+  }
+});
+
+// Delete review (admin only)
+app.delete('/api/admin/reviews/:reviewId', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const deleted = dataManager.deleteReview(reviewId);
+    if (deleted) {
+      res.json({ success: true, message: 'Review deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Review not found' });
+    }
+  } catch (error) {
+    console.error('Review deletion error:', error);
+    res.status(500).json({ error: 'Failed to delete review' });
+  }
+});
+
+// Online status endpoints
+app.post('/api/users/online', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // In a real app, this would update a Redis cache or database
+    // For now, we'll just return success
+    res.json({ success: true, message: 'Online status updated' });
+  } catch (error) {
+    console.error('Online status update error:', error);
+    res.status(500).json({ error: 'Failed to update online status' });
+  }
+});
+
+app.get('/api/tutors/online-status', async (req, res) => {
+  try {
+    const { tutorIds } = req.query;
+    
+    if (!tutorIds) {
+      return res.json({});
+    }
+
+    // Handle both array and comma-separated string formats
+    let ids: string[];
+    if (Array.isArray(tutorIds)) {
+      ids = tutorIds.map(id => String(id));
+    } else if (typeof tutorIds === 'string' && tutorIds.includes(',')) {
+      ids = tutorIds.split(',');
+    } else {
+      ids = [String(tutorIds)];
+    }
+
+    const onlineStatus: { [key: string]: boolean } = {};
+
+    // Simulate online status (in a real app, this would check Redis/database)
+    ids.forEach((id: string) => {
+      // Simple simulation: 70% chance of being online
+      onlineStatus[id] = Math.random() > 0.3;
+    });
+
+    res.json(onlineStatus);
+  } catch (error) {
+    console.error('Online status fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch online status' });
+  }
+});
+
+// User profile update endpoint
+app.put('/api/users/profile', authenticateToken, async (req, res) => {
+  try {
+    const { avatarUrl, name, phone, country, timezone } = req.body;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const user = dataManager.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update user profile
+    const updates: any = {};
+    if (avatarUrl !== undefined) updates.avatarUrl = avatarUrl;
+    if (name !== undefined) updates.name = name;
+    if (phone !== undefined) updates.phone = phone;
+    if (country !== undefined) updates.country = country;
+    if (timezone !== undefined) updates.timezone = timezone;
+
+    dataManager.updateUser(userId, updates);
+    const updatedUser = dataManager.getUserById(userId);
+
+    res.json({ 
+      success: true, 
+      user: {
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        avatarUrl: updatedUser.avatarUrl,
+        phone: updatedUser.phone,
+        country: updatedUser.country,
+        timezone: updatedUser.timezone,
+        role: updatedUser.role,
+        status: updatedUser.status
+      }
+    });
+  } catch (error) {
+    console.error('Profile update error:', error);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+// Submit custom subject request
+app.post('/api/subjects/custom-request', async (req, res) => {
+  try {
+    const { subjectName, description, level, studentId } = req.body;
+    
+    if (!subjectName || !level) {
+      return res.status(400).json({ error: 'Subject name and level are required' });
+    }
+    
+    // In a real app, this would be saved to database and notify admins
+    const customRequest = {
+      id: `custom-${Date.now()}`,
+      subjectName,
+      description: description || '',
+      level,
+      studentId: studentId || 'anonymous',
+      status: 'PENDING',
+      createdAt: new Date().toISOString(),
+    };
+    
+    console.log('Custom subject request received:', customRequest);
+    
+    // For now, just return success
+    res.json({ 
+      success: true, 
+      message: 'Custom subject request submitted successfully',
+      requestId: customRequest.id 
+    });
+  } catch (error) {
+    console.error('Error submitting custom subject request:', error);
+    res.status(500).json({ error: 'Failed to submit custom subject request' });
+  }
+});
+
+// Submit review
+app.post('/api/reviews', async (req, res) => {
+  try {
+    const { bookingId, tutorId, rating, comment, wouldRecommend, sessionQuality, tutorCommunication, tutorKnowledge, tutorPatience, overallExperience } = req.body;
+    
+    if (!bookingId || !tutorId || !rating) {
+      return res.status(400).json({ error: 'Booking ID, tutor ID, and rating are required' });
+    }
+    
+    // Get booking and tutor details
+    const booking = dataManager.getBookingById(bookingId);
+    const tutor = dataManager.getTutorById(tutorId);
+    const student = dataManager.getUserById(booking?.studentId || '');
+    
+    if (!booking || !tutor || !student) {
+      return res.status(404).json({ error: 'Booking, tutor, or student not found' });
+    }
+    
+    // Create review
+    const review = {
+      id: `review-${Date.now()}`,
+      bookingId,
+      tutorId,
+      studentId: booking.studentId,
+      tutorName: tutor.user?.name || 'Unknown Tutor',
+      studentName: student.name,
+      rating,
+      comment: comment || '',
+      wouldRecommend: wouldRecommend || false,
+      sessionQuality: sessionQuality || rating,
+      tutorCommunication: tutorCommunication || rating,
+      tutorKnowledge: tutorKnowledge || rating,
+      tutorPatience: tutorPatience || rating,
+      overallExperience: overallExperience || rating,
+      status: 'APPROVED',
+      createdAt: new Date().toISOString(),
+    };
+    
+    // Add review to data manager
+    dataManager.addReview(review);
+    
+    // Update tutor rating stats
+    dataManager.updateTutorRatingStats(tutorId);
+    
+    console.log('Review submitted:', review);
+    
+    res.json({ 
+      success: true, 
+      message: 'Review submitted successfully',
+      reviewId: review.id 
+    });
+  } catch (error) {
+    console.error('Error submitting review:', error);
+    res.status(500).json({ error: 'Failed to submit review' });
+  }
+});
+
+// ==================== ADMIN ENDPOINTS ====================
+
+// Admin dashboard stats
+app.get('/api/admin/dashboard', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    console.log('[ADMIN DASHBOARD] Fetching dashboard data...');
+    const users = dataManager.getAllUsers();
+    const tutors = dataManager.getAllTutors();
+    const bookings = dataManager.getAllBookings();
+    const reviews = dataManager.getAllReviews();
+    
+    console.log('[ADMIN DASHBOARD] Data counts:', {
+      users: users.length,
+      tutors: tutors.length,
+      bookings: bookings.length,
+      reviews: reviews.length
+    });
+
+    // Calculate stats
+    const totalUsers = users.length;
+    const totalTutors = tutors.length;
+    const totalStudents = users.filter(u => u.role === 'STUDENT').length;
+    const totalBookings = bookings.length;
+    const pendingApprovals = users.filter(u => u.status === 'PENDING').length;
+    const activeSessions = bookings.filter(b => b.status === 'CONFIRMED' || b.status === 'PENDING').length;
+    
+    // Calculate revenue from completed bookings
+    const completedBookings = bookings.filter(b => b.status === 'COMPLETED');
+    const totalRevenue = completedBookings.reduce((sum, booking) => sum + (booking.priceCents || 0), 0);
+    
+    // Calculate average rating
+    const approvedReviews = reviews.filter(r => r.status === 'APPROVED');
+    const averageRating = approvedReviews.length > 0 
+      ? approvedReviews.reduce((sum, review) => sum + review.rating, 0) / approvedReviews.length 
+      : 0;
+
+    res.json({
+      totalUsers,
+      totalTutors,
+      totalStudents,
+      totalBookings,
+      totalRevenue,
+      pendingApprovals,
+      activeSessions,
+      averageRating: Math.round(averageRating * 10) / 10
+    });
+  } catch (error) {
+    console.error('Admin dashboard error:', error);
+    res.status(500).json({ error: 'Failed to fetch dashboard stats' });
+  }
+});
+
+// Get all users for admin
+app.get('/api/admin/users', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    console.log('[ADMIN USERS] Fetching all users...');
+    const users = dataManager.getAllUsers();
+    console.log('[ADMIN USERS] Found users:', users.length);
+    res.json(users);
+  } catch (error) {
+    console.error('Admin users fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+// Get all bookings for admin
+app.get('/api/admin/bookings', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    console.log('[ADMIN BOOKINGS] Fetching all bookings...');
+    const bookings = dataManager.getAllBookings();
+    console.log('[ADMIN BOOKINGS] Found bookings:', bookings.length);
+    
+    // Enrich bookings with user/tutor data
+    const enrichedBookings = bookings.map(booking => ({
+      ...booking,
+      student: dataManager.getUserById(booking.studentId),
+      tutor: dataManager.getUserById(booking.tutorId)
+    }));
+
+    res.json(enrichedBookings);
+  } catch (error) {
+    console.error('Admin bookings fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
+});
+
+// Approve user
+app.post('/api/admin/users/:userId/approve', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const adminId = req.user?.userId;
+
+    const success = dataManager.updateUserStatus(userId, 'ACTIVE', adminId);
+    if (success) {
+      res.json({ success: true, message: 'User approved successfully' });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('User approval error:', error);
+    res.status(500).json({ error: 'Failed to approve user' });
+  }
+});
+
+// Reject user
+app.post('/api/admin/users/:userId/reject', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { reason } = req.body;
+    const adminId = req.user?.userId;
+
+    const success = dataManager.updateUserStatus(userId, 'REJECTED', adminId, reason);
+    if (success) {
+      res.json({ success: true, message: 'User rejected successfully' });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('User rejection error:', error);
+    res.status(500).json({ error: 'Failed to reject user' });
+  }
+});
+
+// Suspend user
+app.post('/api/admin/users/:userId/suspend', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { reason } = req.body;
+    const adminId = req.user?.userId;
+
+    const success = dataManager.updateUserStatus(userId, 'SUSPENDED', adminId, reason);
+    if (success) {
+      res.json({ success: true, message: 'User suspended successfully' });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('User suspension error:', error);
+    res.status(500).json({ error: 'Failed to suspend user' });
+  }
+});
+
+// Activate user
+app.post('/api/admin/users/:userId/activate', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const adminId = req.user?.userId;
+
+    const success = dataManager.updateUserStatus(userId, 'ACTIVE', adminId);
+    if (success) {
+      res.json({ success: true, message: 'User activated successfully' });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('User activation error:', error);
+    res.status(500).json({ error: 'Failed to activate user' });
+  }
+});
+
+// Delete user
+app.delete('/api/admin/users/:userId', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const adminId = req.user?.userId;
+
+    const success = dataManager.deleteUser(userId, adminId);
+    if (success) {
+      res.json({ success: true, message: 'User deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('User deletion error:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+});
+
+// Update booking status (admin)
+app.put('/api/admin/bookings/:bookingId/status', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const { status, reason } = req.body;
+    const adminId = req.user?.userId;
+
+    const booking = dataManager.getBookingById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+    
+    dataManager.updateBooking(bookingId, { status, statusReason: reason });
+    res.json({ success: true, message: 'Booking status updated successfully' });
+  } catch (error) {
+    console.error('Booking status update error:', error);
+    res.status(500).json({ error: 'Failed to update booking status' });
+  }
+});
+
+// Get pending users for admin
+app.get('/api/admin/users/pending', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const users = dataManager.getAllUsers().filter(user => user.status === 'PENDING');
+    res.json(users);
+  } catch (error) {
+    console.error('Admin pending users fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch pending users' });
+  }
+});
+
+// Get all tutors for admin
+app.get('/api/admin/tutors', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
+  try {
+    const tutors = dataManager.getAllTutors();
+    res.json({ tutors });
+  } catch (error) {
+    console.error('Admin tutors fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch tutors' });
+  }
+});
+
+// ==================== CHAT ENDPOINTS ====================
+
+// Get messages between two users
+app.get('/api/chat/messages/:userId1/:userId2', authenticateToken, async (req, res) => {
+  try {
+    const { userId1, userId2 } = req.params;
+    const currentUserId = req.user?.userId;
+    
+    // Verify user has access to this conversation
+    if (currentUserId !== userId1 && currentUserId !== userId2) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    
+    const messages = dataManager.getMessagesByUsers(userId1, userId2);
+    res.json(messages);
+  } catch (error) {
+    console.error('Chat messages fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch messages' });
+  }
+});
+
+// Get all conversations for a user
+app.get('/api/chat/conversations', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const messages = dataManager.getMessagesByUser(userId);
+    
+    // Group messages by conversation partner
+    const conversations = new Map();
+    
+    messages.forEach(msg => {
+      const partnerId = msg.senderId === userId ? msg.recipientId : msg.senderId;
+      if (!conversations.has(partnerId)) {
+        conversations.set(partnerId, {
+          partnerId,
+          lastMessage: msg,
+          unreadCount: 0
+        });
+      }
+      
+      const conversation = conversations.get(partnerId);
+      if (msg.timestamp > conversation.lastMessage.timestamp) {
+        conversation.lastMessage = msg;
+      }
+      
+      if (msg.recipientId === userId && !msg.read) {
+        conversation.unreadCount++;
+      }
+    });
+    
+    const conversationList = Array.from(conversations.values())
+      .sort((a, b) => new Date(b.lastMessage.timestamp).getTime() - new Date(a.lastMessage.timestamp).getTime());
+    
+    res.json(conversationList);
+  } catch (error) {
+    console.error('Chat conversations fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch conversations' });
+  }
+});
+
+// Mark messages as read
+app.put('/api/chat/messages/read', authenticateToken, async (req, res) => {
+  try {
+    const { senderId } = req.body;
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    dataManager.markMessagesAsRead(userId, senderId);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Mark messages read error:', error);
+    res.status(500).json({ error: 'Failed to mark messages as read' });
+  }
+});
+
+// Get unread message count
+app.get('/api/chat/unread-count', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const count = dataManager.getUnreadMessageCount(userId);
+    res.json({ count });
+  } catch (error) {
+    console.error('Unread count fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch unread count' });
+  }
+});
+
+// Create HTTP server
+const server = createServer(app);
+
+// Initialize Socket.IO
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"]
+  }
+});
+
+// Socket.IO authentication middleware
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (!token) {
+    return next(new Error('Authentication error'));
+  }
+  
+  try {
+    const decoded = verifyToken(token);
+    socket.data.user = decoded;
+    next();
+  } catch (error) {
+    next(new Error('Authentication error'));
+  }
+});
+
+// Socket.IO connection handling
+io.on('connection', (socket) => {
+  console.log(`User ${socket.data.user.userId} connected to chat`);
+  
+  // Join user to their personal room
+  socket.join(`user-${socket.data.user.userId}`);
+  
+  // Handle joining chat rooms (for student-tutor conversations)
+  socket.on('join-chat', (data) => {
+    const { studentId, tutorId } = data;
+    const chatRoomId = `chat-${studentId}-${tutorId}`;
+    socket.join(chatRoomId);
+    console.log(`User ${socket.data.user.userId} joined chat room: ${chatRoomId}`);
+  });
+  
+  // Handle sending messages
+  socket.on('send-message', async (data) => {
+    try {
+      const { recipientId, message, chatRoomId } = data;
+      const senderId = socket.data.user.userId;
+      
+      // Save message to database
+      const messageData = {
+        id: `msg-${Date.now()}`,
+        senderId,
+        recipientId,
+        message,
+        timestamp: new Date().toISOString(),
+        chatRoomId
+      };
+      
+      dataManager.addMessage(messageData);
+      
+      // Send message to recipient
+      socket.to(`user-${recipientId}`).emit('receive-message', messageData);
+      
+      // Also send to chat room if it exists
+      if (chatRoomId) {
+        socket.to(chatRoomId).emit('receive-message', messageData);
+      }
+      
+      console.log(`Message sent from ${senderId} to ${recipientId}`);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      socket.emit('error', { message: 'Failed to send message' });
+    }
+  });
+  
+  // Handle typing indicators
+  socket.on('typing-start', (data) => {
+    const { recipientId, chatRoomId } = data;
+    socket.to(`user-${recipientId}`).emit('user-typing', {
+      userId: socket.data.user.userId,
+      isTyping: true
+    });
+    
+    if (chatRoomId) {
+      socket.to(chatRoomId).emit('user-typing', {
+        userId: socket.data.user.userId,
+        isTyping: true
+      });
+    }
+  });
+  
+  socket.on('typing-stop', (data) => {
+    const { recipientId, chatRoomId } = data;
+    socket.to(`user-${recipientId}`).emit('user-typing', {
+      userId: socket.data.user.userId,
+      isTyping: false
+    });
+    
+    if (chatRoomId) {
+      socket.to(chatRoomId).emit('user-typing', {
+        userId: socket.data.user.userId,
+        isTyping: false
+      });
+    }
+  });
+  
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log(`User ${socket.data.user.userId} disconnected from chat`);
+  });
+});
+
+// Start server
+server.listen(PORT, () => {
+  console.log(`Tutorspool API listening on http://localhost:${PORT}`);
+  console.log(`Sample data loaded: ${dataManager.getAllUsers().length} users, ${dataManager.getAllTutors().length} tutors`);
+});

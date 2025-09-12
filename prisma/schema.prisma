@@ -1,0 +1,307 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  role         UserRole       @default(STUDENT)
+  name         String?
+  email        String?        @unique
+  phone        String?        @unique
+  country      String?
+  timezone     String?
+  address      String?
+  avatarUrl    String?
+  verifiedAt   DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  deletedAt    DateTime?
+  
+  // Relations
+  studentProfile StudentProfile?
+  tutorProfile   TutorProfile?
+  bookingsAsStudent Booking[] @relation("StudentBookings")
+  bookingsAsTutor Booking[] @relation("TutorBookings")
+  reviewsGiven   Review[] @relation("StudentReviews")
+  reviewsReceived Review[] @relation("TutorReviews")
+  notifications  Notification[]
+  auditLogs      AdminAuditLog[]
+  customSubjectRequests CustomSubjectRequest[]
+
+  @@index([email])
+  @@index([role])
+  @@index([verifiedAt])
+}
+
+enum UserRole {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+model StudentProfile {
+  id                 String     @id @default(uuid())
+  userId             String     @unique
+  user               User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gradeLevel         String?
+  learningGoals      String?
+  preferredMode      PreferredMode?
+  budgetMin          Int?
+  budgetMax          Int?
+  specialRequirements String?
+  uploads            Json?      // Array of file URLs
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+enum PreferredMode {
+  ONLINE
+  OFFLINE
+}
+
+model TutorProfile {
+  id                  String     @id @default(uuid())
+  userId              String     @unique
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  headline            String?
+  bio                 String?
+  hourlyRateCents     Int?
+  currency            String?
+  yearsExperience     Int?
+  certifications      Json?      // Array of certification objects
+  qualifications      Json?      // Array of qualification objects
+  subjects            Json?      // Array of subject IDs
+  levels              Json?      // Array of level tags
+  availabilityBlocks  Json?      // Array of availability objects
+  demoVideoUrl        String?
+  idVerificationStatus VerificationStatus?
+  idDocumentUrl       String?
+  ratingAvg           Float?     @default(0.0)
+  ratingCount         Int?       @default(0)
+  slug                String?    @unique
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([ratingAvg])
+  @@index([hourlyRateCents])
+  @@index([slug])
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model SubjectCategory {
+  id          String     @id @default(uuid())
+  name        String
+  slug        String     @unique
+  type        CategoryType
+  subjects    Subject[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([type])
+}
+
+enum CategoryType {
+  O_LEVELS
+  IGCSE
+  A_LEVELS
+}
+
+model Subject {
+  id          String     @id @default(uuid())
+  categoryId  String
+  name        String
+  slug        String     @unique
+  levelTags   String[]   // Array of level tags
+  category    SubjectCategory @relation(fields: [categoryId], references: [id])
+  bookings    Booking[]
+  customRequests CustomSubjectRequest[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([categoryId])
+}
+
+model CustomSubjectRequest {
+  id          String     @id @default(uuid())
+  studentId   String
+  subjectId   String?
+  name        String
+  description String?
+  status      RequestStatus @default(NEW)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  student     User       @relation(fields: [studentId], references: [id])
+  subject     Subject?   @relation(fields: [subjectId], references: [id])
+
+  @@index([studentId])
+  @@index([status])
+}
+
+enum RequestStatus {
+  NEW
+  REVIEWING
+  APPROVED
+  DECLINED
+}
+
+model AvailabilityBlock {
+  id            String     @id @default(uuid())
+  tutorId       String
+  dayOfWeek     Int        // 0-6 (Sunday-Saturday)
+  startTimeUTC  String     // HH:mm format
+  endTimeUTC    String     // HH:mm format
+  isRecurring   Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([tutorId])
+  @@index([dayOfWeek])
+}
+
+model Booking {
+  id             String     @id @default(uuid())
+  studentId      String
+  tutorId        String
+  subjectId      String
+  startAtUTC     DateTime
+  endAtUTC       DateTime
+  status         BookingStatus @default(PENDING)
+  priceCents     Int
+  currency       String
+  paymentIntentId String?   @unique
+  meetingLink    String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  student        User       @relation("StudentBookings", fields: [studentId], references: [id])
+  tutor          User       @relation("TutorBookings", fields: [tutorId], references: [id])
+  subject        Subject    @relation(fields: [subjectId], references: [id])
+  review         Review?
+  transactions   Transaction[]
+
+  @@index([studentId])
+  @@index([tutorId])
+  @@index([status])
+  @@index([startAtUTC])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  REFUNDED
+}
+
+model Review {
+  id          String     @id @default(uuid())
+  bookingId   String     @unique
+  tutorId     String
+  studentId   String
+  ratingInt   Int        // 1-5
+  text        String?
+  status      ReviewStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  booking     Booking    @relation(fields: [bookingId], references: [id])
+  tutor       User       @relation("TutorReviews", fields: [tutorId], references: [id])
+  student     User       @relation("StudentReviews", fields: [studentId], references: [id])
+
+  @@index([tutorId])
+  @@index([studentId])
+  @@index([status])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Transaction {
+  id          String     @id @default(uuid())
+  bookingId   String
+  type        TransactionType
+  amountCents Int
+  currency    String
+  provider    String     // stripe, paypal, etc.
+  providerRef String?    // External reference
+  status      TransactionStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  booking     Booking    @relation(fields: [bookingId], references: [id])
+
+  @@index([bookingId])
+  @@index([provider])
+  @@index([status])
+}
+
+enum TransactionType {
+  CHARGE
+  REFUND
+  PAYOUT
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+model Notification {
+  id          String     @id @default(uuid())
+  userId      String
+  channel     NotificationChannel
+  template    String
+  payloadJSON Json?
+  sentAt      DateTime?
+  createdAt   DateTime   @default(now())
+
+  user        User       @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([channel])
+  @@index([sentAt])
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  INAPP
+}
+
+model AdminAuditLog {
+  id          String     @id @default(uuid())
+  actorId     String
+  action      String
+  targetType  String
+  targetId    String?
+  metaJSON    Json?
+  createdAt   DateTime   @default(now())
+
+  actor       User       @relation(fields: [actorId], references: [id])
+
+  @@index([actorId])
+  @@index([action])
+  @@index([targetType])
+  @@index([createdAt])
+}
