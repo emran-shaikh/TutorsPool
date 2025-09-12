@@ -1,14 +1,19 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Robots.txt for TutorsPool
 User-agent: *
 Allow: /
+
+# Sitemap
+Sitemap: https://tutors-pool.vercel.app/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /student/dashboard/
+Disallow: /tutor/dashboard/
+
+# Allow public pages
+Allow: /
+Allow: /login
+Allow: /signup
+Allow: /search
+Allow: /tutor/*
