@@ -1,6 +1,76 @@
 {
   "users": [
     {
+      "name": "Victoria Suarez",
+      "email": "syfe@mailinator.com",
+      "phone": "+1 (587) 168-2749",
+      "country": "Italy",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-100",
+      "createdAt": "2025-09-12T12:38:27.884Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Odessa Oliver",
+      "email": "riwubuc@mailinator.com",
+      "phone": "+1 (824) 494-8226",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-98",
+      "createdAt": "2025-09-12T12:35:37.918Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Ethan Luna",
+      "email": "zawyduxydi@mailinator.com",
+      "phone": "+1 (798) 629-1682",
+      "country": "Other",
+      "timezone": "Asia/Kolkata",
+      "role": "ADMIN",
+      "id": "user-97",
+      "createdAt": "2025-09-12T12:34:29.481Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Shafira Jacobs",
+      "email": "lefuvijyxo@mailinator.com",
+      "phone": "+1 (362) 856-7125",
+      "country": "Other",
+      "timezone": "America/Denver",
+      "role": "ADMIN",
+      "id": "user-96",
+      "createdAt": "2025-09-12T12:23:00.996Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Mercedes Bradford",
+      "email": "felobamyho@mailinator.com",
+      "phone": "+1 (363) 173-7722",
+      "country": "Denmark",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-94",
+      "createdAt": "2025-09-12T12:21:52.424Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
       "name": "Shelly Parker",
       "email": "kehusaruf@mailinator.com",
       "phone": "+1 (377) 467-5507",
@@ -295,70 +365,42 @@
       "approvedBy": "user-17"
     },
     {
-      "name": "Mercedes Bradford",
-      "email": "felobamyho@mailinator.com",
-      "phone": "+1 (363) 173-7722",
-      "country": "Denmark",
+      "name": "Brynn Webster",
+      "email": "nukonokeme@mailinator.com",
+      "phone": "+1 (632) 583-8509",
+      "country": "Japan",
       "timezone": "Asia/Karachi",
       "role": "STUDENT",
-      "id": "user-94",
-      "createdAt": "2025-09-12T12:21:52.424Z",
+      "id": "user-102",
+      "createdAt": "2025-09-12T12:50:00.931Z",
       "status": "PENDING",
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
     },
     {
-      "name": "Shafira Jacobs",
-      "email": "lefuvijyxo@mailinator.com",
-      "phone": "+1 (362) 856-7125",
-      "country": "Other",
-      "timezone": "America/Denver",
-      "role": "ADMIN",
-      "id": "user-96",
-      "createdAt": "2025-09-12T12:23:00.996Z",
+      "name": "Minerva Williamson",
+      "email": "zelyxy@mailinator.com",
+      "phone": "+1 (371) 378-8388",
+      "country": "UAE",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-104",
+      "createdAt": "2025-09-12T13:42:04.889Z",
       "status": "PENDING",
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
     },
     {
-      "name": "Ethan Luna",
-      "email": "zawyduxydi@mailinator.com",
-      "phone": "+1 (798) 629-1682",
-      "country": "Other",
-      "timezone": "Asia/Kolkata",
-      "role": "ADMIN",
-      "id": "user-97",
-      "createdAt": "2025-09-12T12:34:29.481Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
-      "avatarUrl": null
-    },
-    {
-      "name": "Odessa Oliver",
-      "email": "riwubuc@mailinator.com",
-      "phone": "+1 (824) 494-8226",
-      "country": "Other",
+      "name": "Adele Leach",
+      "email": "lenonivyz@mailinator.com",
+      "phone": "+1 (312) 485-5449",
+      "country": "Canada",
       "timezone": "Asia/Karachi",
       "role": "TUTOR",
-      "id": "user-98",
-      "createdAt": "2025-09-12T12:35:37.918Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
-      "avatarUrl": null
-    },
-    {
-      "name": "Victoria Suarez",
-      "email": "syfe@mailinator.com",
-      "phone": "+1 (587) 168-2749",
-      "country": "Italy",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-100",
-      "createdAt": "2025-09-12T12:38:27.884Z",
+      "id": "user-106",
+      "createdAt": "2025-09-12T13:43:07.395Z",
       "status": "PENDING",
       "approvedAt": null,
       "approvedBy": null,
@@ -593,6 +635,42 @@
       "ratingCount": 0,
       "id": "tutor-99",
       "createdAt": "2025-09-12T12:35:37.933Z"
+    },
+    {
+      "userId": "user-106",
+      "headline": "Mollitia sunt aliqua",
+      "bio": "Quo tempora quibusdaQuo tempora quibusdaQuo tempora quibusdaQuo tempora quibusda",
+      "hourlyRateCents": 2700,
+      "currency": "EUR",
+      "yearsExperience": 2019,
+      "subjects": [
+        "Statistics",
+        "Marketing"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "adele-leach",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        },
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-107",
+      "createdAt": "2025-09-12T13:43:07.422Z"
     }
   ],
   "students": [
@@ -710,6 +788,30 @@
       "uploads": [],
       "id": "student-101",
       "createdAt": "2025-09-12T12:38:27.900Z"
+    },
+    {
+      "userId": "user-102",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Dolor incididunt lab",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 5100,
+      "budgetMax": 6700,
+      "specialRequirements": "Recusandae Esse und",
+      "uploads": [],
+      "id": "student-103",
+      "createdAt": "2025-09-12T12:50:01.001Z"
+    },
+    {
+      "userId": "user-104",
+      "gradeLevel": "Middle School (6-8)",
+      "learningGoals": "Consequatur Consequ",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 7300,
+      "budgetMax": 2300,
+      "specialRequirements": "Perspiciatis aut in",
+      "uploads": [],
+      "id": "student-105",
+      "createdAt": "2025-09-12T13:42:04.896Z"
     }
   ],
   "bookings": [
@@ -1185,7 +1287,7 @@
     ],
     "byzyqu@mailinator.com": []
   },
-  "lastId": 101,
+  "lastId": 107,
   "learningProgress": {
     "user-9": {
       "totalGoals": 2,
