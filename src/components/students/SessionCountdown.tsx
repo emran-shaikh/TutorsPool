@@ -242,7 +242,7 @@ const SessionCountdown: React.FC<SessionCountdownProps> = ({
             <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
             <h3 className="text-lg font-semibold mb-2">No Upcoming Sessions</h3>
             <p className="text-sm">You don't have any confirmed sessions scheduled.</p>
-            <Button className="mt-4" onClick={() => window.location.href = '/'}>
+            <Button className="mt-4" onClick={() => navigate('/')}>
               Browse Tutors
             </Button>
           </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -120,6 +121,7 @@ export const TutorRegistrationForm: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const { toast } = useToast();
   const { register: registerUser } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -363,7 +365,7 @@ export const TutorRegistrationForm: React.FC = () => {
       });
 
       // Redirect to dashboard
-      window.location.href = '/tutor/dashboard';
+      navigate('/tutor/dashboard');
     } catch (error) {
       console.error('Registration error:', error);
       toast({

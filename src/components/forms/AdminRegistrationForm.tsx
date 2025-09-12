@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +10,7 @@ import { Shield, Eye, EyeOff } from 'lucide-react';
 
 const AdminRegistrationForm: React.FC = () => {
   const { register } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -57,7 +59,7 @@ const AdminRegistrationForm: React.FC = () => {
           description: 'Welcome to the admin panel. You can now manage the platform.',
         });
         // Redirect to admin dashboard
-        window.location.href = '/admin';
+        navigate('/admin');
       }
     } catch (error) {
       console.error('Admin registration error:', error);

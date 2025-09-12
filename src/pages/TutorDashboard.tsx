@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,6 +38,7 @@ import {
 const TutorDashboard: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -268,7 +270,7 @@ const TutorDashboard: React.FC = () => {
             <p className="text-gray-600 mb-4">
               It looks like you haven't completed your tutor registration yet.
             </p>
-            <Button onClick={() => window.location.href = '/tutor/register'}>
+            <Button onClick={() => navigate('/tutor/register')}>
               Complete Registration
             </Button>
           </CardContent>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient, reviewsApi } from '@/lib/api';
 import { useQueryClient } from '@tanstack/react-query';
@@ -78,6 +79,7 @@ const StudentDashboard: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   
   // State management
   const [profile, setProfile] = useState<StudentProfile | null>(null);
@@ -672,7 +674,7 @@ const StudentDashboard: React.FC = () => {
                     <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">No bookings yet</h3>
                     <p className="text-gray-600 mb-4">Start your learning journey by booking a session with a tutor.</p>
-                    <Button onClick={() => window.location.href = '/search'}>
+                    <Button onClick={() => navigate('/search')}>
                       Find Tutors
                     </Button>
                   </div>
@@ -843,7 +845,7 @@ const StudentDashboard: React.FC = () => {
                   </div>
 
                   <div className="pt-4 border-t">
-                    <Button variant="outline" onClick={() => window.location.href = '/account'}>
+                    <Button variant="outline" onClick={() => navigate('/account')}>
                       <Settings className="h-4 w-4 mr-2" />
                       Update Account Details
                     </Button>

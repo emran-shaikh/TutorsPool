@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,6 +25,7 @@ import {
 const Booking: React.FC = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const tutorIdFromUrl = searchParams.get('tutorId');
   
@@ -144,7 +145,7 @@ const Booking: React.FC = () => {
             <p className="text-gray-600 mb-4">
               You need to be signed in to book a session.
             </p>
-            <Button onClick={() => window.location.href = '/login'}>
+            <Button onClick={() => navigate('/login')}>
               Sign In
             </Button>
           </CardContent>

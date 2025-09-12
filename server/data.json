@@ -321,6 +321,48 @@
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
+    },
+    {
+      "name": "Ethan Luna",
+      "email": "zawyduxydi@mailinator.com",
+      "phone": "+1 (798) 629-1682",
+      "country": "Other",
+      "timezone": "Asia/Kolkata",
+      "role": "ADMIN",
+      "id": "user-97",
+      "createdAt": "2025-09-12T12:34:29.481Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Odessa Oliver",
+      "email": "riwubuc@mailinator.com",
+      "phone": "+1 (824) 494-8226",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-98",
+      "createdAt": "2025-09-12T12:35:37.918Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Victoria Suarez",
+      "email": "syfe@mailinator.com",
+      "phone": "+1 (587) 168-2749",
+      "country": "Italy",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-100",
+      "createdAt": "2025-09-12T12:38:27.884Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -514,6 +556,43 @@
       "id": "tutor-57",
       "createdAt": "2025-09-11T06:08:31.478Z",
       "status": "ACTIVE"
+    },
+    {
+      "userId": "user-98",
+      "headline": "Adipisicing amet Na",
+      "bio": "Dolore laborum eaqueDolore laborum eaqueDolore laborum eaqueDolore laborum eaqueDolore laborum eaque",
+      "hourlyRateCents": 5200,
+      "currency": "EUR",
+      "yearsExperience": 2010,
+      "subjects": [
+        "Economics",
+        "Literature",
+        "Chemistry"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "odessa-oliver",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        },
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-99",
+      "createdAt": "2025-09-12T12:35:37.933Z"
     }
   ],
   "students": [
@@ -619,6 +698,18 @@
       "uploads": [],
       "id": "student-95",
       "createdAt": "2025-09-12T12:21:52.435Z"
+    },
+    {
+      "userId": "user-100",
+      "gradeLevel": "Middle School (6-8)",
+      "learningGoals": "Ea pariatur Enim qu",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 8800,
+      "budgetMax": 10000,
+      "specialRequirements": "Aut architecto debit",
+      "uploads": [],
+      "id": "student-101",
+      "createdAt": "2025-09-12T12:38:27.900Z"
     }
   ],
   "bookings": [
@@ -1094,7 +1185,7 @@
     ],
     "byzyqu@mailinator.com": []
   },
-  "lastId": 96,
+  "lastId": 101,
   "learningProgress": {
     "user-9": {
       "totalGoals": 2,
