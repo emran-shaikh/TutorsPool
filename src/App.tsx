@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import FloatingChat from "@/components/chat/FloatingChat";
 const Login = React.lazy(() => import('./pages/Login'));
 const TutorRegister = React.lazy(() => import('./pages/TutorRegister'));
 const Search = React.lazy(() => import('./pages/Search'));
@@ -20,6 +21,7 @@ const SignUp = React.lazy(() => import('./pages/SignUp'));
 const DebugSignUp = React.lazy(() => import('./pages/DebugSignUp'));
 const Account = React.lazy(() => import('./pages/Account'));
 const StudentDashboard = React.lazy(() => import('./pages/StudentDashboard'));
+const SessionPage = React.lazy(() => import('./pages/SessionPage'));
 const TutorProfile = React.lazy(() => import('./pages/TutorProfile'));
 const TutorDashboard = React.lazy(() => import('./pages/TutorDashboard'));
 const UsersManagement = React.lazy(() => import('./pages/admin/UsersManagement'));
@@ -43,6 +45,7 @@ const App = () => (
         <Sonner />
         <AuthProvider>
           <BrowserRouter>
+            <FloatingChat />
             <Suspense fallback={<div className="p-6">Loading...</div>}>
               <Routes>
                   <Route path="/" element={<Index />} />
@@ -65,6 +68,7 @@ const App = () => (
                   <Route path="/error-test" element={<ErrorTest />} />
                   <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
                   <Route path="/student/dashboard" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
+                  <Route path="/session/:bookingId" element={<ProtectedRoute><SessionPage /></ProtectedRoute>} />
                   <Route path="/tutor/dashboard" element={<ProtectedRoute><TutorDashboard /></ProtectedRoute>} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -1,6 +1,20 @@
 {
   "users": [
     {
+      "name": "Shelly Parker",
+      "email": "kehusaruf@mailinator.com",
+      "phone": "+1 (377) 467-5507",
+      "country": "India",
+      "timezone": "America/New_York",
+      "role": "ADMIN",
+      "id": "user-74",
+      "createdAt": "2025-09-12T08:18:01.011Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-12T08:18:12.848Z",
+      "approvedBy": "user-74",
+      "avatarUrl": null
+    },
+    {
       "name": "Alice Ellison",
       "email": "goty@mailinator.com",
       "phone": "+1 (667) 871-8458",
@@ -146,9 +160,11 @@
       "role": "TUTOR",
       "id": "user-11",
       "createdAt": "2025-09-09T14:38:16.520Z",
-      "status": "ACTIVE",
+      "status": "SUSPENDED",
       "approvedAt": "2025-09-09T14:39:16.880Z",
-      "approvedBy": "user-4"
+      "approvedBy": "user-4",
+      "suspendedAt": "2025-09-12T08:26:07.932Z",
+      "suspendedBy": "user-74"
     },
     {
       "name": "Nicholas Byers",
@@ -811,6 +827,88 @@
       "createdAt": "2025-09-11T13:11:32.563Z",
       "updatedAt": "2025-09-11T20:08:06.643Z",
       "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-9",
+      "tutorId": "tutor-57",
+      "subjectId": "Tempor molestias lab",
+      "startAtUTC": "2025-09-12T00:10:00.000Z",
+      "endAtUTC": "2025-09-12T01:10:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 50000,
+      "currency": "USD",
+      "id": "booking-75",
+      "createdAt": "2025-09-12T11:27:32.577Z",
+      "updatedAt": "2025-09-12T11:37:18.949Z",
+      "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-9",
+      "tutorId": "tutor-57",
+      "subjectId": "biology",
+      "startAtUTC": "2025-09-12T12:00:00.000Z",
+      "endAtUTC": "2025-09-12T12:30:00.000Z",
+      "status": "CANCELLED",
+      "priceCents": 25000,
+      "currency": "USD",
+      "id": "booking-78",
+      "createdAt": "2025-09-12T11:35:11.390Z",
+      "updatedAt": "2025-09-12T11:44:07.833Z",
+      "statusReason": "Cancelled by student"
+    },
+    {
+      "studentId": "user-9",
+      "tutorId": "tutor-57",
+      "subjectId": "history",
+      "startAtUTC": "2025-09-13T11:00:00.000Z",
+      "endAtUTC": "2025-09-13T13:00:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 100000,
+      "currency": "USD",
+      "id": "booking-83",
+      "createdAt": "2025-09-12T11:47:00.847Z",
+      "updatedAt": "2025-09-12T11:47:07.455Z",
+      "statusReason": "Confirmed by tutor"
+    },
+    {
+      "studentId": "user-9",
+      "tutorId": "tutor-19",
+      "subjectId": "biology",
+      "startAtUTC": "2025-09-12T10:00:00.000Z",
+      "endAtUTC": "2025-09-12T11:30:00.000Z",
+      "status": "PENDING",
+      "priceCents": 2999,
+      "currency": "USD",
+      "id": "booking-86",
+      "createdAt": "2025-09-12T11:47:29.409Z"
+    },
+    {
+      "studentId": "user-9",
+      "tutorId": "tutor-57",
+      "subjectId": "physics",
+      "startAtUTC": "2025-09-12T08:00:00.000Z",
+      "endAtUTC": "2025-09-12T09:30:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 75000,
+      "currency": "USD",
+      "id": "booking-88",
+      "createdAt": "2025-09-12T11:47:58.686Z",
+      "updatedAt": "2025-09-12T11:48:17.686Z",
+      "statusReason": "Confirmed by tutor"
+    },
+    {
+      "studentId": "user-9",
+      "tutorId": "tutor-57",
+      "subjectId": "biology",
+      "startAtUTC": "2025-09-12T13:00:00.000Z",
+      "endAtUTC": "2025-09-12T14:30:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 75000,
+      "currency": "USD",
+      "id": "booking-91",
+      "createdAt": "2025-09-12T11:52:23.956Z",
+      "updatedAt": "2025-09-12T11:52:29.847Z",
+      "statusReason": "Confirmed by tutor"
     }
   ],
   "learningGoals": {
@@ -956,7 +1054,7 @@
     ],
     "byzyqu@mailinator.com": []
   },
-  "lastId": 73,
+  "lastId": 93,
   "learningProgress": {
     "user-9": {
       "totalGoals": 2,
@@ -1181,6 +1279,17 @@
       "studentName": "Nicholas Byers",
       "id": "review-73",
       "createdAt": "2025-09-11T20:08:40.504Z",
+      "status": "PENDING"
+    },
+    {
+      "tutorId": "tutor-57",
+      "studentId": "user-9",
+      "bookingId": "booking-75",
+      "rating": 5,
+      "comment": "Ex",
+      "studentName": "Nicholas Byers",
+      "id": "review-81",
+      "createdAt": "2025-09-12T11:37:44.285Z",
       "status": "PENDING"
     }
   ],
@@ -1413,8 +1522,9 @@
         "startAt": "2025-09-11T04:00:00.000Z",
         "endAt": "2025-09-11T05:00:00.000Z"
       },
-      "read": false,
-      "createdAt": "2025-09-11T06:15:18.641Z"
+      "read": true,
+      "createdAt": "2025-09-11T06:15:18.641Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
     },
     {
       "id": "notification-62",
@@ -1446,8 +1556,9 @@
         "startAt": "2025-09-11T05:18:00.000Z",
         "endAt": "2025-09-11T06:18:00.000Z"
       },
-      "read": false,
-      "createdAt": "2025-09-11T13:00:18.547Z"
+      "read": true,
+      "createdAt": "2025-09-11T13:00:18.547Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
     },
     {
       "id": "notification-68",
@@ -1479,8 +1590,9 @@
         "startAt": "2025-09-11T17:53:00.000Z",
         "endAt": "2025-09-11T18:53:00.000Z"
       },
-      "read": false,
-      "createdAt": "2025-09-11T13:11:32.565Z"
+      "read": true,
+      "createdAt": "2025-09-11T13:11:32.565Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
     },
     {
       "id": "notification-72",
@@ -1497,6 +1609,255 @@
       },
       "read": false,
       "createdAt": "2025-09-11T13:11:38.617Z"
+    },
+    {
+      "id": "notification-76",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Nicholas Byers has requested a Tempor molestias lab session with you.",
+      "data": {
+        "bookingId": "booking-75",
+        "studentId": "user-9",
+        "studentName": "Nicholas Byers",
+        "subject": "Tempor molestias lab",
+        "startAt": "2025-09-12T00:10:00.000Z",
+        "endAt": "2025-09-12T01:10:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T11:27:32.581Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
+    },
+    {
+      "id": "notification-77",
+      "userId": "user-9",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your Tempor molestias lab session.",
+      "data": {
+        "bookingId": "booking-75",
+        "tutorId": "tutor-57",
+        "subject": "Tempor molestias lab",
+        "startAt": "2025-09-12T00:10:00.000Z",
+        "endAt": "2025-09-12T01:10:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:28:44.868Z"
+    },
+    {
+      "id": "notification-79",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Nicholas Byers has requested a biology session with you.",
+      "data": {
+        "bookingId": "booking-78",
+        "studentId": "user-9",
+        "studentName": "Nicholas Byers",
+        "subject": "biology",
+        "startAt": "2025-09-12T12:00:00.000Z",
+        "endAt": "2025-09-12T12:30:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T11:35:11.396Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
+    },
+    {
+      "id": "notification-80",
+      "userId": "user-9",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your biology session.",
+      "data": {
+        "bookingId": "booking-78",
+        "tutorId": "tutor-57",
+        "subject": "biology",
+        "startAt": "2025-09-12T12:00:00.000Z",
+        "endAt": "2025-09-12T12:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:36:47.904Z"
+    },
+    {
+      "id": "notification-82",
+      "userId": "tutor-57",
+      "type": "BOOKING_CANCELLED",
+      "title": "Session Cancelled",
+      "message": "Nicholas Byers has cancelled the biology session.",
+      "data": {
+        "bookingId": "booking-78",
+        "studentId": "user-9",
+        "studentName": "Nicholas Byers",
+        "subject": "biology",
+        "reason": "Cancelled by student"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:44:07.835Z"
+    },
+    {
+      "id": "notification-84",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Nicholas Byers has requested a history session with you.",
+      "data": {
+        "bookingId": "booking-83",
+        "studentId": "user-9",
+        "studentName": "Nicholas Byers",
+        "subject": "history",
+        "startAt": "2025-09-13T11:00:00.000Z",
+        "endAt": "2025-09-13T13:00:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T11:47:00.849Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
+    },
+    {
+      "id": "notification-85",
+      "userId": "user-9",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your history session.",
+      "data": {
+        "bookingId": "booking-83",
+        "tutorId": "tutor-57",
+        "subject": "history",
+        "startAt": "2025-09-13T11:00:00.000Z",
+        "endAt": "2025-09-13T13:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:47:07.457Z"
+    },
+    {
+      "id": "notification-87",
+      "userId": "user-18",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Nicholas Byers has requested a biology session with you.",
+      "data": {
+        "bookingId": "booking-86",
+        "studentId": "user-9",
+        "studentName": "Nicholas Byers",
+        "subject": "biology",
+        "startAt": "2025-09-12T10:00:00.000Z",
+        "endAt": "2025-09-12T11:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:47:29.411Z"
+    },
+    {
+      "id": "notification-89",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Nicholas Byers has requested a physics session with you.",
+      "data": {
+        "bookingId": "booking-88",
+        "studentId": "user-9",
+        "studentName": "Nicholas Byers",
+        "subject": "physics",
+        "startAt": "2025-09-12T08:00:00.000Z",
+        "endAt": "2025-09-12T09:30:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T11:47:58.688Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
+    },
+    {
+      "id": "notification-90",
+      "userId": "user-9",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your physics session.",
+      "data": {
+        "bookingId": "booking-88",
+        "tutorId": "tutor-57",
+        "subject": "physics",
+        "startAt": "2025-09-12T08:00:00.000Z",
+        "endAt": "2025-09-12T09:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:48:17.687Z"
+    },
+    {
+      "id": "notification-92",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Nicholas Byers has requested a biology session with you.",
+      "data": {
+        "bookingId": "booking-91",
+        "studentId": "user-9",
+        "studentName": "Nicholas Byers",
+        "subject": "biology",
+        "startAt": "2025-09-12T13:00:00.000Z",
+        "endAt": "2025-09-12T14:30:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T11:52:23.958Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
+    },
+    {
+      "id": "notification-93",
+      "userId": "user-9",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your biology session.",
+      "data": {
+        "bookingId": "booking-91",
+        "tutorId": "tutor-57",
+        "subject": "biology",
+        "startAt": "2025-09-12T13:00:00.000Z",
+        "endAt": "2025-09-12T14:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:52:29.849Z"
+    },
+    {
+      "id": "notification-100",
+      "userId": "user-9",
+      "type": "NEW_MESSAGE",
+      "title": "New Message",
+      "message": "You have a new message from Imran Khan",
+      "data": {
+        "senderId": "user-56",
+        "messageId": "msg-1757622266675"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T12:00:00.000Z"
+    },
+    {
+      "id": "notification-101",
+      "userId": "user-56",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed",
+      "message": "Your session with Sarah Johnson for Physics has been confirmed for tomorrow at 2:00 PM",
+      "data": {
+        "bookingId": "booking-88",
+        "studentId": "user-9",
+        "studentName": "Sarah Johnson",
+        "subject": "Physics",
+        "startTime": "2025-09-12T08:00:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T11:55:00.000Z",
+      "readAt": "2025-09-12T12:04:06.465Z"
+    },
+    {
+      "id": "notification-102",
+      "userId": "user-9",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed",
+      "message": "Your session with Imran Khan for Biology has been confirmed for today at 1:00 PM",
+      "data": {
+        "bookingId": "booking-91",
+        "tutorId": "user-56",
+        "tutorName": "Imran Khan",
+        "subject": "Biology",
+        "startTime": "2025-09-12T13:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T11:58:00.000Z"
     }
   ],
   "messages": [
@@ -1507,7 +1868,8 @@
       "message": "Hi! I'm interested in booking a session with you for Mathematics. Are you available this week?",
       "timestamp": "2025-01-10T10:30:00.000Z",
       "chatRoomId": "chat-user-64-user-56",
-      "read": false
+      "read": true,
+      "readAt": "2025-09-12T08:21:50.209Z"
     },
     {
       "id": "msg-2",

@@ -380,7 +380,21 @@ app.put('/api/students/profile', authenticateToken, async (req, res) => {
 app.get('/api/students/bookings', authenticateToken, async (req, res) => {
   try {
     const studentBookings = dataManager.getBookingsByStudentId(req.user?.userId || '');
-    res.json({ success: true, bookings: studentBookings, total: studentBookings.length });
+    
+    // Enrich bookings with tutor information
+    const enrichedBookings = studentBookings.map(booking => {
+      const tutor = dataManager.getTutorById(booking.tutorId);
+      return {
+        ...booking,
+        tutor: tutor ? {
+          id: tutor.id,
+          user: dataManager.getUserById(tutor.userId),
+          subjects: tutor.subjects
+        } : null
+      };
+    });
+    
+    res.json({ success: true, bookings: enrichedBookings, total: enrichedBookings.length });
   } catch (error) {
     console.error('Student bookings fetch error:', error);
     res.status(400).json({ error: 'Failed to fetch student bookings' });
@@ -449,6 +463,12 @@ app.get('/api/tutors', async (req, res) => {
     const { q, priceMin, priceMax, ratingMin, page = 1, limit = 20 } = req.query;
     
     let filteredTutors = [...dataManager.getAllTutors()];
+
+    // Filter out tutors whose users are not ACTIVE (hide suspended, pending, rejected users)
+    filteredTutors = filteredTutors.filter(tutor => {
+      const user = dataManager.getUserById(tutor.userId);
+      return user && user.status === 'ACTIVE';
+    });
 
     // Apply filters
     if (q) {
@@ -2617,7 +2637,17 @@ app.get('/api/chat/conversations', authenticateToken, async (req, res) => {
       }
     });
     
+    // Add user information to each conversation
     const conversationList = Array.from(conversations.values())
+      .map(conv => {
+        const partnerUser = dataManager.getUserById(conv.partnerId);
+        return {
+          ...conv,
+          partnerName: partnerUser?.name || `User ${conv.partnerId.split('-')[1] || conv.partnerId}`,
+          partnerAvatar: partnerUser?.avatarUrl,
+          lastMessageTime: conv.lastMessage.timestamp
+        };
+      })
       .sort((a, b) => new Date(b.lastMessage.timestamp).getTime() - new Date(a.lastMessage.timestamp).getTime());
     
     res.json(conversationList);
@@ -2721,6 +2751,20 @@ io.on('connection', (socket) => {
       };
       
       dataManager.addMessage(messageData);
+      
+      // Create notification for recipient
+      const senderUser = dataManager.getUserById(senderId);
+      dataManager.addNotification({
+        userId: recipientId,
+        type: 'NEW_MESSAGE',
+        title: 'New Message',
+        message: `You have a new message from ${senderUser?.name || 'a user'}`,
+        data: {
+          senderId,
+          messageId: messageData.id,
+          chatRoomId
+        }
+      });
       
       // Send message to recipient
       socket.to(`user-${recipientId}`).emit('receive-message', messageData);

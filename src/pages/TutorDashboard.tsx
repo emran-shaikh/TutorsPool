@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { RefreshCw } from 'lucide-react';
 import { AvailabilityManager } from '@/components/tutors/AvailabilityManager';
-import ChatInterface from '@/components/chat/ChatInterface';
+import TutorsPoolHeader from '@/components/layout/TutorsPoolHeader';
 import { 
   User, 
   Calendar, 
@@ -279,7 +279,8 @@ const TutorDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <TutorsPoolHeader />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8 flex justify-between items-start">
           <div>
@@ -287,7 +288,6 @@ const TutorDashboard: React.FC = () => {
             <p className="text-gray-600">Manage your tutoring profile and sessions</p>
           </div>
           <div className="flex space-x-4">
-            <ChatInterface />
             <Button 
             onClick={() => {
               refetchProfile();

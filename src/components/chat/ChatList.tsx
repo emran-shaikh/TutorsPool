@@ -11,11 +11,14 @@ import { useAuth } from '@/contexts/AuthContext';
 
 interface Conversation {
   partnerId: string;
+  partnerName: string;
+  partnerAvatar?: string;
   lastMessage: {
     message: string;
     timestamp: string;
     senderId: string;
   };
+  lastMessageTime: string;
   unreadCount: number;
 }
 
@@ -41,9 +44,7 @@ const ChatList: React.FC<ChatListProps> = ({ onSelectChat, onCreateNewChat }) =>
   });
 
   const filteredConversations = conversations.filter((conv: Conversation) => {
-    // For now, we'll filter by partner ID since we don't have partner names in the API
-    // In a real app, you'd want to include partner info in the conversations API
-    return conv.partnerId.toLowerCase().includes(searchTerm.toLowerCase());
+    return conv.partnerName.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const getInitials = (name: string) => {
@@ -69,10 +70,7 @@ const ChatList: React.FC<ChatListProps> = ({ onSelectChat, onCreateNewChat }) =>
   };
 
   const handleChatSelect = (conversation: Conversation) => {
-    // In a real app, you'd fetch the partner's details
-    // For now, we'll use the partner ID as the name
-    const partnerName = `User ${conversation.partnerId.split('-')[1] || conversation.partnerId}`;
-    onSelectChat(conversation.partnerId, partnerName);
+    onSelectChat(conversation.partnerId, conversation.partnerName, conversation.partnerAvatar);
   };
 
   if (isLoading) {
@@ -135,15 +133,16 @@ const ChatList: React.FC<ChatListProps> = ({ onSelectChat, onCreateNewChat }) =>
                 onClick={() => handleChatSelect(conversation)}
               >
                 <Avatar className="h-10 w-10">
-                  <AvatarFallback>
-                    {getInitials(`User ${conversation.partnerId.split('-')[1] || conversation.partnerId}`)}
+                  <AvatarImage src={conversation.partnerAvatar} />
+                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-pink-500 text-white">
+                    {getInitials(conversation.partnerName)}
                   </AvatarFallback>
                 </Avatar>
                 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <p className="font-medium truncate">
-                      User {conversation.partnerId.split('-')[1] || conversation.partnerId}
+                      {conversation.partnerName}
                     </p>
                     <div className="flex items-center space-x-2">
                       <span className="text-xs text-muted-foreground">

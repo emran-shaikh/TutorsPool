@@ -34,6 +34,7 @@ import {
 import { apiClient, adminApi } from '@/lib/api';
 import { useErrorLogger } from '@/hooks/useErrorLogger';
 import { ReviewsManagement } from '@/components/admin/ReviewsManagement';
+import TutorsPoolHeader from '@/components/layout/TutorsPoolHeader';
 
 interface DashboardStats {
   totalUsers: number;
@@ -381,7 +382,10 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <TutorsPoolHeader />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -1146,6 +1150,8 @@ const AdminDashboard: React.FC = () => {
           </div>
         </TabsContent>
       </Tabs>
+        </div>
+      </div>
     </div>
   );
 };

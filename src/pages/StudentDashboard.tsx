@@ -34,8 +34,9 @@ import {
 } from 'lucide-react';
 import { SimpleLearningProgress } from '@/components/students/SimpleLearningProgress';
 import { ReviewSubmission } from '@/components/students/ReviewSubmission';
-import ChatInterface from '@/components/chat/ChatInterface';
 import { UpcomingSessions } from '@/components/students/UpcomingSessions';
+import SessionCountdown from '@/components/students/SessionCountdown';
+import TutorsPoolHeader from '@/components/layout/TutorsPoolHeader';
 
 interface StudentProfile {
   id: string;
@@ -387,20 +388,20 @@ const StudentDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      <TutorsPoolHeader />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Welcome back, {user?.name || 'Student'}!
-              </h1>
-              <p className="text-gray-600">
-                Manage your learning journey and track your progress
-              </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.name || 'Student'}!
+          </h1>
+          <p className="text-gray-600">
+            Manage your learning journey and track your progress
+          </p>
             </div>
-            <ChatInterface />
           </div>
         </div>
 
@@ -456,6 +457,20 @@ const StudentDashboard: React.FC = () => {
             </Card>
           </div>
         )}
+
+        {/* Session Countdown Widget - Always Visible */}
+        <SessionCountdown 
+          onJoinSession={(bookingId) => {
+            // Handle joining session - could open video call or redirect to session page
+            console.log('Joining session:', bookingId);
+            // TODO: Implement actual session joining logic
+          }}
+          onMessageTutor={(tutorId) => {
+            // Handle messaging tutor - could open chat
+            console.log('Messaging tutor:', tutorId);
+            // TODO: Implement chat opening logic
+          }}
+        />
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="profile" className="space-y-6">
@@ -635,6 +650,7 @@ const StudentDashboard: React.FC = () => {
 
           {/* Sessions Tab */}
           <TabsContent value="sessions" className="space-y-6">
+            {/* Upcoming Sessions List */}
             <UpcomingSessions studentId={user?.id || ''} />
           </TabsContent>
 
@@ -743,18 +759,18 @@ const StudentDashboard: React.FC = () => {
                                     <CheckCircle className="w-3 h-3 mr-1" />
                                     Completed
                                   </Badge>
-                                  <Button 
-                                    size="sm" 
+                                <Button 
+                                  size="sm" 
                                     className="bg-orange-500 hover:bg-orange-600 text-white"
-                                    onClick={() => {
+                                  onClick={() => {
                                       // Open review modal for this booking
                                       setSelectedBookingForReview(booking);
-                                      setShowReviewModal(true);
-                                    }}
-                                  >
-                                    <Star className="w-4 h-4 mr-1" />
-                                    Rate & Review
-                                  </Button>
+                                    setShowReviewModal(true);
+                                  }}
+                                >
+                                  <Star className="w-4 h-4 mr-1" />
+                                  Rate & Review
+                                </Button>
                                 </div>
                               )}
                               
@@ -838,7 +854,7 @@ const StudentDashboard: React.FC = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Review Modal */}
+      {/* Review Modal */}
         {showReviewModal && selectedBookingForReview && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
@@ -906,9 +922,9 @@ const StudentDashboard: React.FC = () => {
                   Cancel
                 </Button>
               </div>
-            </div>
           </div>
-        )}
+        </div>
+      )}
       </div>
     </div>
   );

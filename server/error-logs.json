@@ -1,5 +1,291 @@
 [
   {
+    "id": "info_1757665092853_oy19hb6xh",
+    "timestamp": "2025-09-12T08:18:12.853Z",
+    "type": "info",
+    "message": "User user-74 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-74",
+      "serverTime": "2025-09-12T08:18:12.853Z",
+      "processId": 19224
+    }
+  },
+  {
+    "id": "info_1757621286646_3bdtpeksb",
+    "timestamp": "2025-09-11T20:08:06.646Z",
+    "type": "info",
+    "message": "Booking booking-70 status updated to COMPLETED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-70",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-11T20:08:06.646Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596394941_3dmox2162",
+    "timestamp": "2025-09-11T13:13:14.941Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refunded by admin",
+      "serverTime": "2025-09-11T13:13:14.941Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596394018_y0eraia51",
+    "timestamp": "2025-09-11T13:13:14.018Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to COMPLETED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "COMPLETED",
+      "reason": "Reopened after refund",
+      "serverTime": "2025-09-11T13:13:14.018Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596390706_ahvwnu9us",
+    "timestamp": "2025-09-11T13:13:10.706Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refund closed",
+      "serverTime": "2025-09-11T13:13:10.706Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596389649_2tcdricgb",
+    "timestamp": "2025-09-11T13:13:09.649Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refunded by admin",
+      "serverTime": "2025-09-11T13:13:09.649Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596388577_5hx4ggbd5",
+    "timestamp": "2025-09-11T13:13:08.577Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to COMPLETED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "COMPLETED",
+      "reason": "Reopened after refund",
+      "serverTime": "2025-09-11T13:13:08.577Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596388099_2fhkz7wp8",
+    "timestamp": "2025-09-11T13:13:08.099Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refund processed",
+      "serverTime": "2025-09-11T13:13:08.099Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596387105_yd1kzgrhr",
+    "timestamp": "2025-09-11T13:13:07.105Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refund closed",
+      "serverTime": "2025-09-11T13:13:07.105Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596386537_m4cv27zjl",
+    "timestamp": "2025-09-11T13:13:06.537Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refund processed",
+      "serverTime": "2025-09-11T13:13:06.537Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596385291_q2ii9pn4f",
+    "timestamp": "2025-09-11T13:13:05.291Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refund processed",
+      "serverTime": "2025-09-11T13:13:05.291Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596384219_4kmbtnnti",
+    "timestamp": "2025-09-11T13:13:04.219Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refunded by admin",
+      "serverTime": "2025-09-11T13:13:04.219Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596383051_jpxdq2d4f",
+    "timestamp": "2025-09-11T13:13:03.051Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to COMPLETED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "COMPLETED",
+      "reason": "Reopened after refund",
+      "serverTime": "2025-09-11T13:13:03.051Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596377451_cu09siwkb",
+    "timestamp": "2025-09-11T13:12:57.451Z",
+    "type": "info",
+    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-22",
+      "newStatus": "REFUNDED",
+      "reason": "Refunded by admin",
+      "serverTime": "2025-09-11T13:12:57.451Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757596298619_tq8clmq4v",
+    "timestamp": "2025-09-11T13:11:38.619Z",
+    "type": "info",
+    "message": "Booking booking-70 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-70",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-11T13:11:38.619Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757595693566_uewu8adc4",
+    "timestamp": "2025-09-11T13:01:33.566Z",
+    "type": "info",
+    "message": "Booking booking-66 status updated to REFUNDED by admin user-63",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-63",
+      "bookingId": "booking-66",
+      "newStatus": "REFUNDED",
+      "reason": "Refunded by admin",
+      "serverTime": "2025-09-11T13:01:33.566Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757595630210_0obz2vj2y",
+    "timestamp": "2025-09-11T13:00:30.210Z",
+    "type": "info",
+    "message": "Booking booking-66 status updated to COMPLETED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-66",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-11T13:00:30.210Z",
+      "processId": 33760
+    }
+  },
+  {
+    "id": "info_1757595628683_18zwmghnh",
+    "timestamp": "2025-09-11T13:00:28.683Z",
+    "type": "info",
+    "message": "Booking booking-66 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-66",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-11T13:00:28.683Z",
+      "processId": 33760
+    }
+  },
+  {
     "id": "info_1757595564588_iip7efr85",
     "timestamp": "2025-09-11T12:59:24.588Z",
     "type": "info",
@@ -2198,275 +2484,172 @@
     }
   },
   {
-    "id": "info_1757595628683_18zwmghnh",
-    "timestamp": "2025-09-11T13:00:28.683Z",
+    "id": "info_1757665153272_6nl1i9gyr",
+    "timestamp": "2025-09-12T08:19:13.272Z",
     "type": "info",
-    "message": "Booking booking-66 status updated to CONFIRMED by tutor user-56",
+    "message": "User user-11 suspended by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/suspend",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-11",
+      "serverTime": "2025-09-12T08:19:13.272Z",
+      "processId": 19224
+    }
+  },
+  {
+    "id": "info_1757665555646_cfmre8ya5",
+    "timestamp": "2025-09-12T08:25:55.646Z",
+    "type": "info",
+    "message": "User user-11 activated by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/activate",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-11",
+      "serverTime": "2025-09-12T08:25:55.646Z",
+      "processId": 24848
+    }
+  },
+  {
+    "id": "info_1757665567935_9apvo18bf",
+    "timestamp": "2025-09-12T08:26:07.935Z",
+    "type": "info",
+    "message": "User user-11 suspended by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/suspend",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-11",
+      "serverTime": "2025-09-12T08:26:07.936Z",
+      "processId": 24848
+    }
+  },
+  {
+    "id": "info_1757676524869_cslkj0cua",
+    "timestamp": "2025-09-12T11:28:44.869Z",
+    "type": "info",
+    "message": "Booking booking-75 status updated to CONFIRMED by tutor user-56",
     "context": {
       "endpoint": "/api/tutors/bookings/:bookingId/status",
       "method": "PUT",
       "tutorId": "user-56",
-      "bookingId": "booking-66",
+      "bookingId": "booking-75",
       "newStatus": "CONFIRMED",
       "reason": "Confirmed by tutor",
-      "serverTime": "2025-09-11T13:00:28.683Z",
-      "processId": 33760
+      "serverTime": "2025-09-12T11:28:44.869Z",
+      "processId": 17204
     }
   },
   {
-    "id": "info_1757595630210_0obz2vj2y",
-    "timestamp": "2025-09-11T13:00:30.210Z",
+    "id": "info_1757677007906_w0y360lxv",
+    "timestamp": "2025-09-12T11:36:47.906Z",
     "type": "info",
-    "message": "Booking booking-66 status updated to COMPLETED by tutor user-56",
+    "message": "Booking booking-78 status updated to CONFIRMED by tutor user-56",
     "context": {
       "endpoint": "/api/tutors/bookings/:bookingId/status",
       "method": "PUT",
       "tutorId": "user-56",
-      "bookingId": "booking-66",
-      "newStatus": "COMPLETED",
-      "reason": "Session completed",
-      "serverTime": "2025-09-11T13:00:30.210Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757595693566_uewu8adc4",
-    "timestamp": "2025-09-11T13:01:33.566Z",
-    "type": "info",
-    "message": "Booking booking-66 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-66",
-      "newStatus": "REFUNDED",
-      "reason": "Refunded by admin",
-      "serverTime": "2025-09-11T13:01:33.566Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596298619_tq8clmq4v",
-    "timestamp": "2025-09-11T13:11:38.619Z",
-    "type": "info",
-    "message": "Booking booking-70 status updated to CONFIRMED by tutor user-56",
-    "context": {
-      "endpoint": "/api/tutors/bookings/:bookingId/status",
-      "method": "PUT",
-      "tutorId": "user-56",
-      "bookingId": "booking-70",
+      "bookingId": "booking-78",
       "newStatus": "CONFIRMED",
       "reason": "Confirmed by tutor",
-      "serverTime": "2025-09-11T13:11:38.619Z",
-      "processId": 33760
+      "serverTime": "2025-09-12T11:36:47.906Z",
+      "processId": 17204
     }
   },
   {
-    "id": "info_1757596377451_cu09siwkb",
-    "timestamp": "2025-09-11T13:12:57.451Z",
+    "id": "info_1757677038951_a72vcyab7",
+    "timestamp": "2025-09-12T11:37:18.951Z",
     "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refunded by admin",
-      "serverTime": "2025-09-11T13:12:57.451Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596383051_jpxdq2d4f",
-    "timestamp": "2025-09-11T13:13:03.051Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to COMPLETED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "COMPLETED",
-      "reason": "Reopened after refund",
-      "serverTime": "2025-09-11T13:13:03.051Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596384219_4kmbtnnti",
-    "timestamp": "2025-09-11T13:13:04.219Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refunded by admin",
-      "serverTime": "2025-09-11T13:13:04.219Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596385291_q2ii9pn4f",
-    "timestamp": "2025-09-11T13:13:05.291Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refund processed",
-      "serverTime": "2025-09-11T13:13:05.291Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596386537_m4cv27zjl",
-    "timestamp": "2025-09-11T13:13:06.537Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refund processed",
-      "serverTime": "2025-09-11T13:13:06.537Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596387105_yd1kzgrhr",
-    "timestamp": "2025-09-11T13:13:07.105Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refund closed",
-      "serverTime": "2025-09-11T13:13:07.105Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596388099_2fhkz7wp8",
-    "timestamp": "2025-09-11T13:13:08.099Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refund processed",
-      "serverTime": "2025-09-11T13:13:08.099Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596388577_5hx4ggbd5",
-    "timestamp": "2025-09-11T13:13:08.577Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to COMPLETED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "COMPLETED",
-      "reason": "Reopened after refund",
-      "serverTime": "2025-09-11T13:13:08.577Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596389649_2tcdricgb",
-    "timestamp": "2025-09-11T13:13:09.649Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refunded by admin",
-      "serverTime": "2025-09-11T13:13:09.649Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596390706_ahvwnu9us",
-    "timestamp": "2025-09-11T13:13:10.706Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refund closed",
-      "serverTime": "2025-09-11T13:13:10.706Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596394018_y0eraia51",
-    "timestamp": "2025-09-11T13:13:14.018Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to COMPLETED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "COMPLETED",
-      "reason": "Reopened after refund",
-      "serverTime": "2025-09-11T13:13:14.018Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757596394941_3dmox2162",
-    "timestamp": "2025-09-11T13:13:14.941Z",
-    "type": "info",
-    "message": "Booking booking-22 status updated to REFUNDED by admin user-63",
-    "context": {
-      "endpoint": "/api/admin/bookings/:bookingId/status",
-      "method": "PUT",
-      "adminId": "user-63",
-      "bookingId": "booking-22",
-      "newStatus": "REFUNDED",
-      "reason": "Refunded by admin",
-      "serverTime": "2025-09-11T13:13:14.941Z",
-      "processId": 33760
-    }
-  },
-  {
-    "id": "info_1757621286646_3bdtpeksb",
-    "timestamp": "2025-09-11T20:08:06.646Z",
-    "type": "info",
-    "message": "Booking booking-70 status updated to COMPLETED by tutor user-56",
+    "message": "Booking booking-75 status updated to COMPLETED by tutor user-56",
     "context": {
       "endpoint": "/api/tutors/bookings/:bookingId/status",
       "method": "PUT",
       "tutorId": "user-56",
-      "bookingId": "booking-70",
+      "bookingId": "booking-75",
       "newStatus": "COMPLETED",
       "reason": "Session completed",
-      "serverTime": "2025-09-11T20:08:06.646Z",
-      "processId": 33760
+      "serverTime": "2025-09-12T11:37:18.951Z",
+      "processId": 17204
+    }
+  },
+  {
+    "id": "info_1757677447837_wq3ecq6sw",
+    "timestamp": "2025-09-12T11:44:07.837Z",
+    "type": "info",
+    "message": "Booking booking-78 cancelled by student user-9",
+    "context": {
+      "endpoint": "/api/students/bookings/:bookingId/status",
+      "method": "PUT",
+      "studentId": "user-9",
+      "bookingId": "booking-78",
+      "newStatus": "CANCELLED",
+      "reason": "Cancelled by student",
+      "serverTime": "2025-09-12T11:44:07.837Z",
+      "processId": 15528
+    }
+  },
+  {
+    "id": "auth_1757677567527_00rj5xr8e",
+    "timestamp": "2025-09-12T11:46:07.527Z",
+    "type": "auth_error",
+    "email": "itsartificailimran1@gmail.com",
+    "reason": "User not found",
+    "context": {
+      "endpoint": "/api/auth/login",
+      "method": "POST",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "serverTime": "2025-09-12T11:46:07.527Z",
+      "processId": 15528
+    }
+  },
+  {
+    "id": "info_1757677627458_tiyde98vx",
+    "timestamp": "2025-09-12T11:47:07.458Z",
+    "type": "info",
+    "message": "Booking booking-83 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-83",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-12T11:47:07.458Z",
+      "processId": 15528
+    }
+  },
+  {
+    "id": "info_1757677697690_1jux0rpuz",
+    "timestamp": "2025-09-12T11:48:17.690Z",
+    "type": "info",
+    "message": "Booking booking-88 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-88",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-12T11:48:17.690Z",
+      "processId": 15528
+    }
+  },
+  {
+    "id": "info_1757677949851_qsv4g51yu",
+    "timestamp": "2025-09-12T11:52:29.851Z",
+    "type": "info",
+    "message": "Booking booking-91 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-91",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-12T11:52:29.851Z",
+      "processId": 15528
     }
   }
 ]
