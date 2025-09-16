@@ -331,6 +331,187 @@ app.post('/api/students', authenticateToken, async (req, res) => {
   }
 });
 
+// Get AI-powered subject suggestions for student
+app.get('/api/students/ai-suggestions', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    // Get student profile
+    const studentProfile = dataManager.getStudentProfileByUserId(userId);
+    const user = dataManager.getUserById(userId);
+    
+    if (!studentProfile || !user) {
+      return res.status(404).json({ error: 'Student profile not found' });
+    }
+
+    // Get student's booking history for analysis
+    const studentBookings = dataManager.getBookingsByStudentId(userId);
+    const completedBookings = studentProfile.bookings?.filter(b => b.status === 'COMPLETED') || [];
+    
+    // Analyze learning patterns from completed sessions
+    const subjectsStudied = [...new Set(completedBookings.map(b => b.subject))];
+    const tutorsWorkedWith = [...new Set(completedBookings.map(b => b.tutorId))];
+    
+    // Get reviews given by student to understand preferences
+    const studentReviews = dataManager.getReviewsByStudent(userId);
+    const averageRating = studentReviews.length > 0 
+      ? studentReviews.reduce((sum, review) => sum + review.rating, 0) / studentReviews.length 
+      : 0;
+
+    // Enhanced profile for AI analysis
+    const enhancedProfile = {
+      id: studentProfile.id,
+      userId: userId,
+      gradeLevel: studentProfile.gradeLevel || 'high-school',
+      learningGoals: studentProfile.learningGoals || 'Academic improvement and skill development',
+      preferredMode: studentProfile.preferredMode || 'ONLINE',
+      budgetMin: studentProfile.budgetMin,
+      budgetMax: studentProfile.budgetMax,
+      specialRequirements: studentProfile.specialRequirements,
+      interests: studentProfile.interests || ['general-education'],
+      academicLevel: studentProfile.gradeLevel || 'high-school',
+      learningStyle: studentProfile.learningStyle || 'Mixed Learning Style',
+      subjectsStudied: subjectsStudied,
+      strengths: studentProfile.strengths || ['dedicated', 'curious'],
+      weaknesses: studentProfile.weaknesses || ['time-management'],
+      careerGoals: studentProfile.careerGoals || ['professional-development'],
+      hobbies: studentProfile.hobbies || ['learning'],
+      // Additional analysis data
+      sessionHistory: {
+        totalSessions: completedBookings.length,
+        averageSessionDuration: completedBookings.length > 0 
+          ? completedBookings.reduce((sum, b) => sum + (b.durationMinutes || 60), 0) / completedBookings.length 
+          : 60,
+        preferredSubjects: subjectsStudied,
+        tutorsWorkedWith: tutorsWorkedWith.length,
+        averageRating: averageRating
+      }
+    };
+
+    // Generate AI suggestions (simplified version for backend)
+    const suggestions = generateAISuggestions(enhancedProfile);
+
+    res.json({ 
+      success: true, 
+      suggestions,
+      profileAnalysis: {
+        learningStyle: enhancedProfile.learningStyle,
+        academicLevel: enhancedProfile.academicLevel,
+        interests: enhancedProfile.interests,
+        strengths: enhancedProfile.strengths,
+        areasForImprovement: enhancedProfile.weaknesses,
+        sessionHistory: enhancedProfile.sessionHistory
+      },
+      personalizedMessage: `Based on your ${enhancedProfile.sessionHistory.totalSessions} completed sessions and interests in ${enhancedProfile.interests.join(', ')}, I recommend focusing on subjects that align with your learning goals.`
+    });
+
+  } catch (error) {
+    console.error('AI suggestions error:', error);
+    res.status(500).json({ error: 'Failed to generate AI suggestions' });
+  }
+});
+
+// Helper function to generate AI suggestions
+function generateAISuggestions(profile: any): any[] {
+  const subjectsDatabase: { [key: string]: any } = {
+    'mathematics': { difficulty: 'INTERMEDIATE', estimatedHours: 120, relatedSubjects: ['physics', 'chemistry', 'statistics'] },
+    'physics': { difficulty: 'INTERMEDIATE', estimatedHours: 100, relatedSubjects: ['mathematics', 'chemistry', 'engineering'] },
+    'chemistry': { difficulty: 'INTERMEDIATE', estimatedHours: 100, relatedSubjects: ['mathematics', 'physics', 'biology'] },
+    'biology': { difficulty: 'BEGINNER', estimatedHours: 80, relatedSubjects: ['chemistry', 'medicine', 'environmental-science'] },
+    'computer-science': { difficulty: 'INTERMEDIATE', estimatedHours: 150, relatedSubjects: ['mathematics', 'engineering', 'data-science'] },
+    'english': { difficulty: 'BEGINNER', estimatedHours: 60, relatedSubjects: ['literature', 'communication', 'writing'] },
+    'history': { difficulty: 'BEGINNER', estimatedHours: 60, relatedSubjects: ['geography', 'political-science', 'sociology'] },
+    'geography': { difficulty: 'BEGINNER', estimatedHours: 50, relatedSubjects: ['environmental-science', 'history', 'political-science'] },
+    'economics': { difficulty: 'INTERMEDIATE', estimatedHours: 80, relatedSubjects: ['mathematics', 'business', 'political-science'] },
+    'psychology': { difficulty: 'BEGINNER', estimatedHours: 70, relatedSubjects: ['biology', 'sociology', 'philosophy'] }
+  };
+
+  const suggestions: any[] = [];
+  const interests = profile.interests || [];
+  const subjectsStudied = profile.subjectsStudied || [];
+  const careerGoals = profile.careerGoals || [];
+
+  // Generate suggestions based on interests
+  interests.forEach((interest: string) => {
+    const interestLower = interest.toLowerCase();
+    let relatedSubjects: string[] = [];
+    
+    if (interestLower.includes('tech') || interestLower.includes('computer')) {
+      relatedSubjects = ['computer-science', 'mathematics', 'physics'];
+    } else if (interestLower.includes('science') || interestLower.includes('research')) {
+      relatedSubjects = ['mathematics', 'physics', 'chemistry', 'biology'];
+    } else if (interestLower.includes('business') || interestLower.includes('finance')) {
+      relatedSubjects = ['economics', 'mathematics', 'english'];
+    } else if (interestLower.includes('medicine') || interestLower.includes('health')) {
+      relatedSubjects = ['biology', 'chemistry', 'physics'];
+    } else if (interestLower.includes('arts') || interestLower.includes('creative')) {
+      relatedSubjects = ['english', 'history', 'psychology'];
+    } else {
+      relatedSubjects = ['mathematics', 'english', 'science'];
+    }
+
+    relatedSubjects.forEach((subject: string) => {
+      if (!subjectsStudied.includes(subject)) {
+        const subjectData = subjectsDatabase[subject];
+        if (subjectData) {
+          suggestions.push({
+            subject,
+            confidence: 0.8,
+            reason: `Based on your interest in ${interest}`,
+            difficulty: subjectData.difficulty,
+            estimatedHours: subjectData.estimatedHours,
+            prerequisites: [],
+            relatedSubjects: subjectData.relatedSubjects,
+            careerRelevance: [],
+            learningPath: []
+          });
+        }
+      }
+    });
+  });
+
+  // Add grade-appropriate subjects
+  const gradeLevel = profile.gradeLevel || 'high-school';
+  const gradeSubjects: { [key: string]: string[] } = {
+    'elementary': ['mathematics', 'english', 'science'],
+    'middle-school': ['mathematics', 'english', 'science', 'history'],
+    'high-school': ['mathematics', 'physics', 'chemistry', 'biology', 'english', 'history'],
+    'college': ['mathematics', 'physics', 'chemistry', 'biology', 'computer-science', 'economics']
+  };
+
+  const appropriateSubjects = gradeSubjects[gradeLevel] || gradeSubjects['high-school'];
+  appropriateSubjects.forEach((subject: string) => {
+    if (!subjectsStudied.includes(subject) && !suggestions.find((s: any) => s.subject === subject)) {
+      const subjectData = subjectsDatabase[subject];
+      if (subjectData) {
+        suggestions.push({
+          subject,
+          confidence: 0.7,
+          reason: `Appropriate for your ${gradeLevel} level`,
+          difficulty: subjectData.difficulty,
+          estimatedHours: subjectData.estimatedHours,
+          prerequisites: [],
+          relatedSubjects: subjectData.relatedSubjects,
+          careerRelevance: [],
+          learningPath: []
+        });
+      }
+    }
+  });
+
+  // Remove duplicates and sort by confidence
+  const uniqueSuggestions = suggestions.filter((suggestion, index, self) => 
+    index === self.findIndex((s: any) => s.subject === suggestion.subject)
+  );
+
+  return uniqueSuggestions
+    .sort((a: any, b: any) => b.confidence - a.confidence)
+    .slice(0, 6);
+}
+
 // Get student profile
 app.get('/api/students/profile', authenticateToken, async (req, res) => {
   try {
@@ -2816,6 +2997,514 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`User ${socket.data.user.userId} disconnected from chat`);
   });
+});
+
+// ==================== PAYMENT ROUTES ====================
+
+// Create payment intent for a booking
+app.post('/api/payments/create-payment-intent', authenticateToken, async (req, res) => {
+  try {
+    const { bookingId, amount, currency = 'usd' } = req.body;
+    const userId = req.user?.userId;
+
+    if (!bookingId || !amount) {
+      return res.status(400).json({ error: 'Booking ID and amount are required' });
+    }
+
+    // Verify booking belongs to student
+    const booking = dataManager.getBookingById(bookingId);
+    if (!booking || booking.studentId !== userId) {
+      return res.status(404).json({ error: 'Booking not found or unauthorized' });
+    }
+
+    // For now, create a mock payment intent (replace with actual Stripe integration)
+    const paymentIntent = {
+      id: `pi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      client_secret: `pi_${Date.now()}_secret_${Math.random().toString(36).substr(2, 9)}`,
+      amount: Math.round(amount * 100),
+      currency: currency.toLowerCase(),
+      status: 'requires_payment_method'
+    };
+
+    // Create payment record
+    const payment = {
+      id: `payment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      bookingId: bookingId,
+      studentId: booking.studentId,
+      tutorId: booking.tutorId,
+      amount: amount,
+      currency: currency,
+      stripePaymentIntentId: paymentIntent.id,
+      status: 'PENDING',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      metadata: {
+        subject: booking.subject,
+        sessionDate: booking.sessionDate,
+        platformFee: amount * 0.10, // 10% platform fee
+        tutorAmount: amount * 0.90
+      }
+    };
+
+    dataManager.addPayment(payment);
+
+    res.json({
+      success: true,
+      paymentIntent: paymentIntent,
+      payment: payment
+    });
+
+  } catch (error) {
+    console.error('Error creating payment intent:', error);
+    res.status(500).json({ error: 'Failed to create payment intent' });
+  }
+});
+
+// Confirm payment (mock implementation)
+app.post('/api/payments/confirm-payment', authenticateToken, async (req, res) => {
+  try {
+    const { paymentIntentId } = req.body;
+
+    if (!paymentIntentId) {
+      return res.status(400).json({ error: 'Payment intent ID is required' });
+    }
+
+    const payment = dataManager.getPaymentByStripeId(paymentIntentId);
+    if (!payment) {
+      return res.status(404).json({ error: 'Payment not found' });
+    }
+
+    // Mock successful payment
+    payment.status = 'COMPLETED';
+    payment.updatedAt = new Date().toISOString();
+    payment.stripeChargeId = `ch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    // Create payout record for tutor
+    const payout = {
+      id: `payout_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      paymentId: payment.id,
+      tutorId: payment.tutorId,
+      amount: payment.metadata.tutorAmount,
+      currency: payment.currency,
+      status: 'PENDING',
+      holdUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days hold
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      metadata: {
+        platformFee: payment.metadata.platformFee,
+        subject: payment.metadata.subject,
+        sessionDate: payment.metadata.sessionDate
+      }
+    };
+
+    dataManager.addPayout(payout);
+    dataManager.updatePayment(payment);
+
+    // Update booking status
+    const booking = dataManager.getBookingById(payment.bookingId);
+    if (booking) {
+      booking.status = 'CONFIRMED';
+      booking.paymentStatus = 'PAID';
+        dataManager.updateBooking(booking.id, booking);
+    }
+
+    res.json({
+      success: true,
+      payment: payment,
+      payout: payout
+    });
+
+  } catch (error) {
+    console.error('Error confirming payment:', error);
+    res.status(500).json({ error: 'Failed to confirm payment' });
+  }
+});
+
+// Get payment history for student
+app.get('/api/payments/student/payments', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const payments = dataManager.getPaymentsByStudent(userId);
+    
+    res.json({
+      success: true,
+      payments: payments
+    });
+
+  } catch (error) {
+    console.error('Error fetching student payments:', error);
+    res.status(500).json({ error: 'Failed to fetch payments' });
+  }
+});
+
+// Get payout history for tutor
+app.get('/api/payments/tutor/payouts', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const tutor = dataManager.getTutorByUserId(userId);
+    
+    if (!tutor) {
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const payouts = dataManager.getPayoutsByTutor(tutor.id);
+    
+    res.json({
+      success: true,
+      payouts: payouts
+    });
+
+  } catch (error) {
+    console.error('Error fetching tutor payouts:', error);
+    res.status(500).json({ error: 'Failed to fetch payouts' });
+  }
+});
+
+// Request refund
+app.post('/api/payments/request-refund', authenticateToken, async (req, res) => {
+  try {
+    const { paymentId, reason } = req.body;
+    const userId = req.user?.userId;
+
+    if (!paymentId) {
+      return res.status(400).json({ error: 'Payment ID is required' });
+    }
+
+    // Verify payment belongs to student
+    const payment = dataManager.getPaymentById(paymentId);
+    if (!payment || payment.studentId !== userId) {
+      return res.status(404).json({ error: 'Payment not found or unauthorized' });
+    }
+
+    // Mock refund processing
+    payment.status = 'REFUNDED';
+    payment.refundId = `re_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    payment.refundAmount = payment.amount;
+    payment.refundReason = reason;
+    payment.updatedAt = new Date().toISOString();
+
+    dataManager.updatePayment(payment);
+
+    // Update booking status
+    const booking = dataManager.getBookingById(payment.bookingId);
+    if (booking) {
+      booking.status = 'REFUNDED';
+      booking.paymentStatus = 'REFUNDED';
+        dataManager.updateBooking(booking.id, booking);
+    }
+
+    res.json({
+      success: true,
+      refund: {
+        id: payment.refundId,
+        amount: payment.refundAmount,
+        reason: payment.refundReason
+      },
+      payment: payment
+    });
+
+  } catch (error) {
+    console.error('Error processing refund:', error);
+    res.status(500).json({ error: 'Failed to process refund' });
+  }
+});
+
+// Create dispute
+app.post('/api/payments/create-dispute', authenticateToken, async (req, res) => {
+  try {
+    const { paymentId, reason, description } = req.body;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    if (!paymentId || !reason) {
+      return res.status(400).json({ error: 'Payment ID and reason are required' });
+    }
+
+    // Verify payment belongs to student
+    const payment = dataManager.getPaymentById(paymentId);
+    if (!payment || payment.studentId !== userId) {
+      return res.status(404).json({ error: 'Payment not found or unauthorized' });
+    }
+
+    const dispute = {
+      id: `dispute_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      paymentId: paymentId,
+      studentId: userId,
+      tutorId: payment.tutorId,
+      reason: reason,
+      description: description,
+      status: 'OPEN',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      adminNotes: null,
+      resolution: null
+    };
+
+    dataManager.addDispute(dispute);
+
+    // Create notification for admin
+    dataManager.addNotification({
+      userId: 'admin', // Notify all admins
+      type: 'NEW_MESSAGE' as any, // Using NEW_MESSAGE as closest match
+      title: 'New Payment Dispute',
+      message: `Student ${dataManager.getUserById(userId)?.name || 'Unknown'} has created a dispute for payment ${paymentId}`,
+      data: { disputeId: dispute.id, paymentId: paymentId },
+      read: false
+    });
+
+    res.json({
+      success: true,
+      dispute: dispute
+    });
+
+  } catch (error) {
+    console.error('Error creating dispute:', error);
+    res.status(500).json({ error: 'Failed to create dispute' });
+  }
+});
+
+// Get disputes for student
+app.get('/api/payments/student/disputes', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const disputes = dataManager.getDisputesByStudent(userId);
+    
+    res.json({
+      success: true,
+      disputes: disputes
+    });
+
+  } catch (error) {
+    console.error('Error fetching student disputes:', error);
+    res.status(500).json({ error: 'Failed to fetch disputes' });
+  }
+});
+
+// Get disputes for tutor
+app.get('/api/payments/tutor/disputes', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const tutor = dataManager.getTutorByUserId(userId);
+    
+    if (!tutor) {
+      return res.status(404).json({ error: 'Tutor profile not found' });
+    }
+
+    const disputes = dataManager.getDisputesByTutor(tutor.id);
+    
+    res.json({
+      success: true,
+      disputes: disputes
+    });
+
+  } catch (error) {
+    console.error('Error fetching tutor disputes:', error);
+    res.status(500).json({ error: 'Failed to fetch disputes' });
+  }
+});
+
+// Admin endpoints
+app.get('/api/payments/admin/payments', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const payments = dataManager.getAllPayments();
+    
+    res.json({
+      success: true,
+      payments: payments
+    });
+
+  } catch (error) {
+    console.error('Error fetching all payments:', error);
+    res.status(500).json({ error: 'Failed to fetch payments' });
+  }
+});
+
+app.get('/api/payments/admin/payouts', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const payouts = dataManager.getAllPayouts();
+    
+    res.json({
+      success: true,
+      payouts: payouts
+    });
+
+  } catch (error) {
+    console.error('Error fetching all payouts:', error);
+    res.status(500).json({ error: 'Failed to fetch payouts' });
+  }
+});
+
+app.get('/api/payments/admin/disputes', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const disputes = dataManager.getAllDisputes();
+    
+    res.json({
+      success: true,
+      disputes: disputes
+    });
+
+  } catch (error) {
+    console.error('Error fetching all disputes:', error);
+    res.status(500).json({ error: 'Failed to fetch disputes' });
+  }
+});
+
+// Admin: Process payout
+app.post('/api/payments/admin/process-payout', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const { payoutId } = req.body;
+
+    if (!payoutId) {
+      return res.status(400).json({ error: 'Payout ID is required' });
+    }
+
+    const payout = dataManager.getPayoutById(payoutId);
+    if (!payout) {
+      return res.status(404).json({ error: 'Payout not found' });
+    }
+
+    // Mock payout processing
+    payout.status = 'PAID';
+    payout.stripeTransferId = `tr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    payout.paidAt = new Date().toISOString();
+    payout.updatedAt = new Date().toISOString();
+
+    dataManager.updatePayout(payout);
+
+    res.json({
+      success: true,
+      payout: payout
+    });
+
+  } catch (error) {
+    console.error('Error processing payout:', error);
+    res.status(500).json({ error: 'Failed to process payout' });
+  }
+});
+
+// Admin: Handle dispute
+app.post('/api/payments/admin/handle-dispute', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const { disputeId, status, adminNotes, resolution } = req.body;
+
+    if (!disputeId || !status) {
+      return res.status(400).json({ error: 'Dispute ID and status are required' });
+    }
+
+    const dispute = dataManager.getDisputeById(disputeId);
+    if (!dispute) {
+      return res.status(404).json({ error: 'Dispute not found' });
+    }
+
+    dispute.status = status;
+    dispute.adminNotes = adminNotes;
+    dispute.resolution = resolution;
+    dispute.updatedAt = new Date().toISOString();
+
+    dataManager.updateDispute(dispute);
+
+    res.json({
+      success: true,
+      dispute: dispute
+    });
+
+  } catch (error) {
+    console.error('Error handling dispute:', error);
+    res.status(500).json({ error: 'Failed to handle dispute' });
+  }
+});
+
+// Admin: Get payment analytics
+app.get('/api/payments/admin/analytics', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    
+    const payments = dataManager.getAllPayments();
+    const payouts = dataManager.getAllPayouts();
+    const disputes = dataManager.getAllDisputes();
+
+    let filteredPayments = payments;
+    let filteredPayouts = payouts;
+    let filteredDisputes = disputes;
+
+    if (startDate && endDate) {
+      const start = new Date(startDate as string);
+      const end = new Date(endDate as string);
+      
+      filteredPayments = payments.filter(p => {
+        const date = new Date(p.createdAt);
+        return date >= start && date <= end;
+      });
+      
+      filteredPayouts = payouts.filter(p => {
+        const date = new Date(p.createdAt);
+        return date >= start && date <= end;
+      });
+      
+      filteredDisputes = disputes.filter(d => {
+        const date = new Date(d.createdAt);
+        return date >= start && date <= end;
+      });
+    }
+
+    const totalRevenue = filteredPayments
+      .filter(p => p.status === 'COMPLETED')
+      .reduce((sum, p) => sum + p.amount, 0);
+
+    const totalPayouts = filteredPayouts
+      .filter(p => p.status === 'PAID')
+      .reduce((sum, p) => sum + p.amount, 0);
+
+    const platformFees = filteredPayments
+      .filter(p => p.status === 'COMPLETED')
+      .reduce((sum, p) => sum + p.metadata.platformFee, 0);
+
+    const pendingPayouts = filteredPayouts
+      .filter(p => p.status === 'PENDING')
+      .reduce((sum, p) => sum + p.amount, 0);
+
+    const openDisputes = filteredDisputes.filter(d => d.status === 'OPEN').length;
+
+    res.json({
+      success: true,
+      analytics: {
+        totalRevenue,
+        totalPayouts,
+        platformFees,
+        pendingPayouts,
+        openDisputes,
+        paymentCount: filteredPayments.length,
+        payoutCount: filteredPayouts.length,
+        disputeCount: filteredDisputes.length,
+        averagePaymentAmount: filteredPayments.length > 0 ? totalRevenue / filteredPayments.length : 0,
+        successRate: filteredPayments.length > 0 ? 
+          (filteredPayments.filter(p => p.status === 'COMPLETED').length / filteredPayments.length) * 100 : 0
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching payment analytics:', error);
+    res.status(500).json({ error: 'Failed to fetch analytics' });
+  }
 });
 
 // Start server

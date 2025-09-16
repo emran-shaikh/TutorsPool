@@ -12,6 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { RefreshCw } from 'lucide-react';
 import { AvailabilityManager } from '@/components/tutors/AvailabilityManager';
 import TutorsPoolHeader from '@/components/layout/TutorsPoolHeader';
+import { TutorPayoutDashboard } from '@/components/payments/TutorPayoutDashboard';
 import { 
   User, 
   Calendar, 
@@ -417,9 +418,10 @@ const TutorDashboard: React.FC = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
+            <TabsTrigger value="payouts">Payouts</TabsTrigger>
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="availability">Availability</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -579,6 +581,11 @@ const TutorDashboard: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Payouts Tab */}
+          <TabsContent value="payouts">
+            <TutorPayoutDashboard />
           </TabsContent>
 
           {/* Profile Tab */}

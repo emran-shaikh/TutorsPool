@@ -38,6 +38,8 @@ import { ReviewSubmission } from '@/components/students/ReviewSubmission';
 import { UpcomingSessions } from '@/components/students/UpcomingSessions';
 import SessionCountdown from '@/components/students/SessionCountdown';
 import TutorsPoolHeader from '@/components/layout/TutorsPoolHeader';
+import { AISuggestions } from '@/components/students/AISuggestions';
+import { PaymentHistory } from '@/components/payments/PaymentHistory';
 
 interface StudentProfile {
   id: string;
@@ -476,10 +478,12 @@ const StudentDashboard: React.FC = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="ai-suggestions">AI Suggestions</TabsTrigger>
             <TabsTrigger value="sessions">Sessions</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
+            <TabsTrigger value="payments">Payments</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="progress">Progress</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
@@ -650,6 +654,14 @@ const StudentDashboard: React.FC = () => {
             </Card>
           </TabsContent>
 
+          {/* AI Suggestions Tab */}
+          <TabsContent value="ai-suggestions" className="space-y-6">
+            <AISuggestions onSubjectSelect={(subject) => {
+              // Navigate to search with the selected subject
+              navigate(`/search?subject=${subject}`);
+            }} />
+          </TabsContent>
+
           {/* Sessions Tab */}
           <TabsContent value="sessions" className="space-y-6">
             {/* Upcoming Sessions List */}
@@ -796,6 +808,11 @@ const StudentDashboard: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Payments Tab */}
+          <TabsContent value="payments" className="space-y-6">
+            <PaymentHistory />
           </TabsContent>
 
           {/* Reviews Tab */}

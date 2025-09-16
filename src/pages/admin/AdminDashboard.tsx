@@ -35,6 +35,7 @@ import { apiClient, adminApi } from '@/lib/api';
 import { useErrorLogger } from '@/hooks/useErrorLogger';
 import { ReviewsManagement } from '@/components/admin/ReviewsManagement';
 import TutorsPoolHeader from '@/components/layout/TutorsPoolHeader';
+import { AdminPaymentManagement } from '@/components/admin/AdminPaymentManagement';
 
 interface DashboardStats {
   totalUsers: number;
@@ -468,6 +469,7 @@ const AdminDashboard: React.FC = () => {
         <TabsList>
           <TabsTrigger value="users">Users Management</TabsTrigger>
           <TabsTrigger value="bookings">Bookings</TabsTrigger>
+          <TabsTrigger value="payments">Payments</TabsTrigger>
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -793,6 +795,11 @@ const AdminDashboard: React.FC = () => {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Payments Tab */}
+        <TabsContent value="payments" className="space-y-4">
+          <AdminPaymentManagement />
         </TabsContent>
 
         {/* Analytics Tab */}

@@ -148,6 +148,10 @@ class ApiClient {
     return this.request('/students/stats');
   }
 
+  async getAISuggestions() {
+    return this.request('/students/ai-suggestions');
+  }
+
   // Learning Progress methods
   async getLearningProgress(studentId: string) {
     return this.request(`/students/learning-progress/${studentId}`);
@@ -588,4 +592,58 @@ export const chatApi = {
   getConversations: () => apiClient.request('/chat/conversations'),
   markMessagesAsRead: (senderId: string) => apiClient.request('/chat/messages/read', { method: 'PUT', body: JSON.stringify({ senderId }) }),
   getUnreadCount: () => apiClient.request('/chat/unread-count'),
+};
+
+// Payment API
+export const paymentApi = {
+  // Payment processing
+  createPaymentIntent: (bookingId: string, amount: number, currency?: string) =>
+    apiClient.request('/payments/create-payment-intent', {
+      method: 'POST',
+      body: JSON.stringify({ bookingId, amount, currency })
+    }),
+  confirmPayment: (paymentIntentId: string) =>
+    apiClient.request('/payments/confirm-payment', {
+      method: 'POST',
+      body: JSON.stringify({ paymentIntentId })
+    }),
+  
+  // Student payment methods
+  getStudentPayments: () => apiClient.request('/payments/student/payments'),
+  requestRefund: (paymentId: string, reason?: string) =>
+    apiClient.request('/payments/request-refund', {
+      method: 'POST',
+      body: JSON.stringify({ paymentId, reason })
+    }),
+  createDispute: (paymentId: string, reason: string, description?: string) =>
+    apiClient.request('/payments/create-dispute', {
+      method: 'POST',
+      body: JSON.stringify({ paymentId, reason, description })
+    }),
+  getStudentDisputes: () => apiClient.request('/payments/student/disputes'),
+  
+  // Tutor payment methods
+  getTutorPayouts: () => apiClient.request('/payments/tutor/payouts'),
+  getTutorDisputes: () => apiClient.request('/payments/tutor/disputes'),
+  
+  // Admin payment methods
+  getAllPayments: () => apiClient.request('/payments/admin/payments'),
+  getAllPayouts: () => apiClient.request('/payments/admin/payouts'),
+  getAllDisputes: () => apiClient.request('/payments/admin/disputes'),
+  processPayout: (payoutId: string) =>
+    apiClient.request('/payments/admin/process-payout', {
+      method: 'POST',
+      body: JSON.stringify({ payoutId })
+    }),
+  handleDispute: (disputeId: string, status: string, adminNotes?: string, resolution?: string) =>
+    apiClient.request('/payments/admin/handle-dispute', {
+      method: 'POST',
+      body: JSON.stringify({ disputeId, status, adminNotes, resolution })
+    }),
+  getPaymentAnalytics: (startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    return apiClient.request(`/payments/admin/analytics?${params.toString()}`);
+  },
 };

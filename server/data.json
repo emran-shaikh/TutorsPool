@@ -9,9 +9,9 @@
       "role": "STUDENT",
       "id": "user-100",
       "createdAt": "2025-09-12T12:38:27.884Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-15T09:16:57.785Z",
+      "approvedBy": "user-74",
       "avatarUrl": null
     },
     {
@@ -138,7 +138,9 @@
       "status": "ACTIVE",
       "approvedAt": "2025-09-11T06:08:38.402Z",
       "approvedBy": "user-55",
-      "avatarUrl": null
+      "avatarUrl": null,
+      "suspendedAt": "2025-09-12T14:33:20.481Z",
+      "suspendedBy": "user-74"
     },
     {
       "name": "Alvin Spears",
@@ -404,6 +406,62 @@
       "status": "PENDING",
       "approvedAt": null,
       "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Kaseem Castaneda",
+      "email": "rajufekave@mailinator.com",
+      "phone": "+1 (653) 139-2217",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-108",
+      "createdAt": "2025-09-12T14:20:00.304Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Cecilia Rosales",
+      "email": "karaniqumy@mailinator.com",
+      "phone": "+1 (531) 192-7715",
+      "country": "UAE",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-110",
+      "createdAt": "2025-09-12T14:23:50.167Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-12T14:25:15.691Z",
+      "approvedBy": "user-74",
+      "avatarUrl": null
+    },
+    {
+      "name": "Phillip Townsend",
+      "email": "kebyzopu@mailinator.com",
+      "phone": "+1 (139) 883-6067",
+      "country": "Italy",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-140",
+      "createdAt": "2025-09-15T12:08:50.759Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Mohammad Richards",
+      "email": "gaxano@mailinator.com",
+      "phone": "+1 (678) 466-9531",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-142",
+      "createdAt": "2025-09-15T12:11:46.306Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-15T12:11:53.517Z",
+      "approvedBy": "user-74",
       "avatarUrl": null
     }
   ],
@@ -671,6 +729,43 @@
       "ratingCount": 0,
       "id": "tutor-107",
       "createdAt": "2025-09-12T13:43:07.422Z"
+    },
+    {
+      "userId": "user-142",
+      "headline": "Master of Teaching",
+      "bio": "I have 10 years of experience with the reputable institutes.",
+      "hourlyRateCents": 9500,
+      "currency": "GBP",
+      "yearsExperience": 10,
+      "subjects": [
+        "Chemistry",
+        "Literature"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "mohammad-richards",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        },
+        {
+          "dayOfWeek": 1,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-143",
+      "createdAt": "2025-09-15T12:11:46.461Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -812,6 +907,43 @@
       "uploads": [],
       "id": "student-105",
       "createdAt": "2025-09-12T13:42:04.896Z"
+    },
+    {
+      "userId": "user-108",
+      "gradeLevel": "Middle School (6-8)",
+      "learningGoals": "Nihil provident ab ",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 2200,
+      "budgetMax": 9300,
+      "specialRequirements": "Sed cillum excepteur",
+      "uploads": [],
+      "id": "student-109",
+      "createdAt": "2025-09-12T14:20:00.315Z"
+    },
+    {
+      "userId": "user-110",
+      "gradeLevel": "College/University",
+      "learningGoals": "I want to learn Computer programming.",
+      "preferredMode": "ONLINE",
+      "budgetMin": 2000,
+      "budgetMax": 3200,
+      "specialRequirements": "I want to be a perfect computer speacilaist.",
+      "uploads": [],
+      "id": "student-111",
+      "createdAt": "2025-09-12T14:23:50.181Z",
+      "updatedAt": "2025-09-15T06:39:16.673Z"
+    },
+    {
+      "userId": "user-140",
+      "gradeLevel": "College/University",
+      "learningGoals": "Non est deserunt ip",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 2300,
+      "budgetMax": 2900,
+      "specialRequirements": "Qui neque quod corru",
+      "uploads": [],
+      "id": "student-141",
+      "createdAt": "2025-09-15T12:08:50.778Z"
     }
   ],
   "bookings": [
@@ -1142,6 +1274,127 @@
       "createdAt": "2025-09-12T11:52:23.956Z",
       "updatedAt": "2025-09-12T11:52:29.847Z",
       "statusReason": "Confirmed by tutor"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "math",
+      "startAtUTC": "2025-09-12T10:00:00.000Z",
+      "endAtUTC": "2025-09-12T11:00:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 50000,
+      "currency": "USD",
+      "id": "booking-112",
+      "createdAt": "2025-09-12T14:27:31.573Z",
+      "updatedAt": "2025-09-12T14:27:57.805Z",
+      "statusReason": "Confirmed by tutor"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "Recusandae Ea dolor",
+      "startAtUTC": "2025-09-12T04:48:00.000Z",
+      "endAtUTC": "2025-09-12T05:48:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 50000,
+      "currency": "USD",
+      "id": "booking-115",
+      "createdAt": "2025-09-12T14:29:02.912Z",
+      "updatedAt": "2025-09-12T14:29:10.868Z",
+      "statusReason": "Confirmed by tutor"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "Est optio providen",
+      "startAtUTC": "2025-09-12T17:09:00.000Z",
+      "endAtUTC": "2025-09-12T18:09:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 50000,
+      "currency": "USD",
+      "id": "booking-118",
+      "createdAt": "2025-09-12T14:29:56.537Z",
+      "updatedAt": "2025-09-12T14:30:42.077Z",
+      "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "Consequat Consequat",
+      "startAtUTC": "2025-09-15T10:27:00.000Z",
+      "endAtUTC": "2025-09-15T11:27:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 50000,
+      "currency": "USD",
+      "id": "booking-122",
+      "createdAt": "2025-09-15T06:43:49.761Z",
+      "updatedAt": "2025-09-15T06:44:38.831Z",
+      "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "math",
+      "startAtUTC": "2025-09-15T04:00:00.000Z",
+      "endAtUTC": "2025-09-15T04:30:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 25000,
+      "currency": "USD",
+      "id": "booking-125",
+      "createdAt": "2025-09-15T06:45:15.449Z",
+      "updatedAt": "2025-09-15T12:01:59.120Z",
+      "statusReason": "Reopened after refund",
+      "paymentStatus": "REFUNDED"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "physics",
+      "startAtUTC": "2025-09-15T04:00:00.000Z",
+      "endAtUTC": "2025-09-15T05:30:00.000Z",
+      "status": "PENDING",
+      "priceCents": 75000,
+      "currency": "USD",
+      "id": "booking-129",
+      "createdAt": "2025-09-15T11:51:13.468Z"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "economics",
+      "startAtUTC": "2025-09-15T04:00:00.000Z",
+      "endAtUTC": "2025-09-15T06:00:00.000Z",
+      "status": "PENDING",
+      "priceCents": 100000,
+      "currency": "USD",
+      "id": "booking-131",
+      "createdAt": "2025-09-15T11:54:19.327Z"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "Doloribus id exercit",
+      "startAtUTC": "2025-09-14T20:14:00.000Z",
+      "endAtUTC": "2025-09-14T21:14:00.000Z",
+      "status": "PENDING",
+      "priceCents": 50000,
+      "currency": "USD",
+      "id": "booking-135",
+      "createdAt": "2025-09-15T12:00:55.810Z"
+    },
+    {
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "subjectId": "Necessitatibus harum",
+      "startAtUTC": "2025-09-14T23:55:00.000Z",
+      "endAtUTC": "2025-09-15T00:55:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 50000,
+      "currency": "USD",
+      "id": "booking-137",
+      "createdAt": "2025-09-15T12:03:01.709Z",
+      "updatedAt": "2025-09-15T12:03:14.836Z",
+      "statusReason": "Confirmed by tutor"
     }
   ],
   "learningGoals": {
@@ -1287,7 +1540,7 @@
     ],
     "byzyqu@mailinator.com": []
   },
-  "lastId": 107,
+  "lastId": 143,
   "learningProgress": {
     "user-9": {
       "totalGoals": 2,
@@ -1378,6 +1631,39 @@
       "currentStreak": 0,
       "totalHours": 0,
       "recentGoals": [],
+      "upcomingSessions": []
+    },
+    "user-110": {
+      "totalGoals": 2,
+      "completedGoals": 2,
+      "totalSessions": 0,
+      "completedSessions": 0,
+      "currentStreak": 0,
+      "totalHours": 0,
+      "recentGoals": [
+        {
+          "id": "goal-1757687540222",
+          "title": "Programming",
+          "description": "Learn Programming",
+          "category": "COmputer",
+          "priority": "MEDIUM",
+          "targetDate": "1971-04-22",
+          "progress": 100,
+          "status": "COMPLETED",
+          "createdAt": "2025-09-12T14:32:20.222Z"
+        },
+        {
+          "id": "goal-1757918559257",
+          "title": "Learn Basic Coding",
+          "description": "I will learn html, css and js in initial stage to master.",
+          "category": "Computer, programming, frontend",
+          "priority": "MEDIUM",
+          "targetDate": "2025-09-16",
+          "progress": 100,
+          "status": "COMPLETED",
+          "createdAt": "2025-09-15T06:42:39.257Z"
+        }
+      ],
       "upcomingSessions": []
     }
   },
@@ -1523,6 +1809,28 @@
       "studentName": "Nicholas Byers",
       "id": "review-81",
       "createdAt": "2025-09-12T11:37:44.285Z",
+      "status": "PENDING"
+    },
+    {
+      "tutorId": "tutor-57",
+      "studentId": "user-110",
+      "bookingId": "booking-118",
+      "rating": 4,
+      "comment": "Excellent",
+      "studentName": "Cecilia Rosales",
+      "id": "review-121",
+      "createdAt": "2025-09-12T14:31:01.971Z",
+      "status": "PENDING"
+    },
+    {
+      "tutorId": "tutor-57",
+      "studentId": "user-110",
+      "bookingId": "booking-122",
+      "rating": 4,
+      "comment": "Wow",
+      "studentName": "Cecilia Rosales",
+      "id": "review-128",
+      "createdAt": "2025-09-15T06:46:03.991Z",
       "status": "PENDING"
     }
   ],
@@ -2091,6 +2399,286 @@
       },
       "read": false,
       "createdAt": "2025-09-12T11:58:00.000Z"
+    },
+    {
+      "id": "notification-113",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a math session with you.",
+      "data": {
+        "bookingId": "booking-112",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "math",
+        "startAt": "2025-09-12T10:00:00.000Z",
+        "endAt": "2025-09-12T11:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T14:27:31.579Z"
+    },
+    {
+      "id": "notification-114",
+      "userId": "user-110",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your math session.",
+      "data": {
+        "bookingId": "booking-112",
+        "tutorId": "tutor-57",
+        "subject": "math",
+        "startAt": "2025-09-12T10:00:00.000Z",
+        "endAt": "2025-09-12T11:00:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T14:27:57.809Z",
+      "readAt": "2025-09-15T06:47:23.679Z"
+    },
+    {
+      "id": "notification-116",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a Recusandae Ea dolor session with you.",
+      "data": {
+        "bookingId": "booking-115",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "Recusandae Ea dolor",
+        "startAt": "2025-09-12T04:48:00.000Z",
+        "endAt": "2025-09-12T05:48:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T14:29:02.916Z"
+    },
+    {
+      "id": "notification-117",
+      "userId": "user-110",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your Recusandae Ea dolor session.",
+      "data": {
+        "bookingId": "booking-115",
+        "tutorId": "tutor-57",
+        "subject": "Recusandae Ea dolor",
+        "startAt": "2025-09-12T04:48:00.000Z",
+        "endAt": "2025-09-12T05:48:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T14:29:10.871Z",
+      "readAt": "2025-09-15T06:47:23.679Z"
+    },
+    {
+      "id": "notification-119",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a Est optio providen session with you.",
+      "data": {
+        "bookingId": "booking-118",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "Est optio providen",
+        "startAt": "2025-09-12T17:09:00.000Z",
+        "endAt": "2025-09-12T18:09:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-12T14:29:56.539Z"
+    },
+    {
+      "id": "notification-120",
+      "userId": "user-110",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your Est optio providen session.",
+      "data": {
+        "bookingId": "booking-118",
+        "tutorId": "tutor-57",
+        "subject": "Est optio providen",
+        "startAt": "2025-09-12T17:09:00.000Z",
+        "endAt": "2025-09-12T18:09:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-12T14:30:04.691Z",
+      "readAt": "2025-09-15T06:47:23.679Z"
+    },
+    {
+      "id": "notification-123",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a Consequat Consequat session with you.",
+      "data": {
+        "bookingId": "booking-122",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "Consequat Consequat",
+        "startAt": "2025-09-15T10:27:00.000Z",
+        "endAt": "2025-09-15T11:27:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T06:43:49.763Z"
+    },
+    {
+      "id": "notification-124",
+      "userId": "user-110",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your Consequat Consequat session.",
+      "data": {
+        "bookingId": "booking-122",
+        "tutorId": "tutor-57",
+        "subject": "Consequat Consequat",
+        "startAt": "2025-09-15T10:27:00.000Z",
+        "endAt": "2025-09-15T11:27:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-15T06:44:01.740Z",
+      "readAt": "2025-09-15T06:47:23.679Z"
+    },
+    {
+      "id": "notification-126",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a math session with you.",
+      "data": {
+        "bookingId": "booking-125",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "math",
+        "startAt": "2025-09-15T04:00:00.000Z",
+        "endAt": "2025-09-15T04:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T06:45:15.451Z"
+    },
+    {
+      "id": "notification-127",
+      "userId": "user-110",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your math session.",
+      "data": {
+        "bookingId": "booking-125",
+        "tutorId": "tutor-57",
+        "subject": "math",
+        "startAt": "2025-09-15T04:00:00.000Z",
+        "endAt": "2025-09-15T04:30:00.000Z"
+      },
+      "read": true,
+      "createdAt": "2025-09-15T06:45:19.479Z",
+      "readAt": "2025-09-15T06:47:23.679Z"
+    },
+    {
+      "id": "notification-130",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a physics session with you.",
+      "data": {
+        "bookingId": "booking-125",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "physics",
+        "startAt": "2025-09-15T04:00:00.000Z",
+        "endAt": "2025-09-15T05:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T11:51:13.471Z"
+    },
+    {
+      "id": "notification-132",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a economics session with you.",
+      "data": {
+        "bookingId": "booking-125",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "economics",
+        "startAt": "2025-09-15T04:00:00.000Z",
+        "endAt": "2025-09-15T06:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T11:54:19.336Z"
+    },
+    {
+      "id": "notification-133",
+      "userId": "admin",
+      "type": "NEW_MESSAGE",
+      "title": "New Payment Dispute",
+      "message": "Student Cecilia Rosales has created a dispute for payment payment_1757937282362_fzfmwxpg0",
+      "data": {
+        "disputeId": "dispute_1757937534805_forflcb4s",
+        "paymentId": "payment_1757937282362_fzfmwxpg0"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T11:58:54.840Z"
+    },
+    {
+      "id": "notification-134",
+      "userId": "admin",
+      "type": "NEW_MESSAGE",
+      "title": "New Payment Dispute",
+      "message": "Student Cecilia Rosales has created a dispute for payment payment_1757937282362_fzfmwxpg0",
+      "data": {
+        "disputeId": "dispute_1757937590910_4cidnvyoi",
+        "paymentId": "payment_1757937282362_fzfmwxpg0"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T11:59:50.921Z"
+    },
+    {
+      "id": "notification-136",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a Doloribus id exercit session with you.",
+      "data": {
+        "bookingId": "booking-135",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "Doloribus id exercit",
+        "startAt": "2025-09-14T20:14:00.000Z",
+        "endAt": "2025-09-14T21:14:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T12:00:55.812Z"
+    },
+    {
+      "id": "notification-138",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cecilia Rosales has requested a Necessitatibus harum session with you.",
+      "data": {
+        "bookingId": "booking-137",
+        "studentId": "user-110",
+        "studentName": "Cecilia Rosales",
+        "subject": "Necessitatibus harum",
+        "startAt": "2025-09-14T23:55:00.000Z",
+        "endAt": "2025-09-15T00:55:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T12:03:01.713Z"
+    },
+    {
+      "id": "notification-139",
+      "userId": "user-110",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your Necessitatibus harum session.",
+      "data": {
+        "bookingId": "booking-137",
+        "tutorId": "tutor-57",
+        "subject": "Necessitatibus harum",
+        "startAt": "2025-09-14T23:55:00.000Z",
+        "endAt": "2025-09-15T00:55:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-15T12:03:14.840Z"
     }
   ],
   "messages": [
@@ -2181,6 +2769,74 @@
       "recipientId": "user-56",
       "message": "woow",
       "timestamp": "2025-09-11T20:25:30.563Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "payment_1757937282362_fzfmwxpg0",
+      "bookingId": "booking-125",
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "amount": 10,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_1757937282362_kj397fesg",
+      "status": "REFUNDED",
+      "createdAt": "2025-09-15T11:54:42.362Z",
+      "updatedAt": "2025-09-15T12:00:04.364Z",
+      "metadata": {
+        "platformFee": 1,
+        "tutorAmount": 9
+      },
+      "stripeChargeId": "ch_1757937284383_436p819g5",
+      "refundId": "re_1757937604364_x3iyvh326",
+      "refundAmount": 10,
+      "refundReason": "I need refund"
+    }
+  ],
+  "payouts": [
+    {
+      "id": "payout_1757937284383_wkj717sbv",
+      "paymentId": "payment_1757937282362_fzfmwxpg0",
+      "tutorId": "tutor-57",
+      "amount": 9,
+      "currency": "USD",
+      "status": "PAID",
+      "holdUntil": "2025-09-22T11:54:44.383Z",
+      "createdAt": "2025-09-15T11:54:44.385Z",
+      "updatedAt": "2025-09-15T11:57:53.554Z",
+      "metadata": {
+        "platformFee": 1
+      },
+      "stripeTransferId": "tr_1757937473554_jkjb4cp2i",
+      "paidAt": "2025-09-15T11:57:53.554Z"
+    }
+  ],
+  "disputes": [
+    {
+      "id": "dispute_1757937534805_forflcb4s",
+      "paymentId": "payment_1757937282362_fzfmwxpg0",
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "reason": "Wrong tutor",
+      "description": "it as a wrong detailed",
+      "status": "OPEN",
+      "createdAt": "2025-09-15T11:58:54.805Z",
+      "updatedAt": "2025-09-15T11:58:54.805Z",
+      "adminNotes": null,
+      "resolution": null
+    },
+    {
+      "id": "dispute_1757937590910_4cidnvyoi",
+      "paymentId": "payment_1757937282362_fzfmwxpg0",
+      "studentId": "user-110",
+      "tutorId": "tutor-57",
+      "reason": "hello",
+      "description": "again",
+      "status": "OPEN",
+      "createdAt": "2025-09-15T11:59:50.910Z",
+      "updatedAt": "2025-09-15T11:59:50.910Z",
+      "adminNotes": null,
+      "resolution": null
     }
   ]
 }

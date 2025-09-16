@@ -15,6 +15,9 @@ interface DataStore {
   reviews: any[];
   notifications: any[];
   messages: any[];
+  payments: any[];
+  payouts: any[];
+  disputes: any[];
   lastId: number;
 }
 
@@ -40,6 +43,9 @@ class DataManager {
         if (!data.reviews) data.reviews = [];
         if (!data.notifications) data.notifications = [];
         if (!data.messages) data.messages = [];
+        if (!data.payments) data.payments = [];
+        if (!data.payouts) data.payouts = [];
+        if (!data.disputes) data.disputes = [];
         if (!data.lastId) data.lastId = 0;
         
         return data;
@@ -58,6 +64,9 @@ class DataManager {
       reviews: [],
       notifications: [],
       messages: [],
+      payments: [],
+      payouts: [],
+      disputes: [],
       lastId: 0
     };
   }
@@ -195,6 +204,19 @@ class DataManager {
 
   getStudentByUserId(userId: string): any {
     return this.data.students.find(s => s.userId === userId);
+  }
+
+  getStudentProfileByUserId(userId: string): any {
+    const student = this.data.students.find(s => s.userId === userId);
+    if (!student) return null;
+    
+    // Get student's bookings for analysis
+    const bookings = this.getBookingsByStudentId(userId);
+    
+    return {
+      ...student,
+      bookings: bookings
+    };
   }
 
   updateStudent(id: string, updates: any): void {
@@ -902,6 +924,98 @@ class DataManager {
 
   getAllMessages(): any[] {
     return this.data.messages;
+  }
+
+  // ==================== PAYMENT MANAGEMENT ====================
+  
+  // Payment methods
+  addPayment(payment: any): void {
+    this.data.payments.push(payment);
+    this.saveData();
+  }
+
+  getPaymentById(paymentId: string): any {
+    return this.data.payments.find(payment => payment.id === paymentId);
+  }
+
+  getPaymentByStripeId(stripePaymentIntentId: string): any {
+    return this.data.payments.find(payment => payment.stripePaymentIntentId === stripePaymentIntentId);
+  }
+
+  updatePayment(payment: any): void {
+    const index = this.data.payments.findIndex(p => p.id === payment.id);
+    if (index !== -1) {
+      this.data.payments[index] = payment;
+      this.saveData();
+    }
+  }
+
+  getAllPayments(): any[] {
+    return this.data.payments;
+  }
+
+  getPaymentsByStudent(studentId: string): any[] {
+    return this.data.payments.filter(payment => payment.studentId === studentId);
+  }
+
+  getPaymentsByTutor(tutorId: string): any[] {
+    return this.data.payments.filter(payment => payment.tutorId === tutorId);
+  }
+
+  // Payout methods
+  addPayout(payout: any): void {
+    this.data.payouts.push(payout);
+    this.saveData();
+  }
+
+  getPayoutById(payoutId: string): any {
+    return this.data.payouts.find(payout => payout.id === payoutId);
+  }
+
+  updatePayout(payout: any): void {
+    const index = this.data.payouts.findIndex(p => p.id === payout.id);
+    if (index !== -1) {
+      this.data.payouts[index] = payout;
+      this.saveData();
+    }
+  }
+
+  getAllPayouts(): any[] {
+    return this.data.payouts;
+  }
+
+  getPayoutsByTutor(tutorId: string): any[] {
+    return this.data.payouts.filter(payout => payout.tutorId === tutorId);
+  }
+
+  // Dispute methods
+  addDispute(dispute: any): void {
+    this.data.disputes.push(dispute);
+    this.saveData();
+  }
+
+  getDisputeById(disputeId: string): any {
+    return this.data.disputes.find(dispute => dispute.id === disputeId);
+  }
+
+  updateDispute(dispute: any): void {
+    const index = this.data.disputes.findIndex(d => d.id === dispute.id);
+    if (index !== -1) {
+      this.data.disputes[index] = dispute;
+      this.saveData();
+    }
+  }
+
+  getAllDisputes(): any[] {
+    return this.data.disputes;
+  }
+
+  getDisputesByStudent(studentId: string): any[] {
+    return this.data.disputes.filter(dispute => dispute.studentId === studentId);
+  }
+
+  getDisputesByTutor(tutorId: string): any[] {
+    return this.data.disputes.filter(dispute => dispute.tutorId === tutorId);
   }
 }
 

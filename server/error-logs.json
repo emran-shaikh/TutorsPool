@@ -2651,5 +2651,251 @@
       "serverTime": "2025-09-12T11:52:29.851Z",
       "processId": 15528
     }
+  },
+  {
+    "id": "info_1757687115692_okthxmtk8",
+    "timestamp": "2025-09-12T14:25:15.692Z",
+    "type": "info",
+    "message": "User user-110 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-110",
+      "serverTime": "2025-09-12T14:25:15.692Z",
+      "processId": 51460
+    }
+  },
+  {
+    "id": "info_1757687277812_f1q8ro25m",
+    "timestamp": "2025-09-12T14:27:57.813Z",
+    "type": "info",
+    "message": "Booking booking-112 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-112",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-12T14:27:57.813Z",
+      "processId": 51460
+    }
+  },
+  {
+    "id": "info_1757687350873_ax6nfoxj3",
+    "timestamp": "2025-09-12T14:29:10.873Z",
+    "type": "info",
+    "message": "Booking booking-115 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-115",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-12T14:29:10.873Z",
+      "processId": 51460
+    }
+  },
+  {
+    "id": "info_1757687404693_od1tbgt4h",
+    "timestamp": "2025-09-12T14:30:04.693Z",
+    "type": "info",
+    "message": "Booking booking-118 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-118",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-12T14:30:04.693Z",
+      "processId": 51460
+    }
+  },
+  {
+    "id": "info_1757687442078_29stcw2v9",
+    "timestamp": "2025-09-12T14:30:42.079Z",
+    "type": "info",
+    "message": "Booking booking-118 status updated to COMPLETED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-118",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-12T14:30:42.079Z",
+      "processId": 51460
+    }
+  },
+  {
+    "id": "info_1757687600484_u3p0jubou",
+    "timestamp": "2025-09-12T14:33:20.484Z",
+    "type": "info",
+    "message": "User user-56 suspended by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/suspend",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-56",
+      "serverTime": "2025-09-12T14:33:20.484Z",
+      "processId": 51460
+    }
+  },
+  {
+    "id": "info_1757687617801_au7g32dmc",
+    "timestamp": "2025-09-12T14:33:37.801Z",
+    "type": "info",
+    "message": "User user-56 activated by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/activate",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-56",
+      "serverTime": "2025-09-12T14:33:37.801Z",
+      "processId": 51460
+    }
+  },
+  {
+    "id": "info_1757918641741_lj246px7x",
+    "timestamp": "2025-09-15T06:44:01.741Z",
+    "type": "info",
+    "message": "Booking booking-122 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-122",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-15T06:44:01.741Z",
+      "processId": 13028
+    }
+  },
+  {
+    "id": "info_1757918678833_sx6vqlo6n",
+    "timestamp": "2025-09-15T06:44:38.833Z",
+    "type": "info",
+    "message": "Booking booking-122 status updated to COMPLETED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-122",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-15T06:44:38.833Z",
+      "processId": 13028
+    }
+  },
+  {
+    "id": "info_1757918719481_nneu4pbu0",
+    "timestamp": "2025-09-15T06:45:19.481Z",
+    "type": "info",
+    "message": "Booking booking-125 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-125",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-15T06:45:19.481Z",
+      "processId": 13028
+    }
+  },
+  {
+    "id": "info_1757927817787_zl8bqbsw8",
+    "timestamp": "2025-09-15T09:16:57.787Z",
+    "type": "info",
+    "message": "User user-100 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-100",
+      "serverTime": "2025-09-15T09:16:57.787Z",
+      "processId": 13028
+    }
+  },
+  {
+    "id": "info_1757937699428_q85er4nom",
+    "timestamp": "2025-09-15T12:01:39.428Z",
+    "type": "info",
+    "message": "Booking booking-125 status updated to REFUNDED by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-74",
+      "bookingId": "booking-125",
+      "newStatus": "REFUNDED",
+      "reason": "Refund processed",
+      "serverTime": "2025-09-15T12:01:39.428Z",
+      "processId": 22004
+    }
+  },
+  {
+    "id": "info_1757937703066_q873cdeyt",
+    "timestamp": "2025-09-15T12:01:43.066Z",
+    "type": "info",
+    "message": "Booking booking-125 status updated to REFUNDED by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-74",
+      "bookingId": "booking-125",
+      "newStatus": "REFUNDED",
+      "reason": "Refund closed",
+      "serverTime": "2025-09-15T12:01:43.066Z",
+      "processId": 22004
+    }
+  },
+  {
+    "id": "info_1757937719125_tcvxn7alc",
+    "timestamp": "2025-09-15T12:01:59.125Z",
+    "type": "info",
+    "message": "Booking booking-125 status updated to COMPLETED by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-74",
+      "bookingId": "booking-125",
+      "newStatus": "COMPLETED",
+      "reason": "Reopened after refund",
+      "serverTime": "2025-09-15T12:01:59.125Z",
+      "processId": 22004
+    }
+  },
+  {
+    "id": "info_1757937794844_ysuir2ghq",
+    "timestamp": "2025-09-15T12:03:14.844Z",
+    "type": "info",
+    "message": "Booking booking-137 status updated to CONFIRMED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-137",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-15T12:03:14.844Z",
+      "processId": 19720
+    }
+  },
+  {
+    "id": "info_1757938313526_3g2fpw99t",
+    "timestamp": "2025-09-15T12:11:53.527Z",
+    "type": "info",
+    "message": "User user-142 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-142",
+      "serverTime": "2025-09-15T12:11:53.527Z",
+      "processId": 19720
+    }
   }
 ]

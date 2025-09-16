@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { PaymentProcessor } from '@/components/payments/PaymentProcessor';
 import { 
   Calendar, 
   Clock, 
@@ -36,6 +37,8 @@ const Booking: React.FC = () => {
   const [duration, setDuration] = useState<number>(60); // minutes
   const [notes, setNotes] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [createdBooking, setCreatedBooking] = useState<any>(null);
   const { toast } = useToast();
 
   // Update selectedTutor when URL parameter changes
@@ -55,6 +58,8 @@ const Booking: React.FC = () => {
     queryKey: ['subjects-for-booking'],
     queryFn: () => apiClient.getSubjects(),
   });
+
+  const tutors = tutorsData?.tutors || [];
 
   const selectedTutorData = tutorsData?.items?.find(t => t.id === selectedTutor);
   const selectedSubjectData = subjectsData?.items?.find(s => s.id === selectedSubject);
@@ -97,7 +102,7 @@ const Booking: React.FC = () => {
       const startDateTime = new Date(`${selectedDate}T${selectedTime}`);
       const endDateTime = new Date(startDateTime.getTime() + duration * 60000);
 
-      await apiClient.createBooking({
+      const bookingResponse = await apiClient.createBooking({
         tutorId: selectedTutor,
         subjectId: selectedSubject,
         startAtUTC: startDateTime.toISOString(),
@@ -106,23 +111,18 @@ const Booking: React.FC = () => {
         currency: 'USD',
       });
 
-      toast({
-        title: 'Booking requested successfully!',
-        description: 'Your session has been requested. The tutor will confirm shortly.',
-      });
+      if (bookingResponse.success) {
+        setCreatedBooking(bookingResponse.booking);
+        setShowPayment(true);
+        
+        toast({
+          title: 'Booking created successfully!',
+          description: 'Please complete payment to confirm your session.',
+        });
+      } else {
+        throw new Error('Failed to create booking');
+      }
 
-      // Invalidate related queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ['tutor-bookings'] });
-      queryClient.invalidateQueries({ queryKey: ['admin-bookings'] });
-      queryClient.invalidateQueries({ queryKey: ['tutor-stats'] });
-      queryClient.invalidateQueries({ queryKey: ['admin-stats'] });
-
-      // Reset form
-      setSelectedTutor('');
-      setSelectedSubject('');
-      setSelectedDate('');
-      setSelectedTime('');
-      setNotes('');
     } catch (error: any) {
       console.error('Booking error:', error);
       toast({
@@ -133,6 +133,41 @@ const Booking: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handlePaymentSuccess = (payment: any) => {
+    toast({
+      title: 'Payment successful!',
+      description: 'Your session has been confirmed and payment processed.',
+    });
+
+    // Invalidate related queries to refresh data
+    queryClient.invalidateQueries({ queryKey: ['tutor-bookings'] });
+    queryClient.invalidateQueries({ queryKey: ['admin-bookings'] });
+    queryClient.invalidateQueries({ queryKey: ['tutor-stats'] });
+    queryClient.invalidateQueries({ queryKey: ['admin-stats'] });
+
+    // Reset form and navigate
+    setSelectedTutor('');
+    setSelectedSubject('');
+    setSelectedDate('');
+    setSelectedTime('');
+    setDuration(60);
+    setNotes('');
+    setShowPayment(false);
+    setCreatedBooking(null);
+    
+    navigate('/student/dashboard');
+  };
+
+  const handlePaymentError = (error: string) => {
+    toast({
+      title: 'Payment failed',
+      description: error,
+      variant: 'destructive',
+    });
+    setShowPayment(false);
+    setCreatedBooking(null);
   };
 
   if (!user) {
@@ -389,6 +424,27 @@ const Booking: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Payment Processor Modal */}
+      {showPayment && createdBooking && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <PaymentProcessor
+              booking={{
+                id: createdBooking.id,
+                subject: selectedSubject,
+                sessionDate: selectedDate,
+                duration: duration,
+                tutorName: tutors?.find(t => t.id === selectedTutor)?.user?.name || 'Tutor',
+                amount: totalPrice / 100,
+                currency: 'USD'
+              }}
+              onPaymentSuccess={handlePaymentSuccess}
+              onPaymentError={handlePaymentError}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
