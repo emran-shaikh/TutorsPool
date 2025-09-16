@@ -641,7 +641,7 @@ class DataManager {
   // Notification methods
   addNotification(notification: {
     userId: string;
-    type: 'BOOKING_REQUEST' | 'BOOKING_CONFIRMED' | 'BOOKING_REJECTED' | 'BOOKING_CANCELLED' | 'SESSION_REMINDER' | 'REVIEW_RECEIVED' | 'NEW_MESSAGE';
+    type: 'BOOKING_REQUEST' | 'BOOKING_CONFIRMED' | 'BOOKING_REJECTED' | 'BOOKING_CANCELLED' | 'SESSION_REMINDER' | 'REVIEW_RECEIVED' | 'NEW_MESSAGE' | 'DISPUTE_CREATED';
     title: string;
     message: string;
     data?: any;

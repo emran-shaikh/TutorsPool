@@ -1,11 +1,11 @@
 import Stripe from 'stripe';
 import { stripe, stripeConfig, PaymentStatus, PayoutStatus, DisputeStatus } from '../config/stripe';
-import { DataManager } from '../dataManager';
+import { dataManager } from '../dataManager';
 
 export class PaymentService {
-  private dataManager: DataManager;
+  private dataManager: any;
 
-  constructor(dataManager: DataManager) {
+  constructor(dataManager: any) {
     this.dataManager = dataManager;
   }
 
@@ -219,7 +219,7 @@ export class PaymentService {
       const refund = await stripe.refunds.create({
         payment_intent: payment.stripePaymentIntentId,
         amount: Math.round(refundAmount * 100),
-        reason: reason || 'requested_by_customer',
+        reason: (reason || 'requested_by_customer') as Stripe.RefundCreateParams.Reason,
         metadata: {
           paymentId: payment.id,
           bookingId: payment.bookingId,

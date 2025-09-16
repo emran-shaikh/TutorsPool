@@ -2897,5 +2897,135 @@
       "serverTime": "2025-09-15T12:11:53.527Z",
       "processId": 19720
     }
+  },
+  {
+    "id": "info_1758007006386_gpbizgoc5",
+    "timestamp": "2025-09-16T07:16:46.386Z",
+    "type": "info",
+    "message": "User user-140 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-140",
+      "serverTime": "2025-09-16T07:16:46.386Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007008299_32onni29y",
+    "timestamp": "2025-09-16T07:16:48.299Z",
+    "type": "info",
+    "message": "User user-108 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-108",
+      "serverTime": "2025-09-16T07:16:48.300Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007009220_82904y1in",
+    "timestamp": "2025-09-16T07:16:49.220Z",
+    "type": "info",
+    "message": "User user-106 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-106",
+      "serverTime": "2025-09-16T07:16:49.220Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007040987_820ur3s4e",
+    "timestamp": "2025-09-16T07:17:20.987Z",
+    "type": "info",
+    "message": "User user-104 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-104",
+      "serverTime": "2025-09-16T07:17:20.987Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007041687_1qgvish53",
+    "timestamp": "2025-09-16T07:17:21.687Z",
+    "type": "info",
+    "message": "User user-102 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-102",
+      "serverTime": "2025-09-16T07:17:21.687Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007050894_d79yt2scb",
+    "timestamp": "2025-09-16T07:17:30.895Z",
+    "type": "info",
+    "message": "User user-94 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-94",
+      "serverTime": "2025-09-16T07:17:30.895Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007197495_lghh4cumq",
+    "timestamp": "2025-09-16T07:19:57.495Z",
+    "type": "info",
+    "message": "User user-148 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-148",
+      "serverTime": "2025-09-16T07:19:57.495Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007303566_ev9a4wz9t",
+    "timestamp": "2025-09-16T07:21:43.566Z",
+    "type": "info",
+    "message": "Booking booking-150 status updated to CONFIRMED by tutor user-148",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-148",
+      "bookingId": "booking-150",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-16T07:21:43.566Z",
+      "processId": 42320
+    }
+  },
+  {
+    "id": "info_1758007343825_8whes9h2v",
+    "timestamp": "2025-09-16T07:22:23.825Z",
+    "type": "info",
+    "message": "Booking booking-150 status updated to COMPLETED by tutor user-148",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-148",
+      "bookingId": "booking-150",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-16T07:22:23.825Z",
+      "processId": 10556
+    }
   }
 ]

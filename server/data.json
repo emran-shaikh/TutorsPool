@@ -65,9 +65,9 @@
       "role": "STUDENT",
       "id": "user-94",
       "createdAt": "2025-09-12T12:21:52.424Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-16T07:17:30.893Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     },
     {
@@ -375,9 +375,9 @@
       "role": "STUDENT",
       "id": "user-102",
       "createdAt": "2025-09-12T12:50:00.931Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-16T07:17:21.631Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     },
     {
@@ -389,9 +389,9 @@
       "role": "STUDENT",
       "id": "user-104",
       "createdAt": "2025-09-12T13:42:04.889Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-16T07:17:20.983Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     },
     {
@@ -403,9 +403,9 @@
       "role": "TUTOR",
       "id": "user-106",
       "createdAt": "2025-09-12T13:43:07.395Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-16T07:16:49.216Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     },
     {
@@ -417,9 +417,9 @@
       "role": "STUDENT",
       "id": "user-108",
       "createdAt": "2025-09-12T14:20:00.304Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-16T07:16:48.293Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     },
     {
@@ -445,9 +445,9 @@
       "role": "STUDENT",
       "id": "user-140",
       "createdAt": "2025-09-15T12:08:50.759Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-16T07:16:46.379Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     },
     {
@@ -462,6 +462,20 @@
       "status": "ACTIVE",
       "approvedAt": "2025-09-15T12:11:53.517Z",
       "approvedBy": "user-74",
+      "avatarUrl": null
+    },
+    {
+      "name": "Indira Wong",
+      "email": "vydobyle@mailinator.com",
+      "phone": "+1 (949) 811-3768",
+      "country": "Australia",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-148",
+      "createdAt": "2025-09-16T07:19:39.620Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-16T07:19:57.492Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     }
   ],
@@ -728,7 +742,8 @@
       "ratingAvg": 0,
       "ratingCount": 0,
       "id": "tutor-107",
-      "createdAt": "2025-09-12T13:43:07.422Z"
+      "createdAt": "2025-09-12T13:43:07.422Z",
+      "status": "ACTIVE"
     },
     {
       "userId": "user-142",
@@ -765,6 +780,44 @@
       "ratingCount": 0,
       "id": "tutor-143",
       "createdAt": "2025-09-15T12:11:46.461Z",
+      "status": "ACTIVE"
+    },
+    {
+      "userId": "user-148",
+      "headline": "Perspiciatis maiore",
+      "bio": "Est aut dolore nemo Est aut dolore nemo Est aut dolore nemo Est aut dolore nemo ",
+      "hourlyRateCents": 3000,
+      "currency": "EUR",
+      "yearsExperience": 2007,
+      "subjects": [
+        "Chemistry",
+        "Literature",
+        "Programming"
+      ],
+      "levels": [
+        "Graduate School",
+        "Middle School (6-8)"
+      ],
+      "slug": "indira-wong",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        },
+        {
+          "dayOfWeek": 1,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-149",
+      "createdAt": "2025-09-16T07:19:39.640Z",
       "status": "ACTIVE"
     }
   ],
@@ -1395,6 +1448,44 @@
       "createdAt": "2025-09-15T12:03:01.709Z",
       "updatedAt": "2025-09-15T12:03:14.836Z",
       "statusReason": "Confirmed by tutor"
+    },
+    {
+      "studentId": "user-102",
+      "tutorId": "tutor-143",
+      "subjectId": "math",
+      "startAtUTC": "2025-09-16T08:00:00.000Z",
+      "endAtUTC": "2025-09-16T10:00:00.000Z",
+      "status": "PENDING",
+      "priceCents": 19000,
+      "currency": "USD",
+      "id": "booking-144",
+      "createdAt": "2025-09-16T07:18:24.490Z"
+    },
+    {
+      "studentId": "user-102",
+      "tutorId": "tutor-1",
+      "subjectId": "biology",
+      "startAtUTC": "2025-09-16T11:00:00.000Z",
+      "endAtUTC": "2025-09-16T13:00:00.000Z",
+      "status": "PENDING",
+      "priceCents": 5000,
+      "currency": "USD",
+      "id": "booking-146",
+      "createdAt": "2025-09-16T07:18:40.490Z"
+    },
+    {
+      "studentId": "user-102",
+      "tutorId": "tutor-149",
+      "subjectId": "Quia consequatur om",
+      "startAtUTC": "2025-09-16T06:45:00.000Z",
+      "endAtUTC": "2025-09-16T07:45:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 3000,
+      "currency": "EUR",
+      "id": "booking-150",
+      "createdAt": "2025-09-16T07:21:08.850Z",
+      "updatedAt": "2025-09-16T07:22:23.822Z",
+      "statusReason": "Session completed"
     }
   ],
   "learningGoals": {
@@ -1540,7 +1631,7 @@
     ],
     "byzyqu@mailinator.com": []
   },
-  "lastId": 143,
+  "lastId": 152,
   "learningProgress": {
     "user-9": {
       "totalGoals": 2,
@@ -1664,6 +1755,16 @@
           "createdAt": "2025-09-15T06:42:39.257Z"
         }
       ],
+      "upcomingSessions": []
+    },
+    "user-102": {
+      "totalGoals": 0,
+      "completedGoals": 0,
+      "totalSessions": 0,
+      "completedSessions": 0,
+      "currentStreak": 0,
+      "totalHours": 0,
+      "recentGoals": [],
       "upcomingSessions": []
     }
   },
@@ -2679,6 +2780,73 @@
       },
       "read": false,
       "createdAt": "2025-09-15T12:03:14.840Z"
+    },
+    {
+      "id": "notification-145",
+      "userId": "user-142",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Brynn Webster has requested a math session with you.",
+      "data": {
+        "bookingId": "booking-144",
+        "studentId": "user-102",
+        "studentName": "Brynn Webster",
+        "subject": "math",
+        "startAt": "2025-09-16T08:00:00.000Z",
+        "endAt": "2025-09-16T10:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-16T07:18:24.498Z"
+    },
+    {
+      "id": "notification-147",
+      "userId": "user-1",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Brynn Webster has requested a biology session with you.",
+      "data": {
+        "bookingId": "booking-146",
+        "studentId": "user-102",
+        "studentName": "Brynn Webster",
+        "subject": "biology",
+        "startAt": "2025-09-16T11:00:00.000Z",
+        "endAt": "2025-09-16T13:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-16T07:18:40.492Z"
+    },
+    {
+      "id": "notification-151",
+      "userId": "user-148",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Brynn Webster has requested a Quia consequatur om session with you.",
+      "data": {
+        "bookingId": "booking-150",
+        "studentId": "user-102",
+        "studentName": "Brynn Webster",
+        "subject": "Quia consequatur om",
+        "startAt": "2025-09-16T06:45:00.000Z",
+        "endAt": "2025-09-16T07:45:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-16T07:21:08.865Z"
+    },
+    {
+      "id": "notification-152",
+      "userId": "user-102",
+      "type": "BOOKING_CONFIRMED",
+      "title": "Session Confirmed!",
+      "message": "Your tutor has confirmed your Quia consequatur om session.",
+      "data": {
+        "bookingId": "booking-150",
+        "tutorId": "tutor-149",
+        "subject": "Quia consequatur om",
+        "startAt": "2025-09-16T06:45:00.000Z",
+        "endAt": "2025-09-16T07:45:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-16T07:21:43.564Z"
     }
   ],
   "messages": [

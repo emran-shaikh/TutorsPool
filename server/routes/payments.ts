@@ -149,14 +149,12 @@ router.post('/create-dispute', authenticateToken, async (req, res) => {
 
     // Create notification for admin
     dataManager.addNotification({
-      id: `notif_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       userId: 'admin', // Notify all admins
       type: 'DISPUTE_CREATED',
       title: 'New Payment Dispute',
       message: `Student ${dataManager.getUserById(userId)?.name} has created a dispute for payment ${paymentId}`,
       data: { disputeId: dispute.id, paymentId: paymentId },
-      read: false,
-      createdAt: new Date().toISOString()
+      read: false
     });
 
     res.json({
@@ -401,14 +399,12 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
           
           // Notify admin
           dataManager.addNotification({
-            id: `notif_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             userId: 'admin',
             type: 'DISPUTE_CREATED',
             title: 'Stripe Dispute Created',
             message: `A dispute has been created for payment ${payment.id}`,
             data: { disputeId: disputeRecord.id, paymentId: payment.id },
-            read: false,
-            createdAt: new Date().toISOString()
+            read: false
           });
         }
       } catch (error) {
