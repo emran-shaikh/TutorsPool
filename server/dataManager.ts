@@ -264,6 +264,25 @@ class DataManager {
   }
 
   // Initialize with sample data if empty
+  clearAllData(): void {
+    this.data = {
+      users: [],
+      tutors: [],
+      students: [],
+      bookings: [],
+      learningProgress: {},
+      reviews: [],
+      notifications: [],
+      messages: [],
+      payments: [],
+      payouts: [],
+      disputes: [],
+      lastId: 0
+    };
+    this.saveData();
+    console.log('[DATA MANAGER] All data cleared');
+  }
+
   initializeSampleData(): void {
     console.log(`[DATA MANAGER] Current users count: ${this.data.users.length}`);
     console.log(`[DATA MANAGER] Current tutors count: ${this.data.tutors.length}`);
@@ -422,13 +441,94 @@ class DataManager {
           priceCents: 2500,
           currency: 'USD',
           createdAt: new Date().toISOString(),
+        },
+        // Add completed bookings for user-153 (the current student)
+        {
+          id: 'booking-student-1',
+          studentId: 'user-153',
+          tutorId: 'tutor-143',
+          subjectId: 'mathematics',
+          startAtUTC: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          endAtUTC: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000).toISOString(),
+          status: 'COMPLETED',
+          priceCents: 5000,
+          currency: 'USD',
+          createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+        {
+          id: 'booking-student-2',
+          studentId: 'user-153',
+          tutorId: 'tutor-143',
+          subjectId: 'physics',
+          startAtUTC: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          endAtUTC: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000 + 90 * 60 * 1000).toISOString(),
+          status: 'COMPLETED',
+          priceCents: 7500,
+          currency: 'USD',
+          createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        }
+      ];
+
+      // Add sample reviews
+      const sampleReviews = [
+        {
+          id: 'review-sample-1',
+          tutorId: 'tutor-1',
+          studentId: 'user-2',
+          bookingId: 'booking-1',
+          rating: 5,
+          comment: 'John is an amazing math tutor! He helped me understand calculus concepts that I was struggling with for months. His teaching style is clear and patient.',
+          subject: 'A Level Mathematics',
+          improvement: 'Grade improved from C to A*',
+          status: 'APPROVED',
+          isSuccessStory: true,
+          createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+        {
+          id: 'review-sample-2',
+          tutorId: 'tutor-2',
+          studentId: 'user-2',
+          bookingId: 'booking-2',
+          rating: 5,
+          comment: 'Sarah made physics so much easier to understand! Her real-world examples and interactive approach helped me ace my final exam.',
+          subject: 'IGCSE Physics',
+          improvement: 'Achieved 92% in final exam',
+          status: 'APPROVED',
+          isSuccessStory: true,
+          createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+        {
+          id: 'review-sample-3',
+          tutorId: 'tutor-1',
+          studentId: 'user-3',
+          bookingId: 'booking-3',
+          rating: 5,
+          comment: 'Absolutely brilliant! This tutor transformed my understanding of mathematics. I went from failing to getting top grades in my class.',
+          subject: 'O Level Mathematics',
+          improvement: 'From failing to top of class',
+          status: 'APPROVED',
+          isSuccessStory: true,
+          createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+        {
+          id: 'review-sample-4',
+          tutorId: 'tutor-2',
+          studentId: 'user-3',
+          rating: 5,
+          comment: 'The best chemistry tutor I\'ve ever had! She makes complex reactions seem simple and her lab examples are fantastic.',
+          subject: 'A Level Chemistry',
+          improvement: 'Mastered organic chemistry',
+          status: 'APPROVED',
+          isSuccessStory: true,
+          createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
         }
       ];
 
       this.data.users = sampleUsers;
       this.data.tutors = sampleTutors;
       this.data.bookings = sampleBookings;
-      this.data.lastId = 3;
+      this.data.reviews = sampleReviews;
+      this.data.lastId = 10;
       this.saveData();
       console.log('[DATA MANAGER] Sample data loaded successfully');
     } else {
@@ -626,6 +726,40 @@ class DataManager {
       return this.data.reviews.filter(r => r.status === status);
     }
     return this.data.reviews;
+  }
+
+  getFeaturedReviews() {
+    // Get approved reviews with high ratings (4+ stars)
+    const featuredReviews = this.data.reviews
+      .filter(r => r.status === 'APPROVED' && r.rating >= 4)
+      .sort((a, b) => {
+        // Sort by rating (descending) then by creation date (newest first)
+        if (b.rating !== a.rating) {
+          return b.rating - a.rating;
+        }
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      })
+      .slice(0, 6) // Get top 6 reviews
+      .map(review => {
+        // Enrich with student and tutor information
+        const student = this.getUserById(review.studentId);
+        const tutor = this.getTutorById(review.tutorId);
+        const tutorUser = tutor ? this.getUserById(tutor.userId) : null;
+        
+        // Get booking details for subject information
+        const booking = review.bookingId ? this.getBookingById(review.bookingId) : null;
+        
+        return {
+          ...review,
+          studentName: student?.name || 'Anonymous Student',
+          studentImage: student?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(student?.name || 'Student')}&background=random`,
+          tutorName: tutorUser?.name || 'Tutor',
+          subject: review.subject || booking?.subjectId || 'General Tutoring',
+          improvement: review.improvement || 'Significant improvement achieved'
+        };
+      });
+
+    return featuredReviews;
   }
 
   deleteReview(reviewId: string) {

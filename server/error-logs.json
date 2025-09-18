@@ -3027,5 +3027,261 @@
       "serverTime": "2025-09-16T07:22:23.825Z",
       "processId": 10556
     }
+  },
+  {
+    "id": "info_1758174898767_c0uzo2q1a",
+    "timestamp": "2025-09-18T05:54:58.767Z",
+    "type": "info",
+    "message": "User user-153 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-153",
+      "serverTime": "2025-09-18T05:54:58.768Z",
+      "processId": 52464
+    }
+  },
+  {
+    "id": "info_1758175868066_tw1rl6mjd",
+    "timestamp": "2025-09-18T06:11:08.066Z",
+    "type": "info",
+    "message": "Booking booking-157 status updated to COMPLETED by tutor user-142",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-142",
+      "bookingId": "booking-157",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-18T06:11:08.066Z",
+      "processId": 14368
+    }
+  },
+  {
+    "id": "info_1758176269976_bwch0db9o",
+    "timestamp": "2025-09-18T06:17:49.976Z",
+    "type": "info",
+    "message": "Booking booking-161 status updated to COMPLETED by tutor user-142",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-142",
+      "bookingId": "booking-161",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-18T06:17:49.976Z",
+      "processId": 46444
+    }
+  },
+  {
+    "id": "info_1758176325261_uulw2tgon",
+    "timestamp": "2025-09-18T06:18:45.261Z",
+    "type": "info",
+    "message": "Booking booking-155 status updated to CONFIRMED by tutor user-142",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-142",
+      "bookingId": "booking-155",
+      "newStatus": "CONFIRMED",
+      "reason": "Confirmed by tutor",
+      "serverTime": "2025-09-18T06:18:45.261Z",
+      "processId": 46444
+    }
+  },
+  {
+    "id": "info_1758176332402_gwhci5vfo",
+    "timestamp": "2025-09-18T06:18:52.402Z",
+    "type": "info",
+    "message": "Booking booking-144 status updated to CANCELLED by tutor user-142",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-142",
+      "bookingId": "booking-144",
+      "newStatus": "CANCELLED",
+      "reason": "Cancelled by tutor",
+      "serverTime": "2025-09-18T06:18:52.402Z",
+      "processId": 46444
+    }
+  },
+  {
+    "id": "info_1758176377525_gy5u0o0be",
+    "timestamp": "2025-09-18T06:19:37.525Z",
+    "type": "info",
+    "message": "Booking booking-155 status updated to COMPLETED by tutor user-142",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-142",
+      "bookingId": "booking-155",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-18T06:19:37.525Z",
+      "processId": 18800
+    }
+  },
+  {
+    "id": "info_1758176378338_6iqmdnrnk",
+    "timestamp": "2025-09-18T06:19:38.338Z",
+    "type": "info",
+    "message": "Booking booking-159 status updated to COMPLETED by tutor user-142",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-142",
+      "bookingId": "booking-159",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-18T06:19:38.338Z",
+      "processId": 18800
+    }
+  },
+  {
+    "id": "info_1758176391832_b272h2dh8",
+    "timestamp": "2025-09-18T06:19:51.832Z",
+    "type": "info",
+    "message": "Booking booking-163 cancelled by student user-153",
+    "context": {
+      "endpoint": "/api/students/bookings/:bookingId/status",
+      "method": "PUT",
+      "studentId": "user-153",
+      "bookingId": "booking-163",
+      "newStatus": "CANCELLED",
+      "reason": "Cancelled by student",
+      "serverTime": "2025-09-18T06:19:51.832Z",
+      "processId": 18800
+    }
+  },
+  {
+    "id": "info_1758176858750_3wy9e7j2j",
+    "timestamp": "2025-09-18T06:27:38.750Z",
+    "type": "info",
+    "message": "User user-98 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-98",
+      "serverTime": "2025-09-18T06:27:38.750Z",
+      "processId": 18800
+    }
+  },
+  {
+    "id": "info_1758176860910_glt8cnxek",
+    "timestamp": "2025-09-18T06:27:40.910Z",
+    "type": "info",
+    "message": "User user-97 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-97",
+      "serverTime": "2025-09-18T06:27:40.910Z",
+      "processId": 18800
+    }
+  },
+  {
+    "id": "info_1758176862860_rjklqu47l",
+    "timestamp": "2025-09-18T06:27:42.860Z",
+    "type": "info",
+    "message": "User user-96 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-96",
+      "serverTime": "2025-09-18T06:27:42.860Z",
+      "processId": 18800
+    }
+  },
+  {
+    "id": "info_1758179030182_8ic5o1ges",
+    "timestamp": "2025-09-18T07:03:50.182Z",
+    "type": "info",
+    "message": "Booking booking-174 status updated to COMPLETED by tutor user-142",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-142",
+      "bookingId": "booking-174",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-18T07:03:50.182Z",
+      "processId": 46596
+    }
+  },
+  {
+    "id": "info_1758180080355_tb52bsbkn",
+    "timestamp": "2025-09-18T07:21:20.355Z",
+    "type": "info",
+    "message": "User user-11 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-11",
+      "serverTime": "2025-09-18T07:21:20.355Z",
+      "processId": 51400
+    }
+  },
+  {
+    "id": "info_1758180250667_b1fy5k1f9",
+    "timestamp": "2025-09-18T07:24:10.667Z",
+    "type": "info",
+    "message": "User user-15 approved by admin user-74",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-74",
+      "targetUserId": "user-15",
+      "serverTime": "2025-09-18T07:24:10.667Z",
+      "processId": 51400
+    }
+  },
+  {
+    "id": "info_1758180302916_kz4f1jlzh",
+    "timestamp": "2025-09-18T07:25:02.916Z",
+    "type": "info",
+    "message": "Booking booking-17 status updated to COMPLETED by tutor user-15",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-15",
+      "bookingId": "booking-17",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-09-18T07:25:02.916Z",
+      "processId": 51400
+    }
+  },
+  {
+    "id": "api_1758180352319_2g7k8ss03",
+    "timestamp": "2025-09-18T07:25:52.319Z",
+    "type": "api_error",
+    "endpoint": "/api/tutors/bookings",
+    "method": "GET",
+    "statusCode": 404,
+    "error": "User not found",
+    "context": {
+      "userId": "user-142",
+      "serverTime": "2025-09-18T07:25:52.319Z",
+      "processId": 51400
+    }
+  },
+  {
+    "id": "api_1758180352324_3y0234fqw",
+    "timestamp": "2025-09-18T07:25:52.324Z",
+    "type": "api_error",
+    "endpoint": "/api/tutors/stats",
+    "method": "GET",
+    "statusCode": 404,
+    "error": "User not found",
+    "context": {
+      "userId": "user-142",
+      "serverTime": "2025-09-18T07:25:52.324Z",
+      "processId": 51400
+    }
   }
 ]

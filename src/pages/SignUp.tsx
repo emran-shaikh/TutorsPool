@@ -14,9 +14,16 @@ const SignUp: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Join Tutorspool
-          </h1>
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <img 
+              src="/logo.png" 
+              alt="TutorsPool Logo" 
+              className="h-12 w-auto"
+            />
+            {/* <h1 className="text-4xl font-bold text-gray-900">
+              Join Tutorspool
+            </h1> */}
+          </div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Choose your role and start your learning journey or teaching career today
           </p>

@@ -15,8 +15,15 @@ const Login: React.FC = () => {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white border rounded-xl shadow-sm p-6">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-4">Sign in</h1>
-        <p className="text-sm text-gray-600 mb-6">Use your email to access TutorsPool.</p>
+        <div className="flex items-center justify-center space-x-3 mb-6">
+          <img 
+            src="/logo.png" 
+            alt="TutorsPool Logo" 
+            className="h-8 w-auto"
+          />
+          {/* <h1 className="text-2xl font-semibold text-gray-900">Sign in</h1> */}
+        </div>
+        <p className="text-sm text-gray-600 mb-6 text-center">Use your email to access TutorsPool.</p>
         <form className="space-y-4" onSubmit={async (e) => {
           e.preventDefault();
           setSubmitting(true);

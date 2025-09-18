@@ -76,15 +76,17 @@ const TutorsPoolHeader: React.FC<TutorsPoolHeaderProps> = ({ className = '' }) =
           {/* Logo and Brand */}
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center">
-                <GraduationCap className="h-6 w-6 text-white" />
-              </div>
-              <div>
+              <img 
+                src="/logo.png" 
+                alt="TutorsPool Logo" 
+                className="h-12 w-auto"
+              />
+              {/* <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   TutorsPool
                 </h1>
                 <p className="text-xs text-gray-500 -mt-1">Learning Platform</p>
-              </div>
+              </div> */}
             </Link>
           </div>
 

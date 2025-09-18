@@ -529,6 +529,23 @@ export const reviewsApi = {
   getStudentReviews: (studentId: string) =>
     apiClient.request(`/students/${studentId}/reviews`),
 
+  // Get featured reviews for home page
+  getFeaturedReviews: () =>
+    apiClient.request('/reviews/featured'),
+
+  // Submit success story
+  submitSuccessStory: (storyData: {
+    tutorId: string;
+    subject?: string;
+    rating: number;
+    comment: string;
+    improvement?: string;
+  }) =>
+    apiClient.request('/reviews/success-story', {
+      method: 'POST',
+      body: JSON.stringify(storyData)
+    }),
+
   // Get all reviews (admin only)
   getAllReviews: (status?: string) =>
     apiClient.request(`/admin/reviews${status ? `?status=${status}` : ''}`),

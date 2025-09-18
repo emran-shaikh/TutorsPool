@@ -61,6 +61,16 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
+            <div className="flex items-center justify-center space-x-3 mb-6">
+              <img 
+                src="/logo.png" 
+                alt="TutorsPool Logo" 
+                className="h-8 w-auto"
+              />
+              {/* <span className="text-xl font-bold text-blue-900">
+                Tutors<span className="text-orange-500">Pool</span>
+              </span> */}
+            </div>
             <div className="flex items-center mb-4">
               <div className="flex-shrink-0">
                 <svg className="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

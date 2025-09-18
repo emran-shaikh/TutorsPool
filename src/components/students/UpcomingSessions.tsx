@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { apiClient } from '@/lib/api';
+import { PaymentProcessor } from '@/components/payments/PaymentProcessor';
 import { 
   Calendar, 
   Clock, 
@@ -24,7 +25,8 @@ import {
   Video,
   Phone,
   Star,
-  RefreshCw
+  RefreshCw,
+  CreditCard
 } from 'lucide-react';
 
 interface UpcomingSession {
@@ -75,6 +77,8 @@ export const UpcomingSessions: React.FC<UpcomingSessionsProps> = ({ studentId })
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [selectedSession, setSelectedSession] = useState<UpcomingSession | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [createdBooking, setCreatedBooking] = useState<any>(null);
   
   const [newBooking, setNewBooking] = useState({
     tutorId: '',
@@ -180,25 +184,20 @@ export const UpcomingSessions: React.FC<UpcomingSessionsProps> = ({ studentId })
 
       console.log('Booking data:', bookingData);
 
-      await apiClient.createBooking(bookingData);
+      const bookingResponse = await apiClient.createBooking(bookingData);
       
-      toast({
-        title: 'Success',
-        description: 'Session booking request sent to tutor!',
-      });
-
-      setIsBookingModalOpen(false);
-      setNewBooking({
-        tutorId: '',
-        subject: '',
-        startDate: '',
-        startTime: '',
-        duration: 60,
-        notes: '',
-        meetingType: 'ONLINE'
-      });
-      
-      loadData(); // Refresh sessions
+      if (bookingResponse.success) {
+        setCreatedBooking(bookingResponse.booking);
+        setIsBookingModalOpen(false);
+        setShowPayment(true);
+        
+        toast({
+          title: 'Booking created successfully!',
+          description: 'Please complete payment to confirm your session.',
+        });
+      } else {
+        throw new Error('Failed to create booking');
+      }
     } catch (error) {
       console.error('Error creating booking:', error);
       toast({
@@ -227,8 +226,48 @@ export const UpcomingSessions: React.FC<UpcomingSessionsProps> = ({ studentId })
     }
   };
 
+  const handlePaymentSuccess = (payment: any) => {
+    toast({
+      title: 'Payment successful!',
+      description: 'Your session has been confirmed and payment processed.',
+    });
+
+    // Reset booking form
+    setNewBooking({
+      tutorId: '',
+      subject: '',
+      startDate: '',
+      startTime: '',
+      duration: 60,
+      notes: '',
+      meetingType: 'ONLINE'
+    });
+
+    // Close payment modal
+    setShowPayment(false);
+    setCreatedBooking(null);
+    
+    // Refresh sessions
+    loadData();
+  };
+
+  const handlePaymentError = (error: string) => {
+    toast({
+      title: 'Payment failed',
+      description: error,
+      variant: 'destructive',
+    });
+    setShowPayment(false);
+    setCreatedBooking(null);
+  };
+
   const getStatusBadge = (status: string) => {
     const statusConfig = {
+      PENDING_PAYMENT: { 
+        color: 'bg-orange-100 text-orange-800 border-orange-200', 
+        icon: CreditCard,
+        text: 'Payment Required'
+      },
       PENDING: { 
         color: 'bg-yellow-100 text-yellow-800 border-yellow-200', 
         icon: Clock,
@@ -654,6 +693,27 @@ export const UpcomingSessions: React.FC<UpcomingSessionsProps> = ({ studentId })
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Payment Processor Modal */}
+      {showPayment && createdBooking && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <PaymentProcessor
+              booking={{
+                id: createdBooking.id,
+                subject: newBooking.subject,
+                sessionDate: newBooking.startDate,
+                duration: newBooking.duration,
+                tutorName: tutors.find(t => t.id === newBooking.tutorId)?.user?.name || 'Tutor',
+                amount: (tutors.find(t => t.id === newBooking.tutorId)?.hourlyRateCents || 5000) * newBooking.duration / 60 / 100,
+                currency: tutors.find(t => t.id === newBooking.tutorId)?.currency || 'USD'
+              }}
+              onPaymentSuccess={handlePaymentSuccess}
+              onPaymentError={handlePaymentError}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

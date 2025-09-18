@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { apiClient, reviewsApi } from '@/lib/api';
+import { apiClient, reviewsApi, paymentApi } from '@/lib/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { PaymentProcessor } from '@/components/payments/PaymentProcessor';
 import { 
   User, 
   BookOpen, 
@@ -28,6 +29,7 @@ import {
   XCircle,
   AlertCircle,
   TrendingUp,
+  CreditCard,
   Award,
   FileText,
   Eye,
@@ -71,7 +73,7 @@ interface Booking {
   subjectId: string;
   startAtUTC: string;
   endAtUTC: string;
-  status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED' | 'REFUNDED';
+  status: 'PENDING_PAYMENT' | 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED' | 'REFUNDED';
   priceCents: number;
   currency: string;
   createdAt: string;
@@ -95,6 +97,8 @@ const StudentDashboard: React.FC = () => {
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [selectedBookingForPayment, setSelectedBookingForPayment] = useState<any>(null);
 
   // Check user approval status
   if (user?.status === 'PENDING') {
@@ -337,6 +341,33 @@ const StudentDashboard: React.FC = () => {
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditingProfile({});
+  };
+
+  const handlePaymentClick = (booking: any) => {
+    setSelectedBookingForPayment(booking);
+    setShowPayment(true);
+  };
+
+  const handlePaymentSuccess = (payment: any) => {
+    toast({
+      title: 'Payment successful!',
+      description: 'Your session has been confirmed and payment processed.',
+    });
+
+    // Refresh bookings data
+    loadStudentData();
+    setShowPayment(false);
+    setSelectedBookingForPayment(null);
+  };
+
+  const handlePaymentError = (error: string) => {
+    toast({
+      title: 'Payment failed',
+      description: error,
+      variant: 'destructive',
+    });
+    setShowPayment(false);
+    setSelectedBookingForPayment(null);
   };
 
   const formatCurrency = (cents: number) => {
@@ -721,19 +752,24 @@ const StudentDashboard: React.FC = () => {
                                     className={`h-2 rounded-full ${
                                       booking.status === 'COMPLETED' ? 'bg-green-500' :
                                       booking.status === 'CONFIRMED' ? 'bg-blue-500' :
+                                      booking.status === 'PENDING' ? 'bg-yellow-500' :
+                                      booking.status === 'PENDING_PAYMENT' ? 'bg-orange-500' :
                                       booking.status === 'CANCELLED' ? 'bg-red-500' :
-                                      'bg-yellow-500'
+                                      'bg-gray-500'
                                     }`}
                                     style={{
                                       width: booking.status === 'COMPLETED' ? '100%' :
                                              booking.status === 'CONFIRMED' ? '75%' :
+                                             booking.status === 'PENDING' ? '50%' :
+                                             booking.status === 'PENDING_PAYMENT' ? '25%' :
                                              booking.status === 'CANCELLED' ? '25%' :
                                              '50%'
                                     }}
                                   ></div>
                                 </div>
                                 <span className="text-xs text-gray-500">
-                                  {booking.status === 'PENDING' ? 'Awaiting confirmation' :
+                                  {booking.status === 'PENDING_PAYMENT' ? 'Payment required' :
+                                   booking.status === 'PENDING' ? 'Awaiting confirmation' :
                                    booking.status === 'CONFIRMED' ? 'Confirmed - Ready for session' :
                                    booking.status === 'COMPLETED' ? 'Session completed' :
                                    booking.status === 'CANCELLED' ? 'Cancelled' : 'Unknown'}
@@ -743,6 +779,28 @@ const StudentDashboard: React.FC = () => {
                             
                             {/* Action buttons */}
                             <div className="flex space-x-2">
+                              {booking.status === 'PENDING_PAYMENT' && (
+                                <>
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    onClick={() => handlePaymentClick(booking)}
+                                  >
+                                    <CreditCard className="w-4 h-4 mr-1" />
+                                    Pay Now
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline"
+                                    className="text-red-600 hover:text-red-700"
+                                    onClick={() => handleCancelBooking(booking.id)}
+                                  >
+                                    <XCircle className="w-4 h-4 mr-1" />
+                                    Cancel
+                                  </Button>
+                                </>
+                              )}
+                              
                               {booking.status === 'PENDING' && (
                                 <Button 
                                   size="sm" 
@@ -941,6 +999,27 @@ const StudentDashboard: React.FC = () => {
                   Cancel
                 </Button>
               </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Processor Modal */}
+      {showPayment && selectedBookingForPayment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <PaymentProcessor
+              booking={{
+                id: selectedBookingForPayment.id,
+                subject: selectedBookingForPayment.subjectId,
+                sessionDate: new Date(selectedBookingForPayment.startAtUTC).toLocaleDateString(),
+                duration: Math.round((new Date(selectedBookingForPayment.endAtUTC).getTime() - new Date(selectedBookingForPayment.startAtUTC).getTime()) / 60000),
+                tutorName: selectedBookingForPayment.tutorName || 'Tutor',
+                amount: selectedBookingForPayment.priceCents / 100,
+                currency: selectedBookingForPayment.currency || 'USD'
+              }}
+              onPaymentSuccess={handlePaymentSuccess}
+              onPaymentError={handlePaymentError}
+            />
           </div>
         </div>
       )}

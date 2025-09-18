@@ -124,6 +124,61 @@ app.get('/api/health', (_req, res) => {
   res.json({ ok: true, timestamp: new Date().toISOString() });
 });
 
+// Reset sample data endpoint (for development)
+app.post('/api/admin/reset-sample-data', authenticateToken, requireRole('ADMIN'), async (req, res) => {
+  try {
+    // Clear existing data
+    dataManager.clearAllData();
+    // Reload sample data
+    dataManager.initializeSampleData();
+    
+    res.json({ 
+      success: true, 
+      message: 'Sample data reset successfully',
+      counts: {
+        users: dataManager.getAllUsers().length,
+        tutors: dataManager.getAllTutors().length,
+        bookings: dataManager.getAllBookings().length,
+        reviews: dataManager.getAllReviews().length
+      }
+    });
+  } catch (error) {
+    console.error('Error resetting sample data:', error);
+    res.status(500).json({ error: 'Failed to reset sample data' });
+  }
+});
+
+// Add completed booking for testing (development only)
+app.post('/api/admin/add-test-booking', authenticateToken, async (req, res) => {
+  try {
+    const { studentId, tutorId, subjectId } = req.body;
+    
+    const completedBooking = {
+      studentId: studentId || 'user-153',
+      tutorId: tutorId || 'tutor-143',
+      subjectId: subjectId || 'mathematics',
+      startAtUTC: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      endAtUTC: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000).toISOString(),
+      status: 'COMPLETED',
+      priceCents: 5000,
+      currency: 'USD',
+      paymentStatus: 'PAID',
+      createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+    
+    const addedBooking = dataManager.addBooking(completedBooking);
+    
+    res.json({ 
+      success: true, 
+      booking: addedBooking,
+      message: 'Test completed booking added successfully'
+    });
+  } catch (error) {
+    console.error('Error adding test booking:', error);
+    res.status(500).json({ error: 'Failed to add test booking' });
+  }
+});
+
 // Error monitoring endpoints
 app.get('/api/logs/errors', (req, res) => {
   try {
@@ -722,9 +777,11 @@ app.post('/api/bookings', authenticateToken, requireActiveUser, async (req, res)
       subjectId,
       startAtUTC,
       endAtUTC,
-      status: 'PENDING',
+      status: 'PENDING_PAYMENT', // Changed to indicate payment is required
       priceCents,
       currency,
+      paymentStatus: 'UNPAID', // Add payment status tracking
+      paymentRequired: true,
     };
 
     console.log('Booking object:', booking);
@@ -2310,6 +2367,82 @@ app.get('/api/admin/reviews', authenticateToken, requireRole('ADMIN'), async (re
   } catch (error) {
     console.error('Admin reviews fetch error:', error);
     res.status(500).json({ error: 'Failed to fetch reviews' });
+  }
+});
+
+// Get featured reviews for home page
+app.get('/api/reviews/featured', async (req, res) => {
+  try {
+    const featuredReviews = dataManager.getFeaturedReviews();
+    res.json({ reviews: featuredReviews });
+  } catch (error) {
+    console.error('Featured reviews fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch featured reviews' });
+  }
+});
+
+// Create success story (public review for home page)
+app.post('/api/reviews/success-story', authenticateToken, async (req, res) => {
+  try {
+    const { tutorId, subject, rating, comment, improvement } = req.body;
+    const studentId = req.user?.userId;
+
+    if (!studentId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    // Validate required fields
+    if (!tutorId || !rating || rating < 1 || rating > 5 || !comment) {
+      return res.status(400).json({ error: 'Tutor ID, rating (1-5), and comment are required' });
+    }
+
+    // Check if student has completed sessions with this tutor
+    const completedBookings = dataManager.getAllBookings().filter(b => 
+      b.studentId === studentId && 
+      b.tutorId === tutorId && 
+      b.status === 'COMPLETED'
+    );
+
+    if (completedBookings.length === 0) {
+      return res.status(400).json({ error: 'You can only review tutors you have completed sessions with' });
+    }
+
+    // Check if student already reviewed this tutor
+    const existingReview = dataManager.getReviewsByStudent(studentId).find(r => r.tutorId === tutorId);
+    if (existingReview) {
+      return res.status(400).json({ error: 'You have already reviewed this tutor' });
+    }
+
+    const review = {
+      tutorId,
+      studentId,
+      rating: parseInt(rating),
+      comment: comment.trim(),
+      subject: subject || 'General Tutoring',
+      improvement: improvement || 'Significant improvement achieved',
+      isSuccessStory: true, // Mark as success story for home page display
+    };
+
+    const newReview = dataManager.addReview(review);
+
+    // Create notification for tutor
+    dataManager.addNotification({
+      userId: tutorId,
+      type: 'REVIEW_RECEIVED',
+      title: 'New Success Story Received',
+      message: `A student shared their success story about your tutoring!`,
+      data: { reviewId: newReview.id, rating: rating }
+    });
+
+    res.status(201).json({
+      success: true,
+      review: newReview,
+      message: 'Thank you for sharing your success story! It will be reviewed and featured on our homepage.'
+    });
+
+  } catch (error) {
+    console.error('Success story submission error:', error);
+    res.status(500).json({ error: 'Failed to submit success story' });
   }
 });
 

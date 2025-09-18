@@ -50,8 +50,15 @@ const Header: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <Link to="/" className="text-2xl font-bold text-blue-900 hover:text-blue-700 transition-colors">
-                Tutors<span className="text-orange-500">Pool</span>
+              <Link to="/" className="flex items-center space-x-3">
+                <img 
+                  src="/logo.png" 
+                  alt="TutorsPool Logo" 
+                  className="h-12 w-auto"
+                />
+                {/* <span className="text-2xl font-bold text-blue-900 hover:text-blue-700 transition-colors">
+                  Tutors<span className="text-orange-500">Pool</span>
+                </span> */}
               </Link>
             </div>
           </div>
