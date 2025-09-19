@@ -105,6 +105,34 @@
       "approvedAt": "2025-09-18T07:24:10.665Z",
       "approvedBy": "user-74",
       "avatarUrl": null
+    },
+    {
+      "name": "Rafael Lyons",
+      "email": "memedo@mailinator.com",
+      "phone": "+1 (839) 569-6935",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-21",
+      "createdAt": "2025-09-18T10:41:21.699Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-18T10:41:54.277Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Bree Stanley",
+      "email": "doryzypabo@mailinator.com",
+      "phone": "+1 (393) 154-1719",
+      "country": "Egypt",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-27",
+      "createdAt": "2025-09-18T13:26:52.351Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-18T13:27:23.572Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -202,6 +230,30 @@
       "uploads": [],
       "id": "student-12",
       "createdAt": "2025-09-18T07:21:10.531Z"
+    },
+    {
+      "userId": "user-21",
+      "gradeLevel": "Middle School (6-8)",
+      "learningGoals": "Sapiente nihil sed a",
+      "preferredMode": "ONLINE",
+      "budgetMin": 9300,
+      "budgetMax": 10000,
+      "specialRequirements": "Tempor ipsam suscipi",
+      "uploads": [],
+      "id": "student-22",
+      "createdAt": "2025-09-18T10:41:21.708Z"
+    },
+    {
+      "userId": "user-27",
+      "gradeLevel": "Professional Development",
+      "learningGoals": "Sit voluptatem Ali",
+      "preferredMode": "ONLINE",
+      "budgetMin": 8100,
+      "budgetMax": 8300,
+      "specialRequirements": "Ad pariatur Praesen",
+      "uploads": [],
+      "id": "student-28",
+      "createdAt": "2025-09-18T13:26:52.361Z"
     }
   ],
   "bookings": [
@@ -294,9 +346,48 @@
       "createdAt": "2025-09-18T07:24:48.948Z",
       "updatedAt": "2025-09-18T07:25:02.914Z",
       "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-21",
+      "tutorId": "tutor-16",
+      "subjectId": "Maxime magni perspic",
+      "startAtUTC": "2025-09-18T13:37:00.000Z",
+      "endAtUTC": "2025-09-18T14:37:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 7600,
+      "currency": "GBP",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-23",
+      "createdAt": "2025-09-18T10:42:35.569Z"
+    },
+    {
+      "studentId": "user-21",
+      "tutorId": "tutor-16",
+      "subjectId": "math",
+      "startAtUTC": "2025-09-18T13:00:00.000Z",
+      "endAtUTC": "2025-09-18T14:30:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 11400,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-25",
+      "createdAt": "2025-09-18T10:43:21.346Z"
     }
   ],
-  "learningProgress": {},
+  "learningProgress": {
+    "user-21": {
+      "totalGoals": 0,
+      "completedGoals": 0,
+      "totalSessions": 0,
+      "completedSessions": 0,
+      "currentStreak": 0,
+      "totalHours": 0,
+      "recentGoals": [],
+      "upcomingSessions": []
+    }
+  },
   "reviews": [
     {
       "id": "review-sample-1",
@@ -408,6 +499,40 @@
       },
       "read": false,
       "createdAt": "2025-09-18T09:38:20.099Z"
+    },
+    {
+      "id": "notification-24",
+      "userId": "user-15",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Rafael Lyons has requested a Maxime magni perspic session with you.",
+      "data": {
+        "bookingId": "booking-23",
+        "studentId": "user-21",
+        "studentName": "Rafael Lyons",
+        "subject": "Maxime magni perspic",
+        "startAt": "2025-09-18T13:37:00.000Z",
+        "endAt": "2025-09-18T14:37:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-18T10:42:35.571Z"
+    },
+    {
+      "id": "notification-26",
+      "userId": "user-15",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Rafael Lyons has requested a math session with you.",
+      "data": {
+        "bookingId": "booking-25",
+        "studentId": "user-21",
+        "studentName": "Rafael Lyons",
+        "subject": "math",
+        "startAt": "2025-09-18T13:00:00.000Z",
+        "endAt": "2025-09-18T14:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-18T10:43:21.348Z"
     }
   ],
   "messages": [],
@@ -492,5 +617,5 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 20
+  "lastId": 28
 }

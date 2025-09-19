@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import { dataManager } from './dataManager';
 import errorLogger from './errorLogger.js';
+import { authenticateToken, requireRole, requireActiveUser, generateToken, verifyToken } from './middleware/authMiddleware';
 
 // Extend Express Request type to include user
 declare global {
@@ -37,87 +38,13 @@ app.use((req, res, next) => {
 // Initialize sample data
 dataManager.initializeSampleData();
 
-// Simple JWT-like token generation (for development)
-const generateToken = (userId: string, email: string, role: string) => {
-  return Buffer.from(JSON.stringify({ userId, email, role, exp: Date.now() + 7 * 24 * 60 * 60 * 1000 })).toString('base64');
-};
+// Token functions are now imported from ./middleware/authMiddleware
 
-const verifyToken = (token: string) => {
-  try {
-    const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
-    if (decoded.exp < Date.now()) {
-      throw new Error('Token expired');
-    }
-    return decoded;
-  } catch (error) {
-    throw new Error('Invalid token');
-  }
-};
+// Authentication middleware is now imported from ./middleware/authMiddleware
 
-// Middleware for authentication
-const authenticateToken = (req: any, res: any, next: any) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+// requireActiveUser middleware is now imported from ./middleware/authMiddleware
 
-  if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
-  }
-
-  try {
-    const decoded = verifyToken(token);
-    console.log(`[AUTH] Decoded token:`, decoded);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    console.log(`[AUTH] Token verification failed:`, error.message);
-    return res.status(403).json({ error: 'Invalid token' });
-  }
-};
-
-// Middleware to check user status (ACTIVE users only)
-const requireActiveUser = (req: any, res: any, next: any) => {
-  if (!req.user) {
-    return res.status(401).json({ error: 'Authentication required' });
-  }
-  
-  const user = dataManager.getUserById(req.user.userId);
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
-  
-  if (user.status !== 'ACTIVE') {
-    return res.status(403).json({ 
-      error: 'Account not approved', 
-      status: user.status,
-      message: user.status === 'PENDING' ? 'Your account is pending approval' :
-               user.status === 'REJECTED' ? 'Your account has been rejected' :
-               user.status === 'SUSPENDED' ? 'Your account has been suspended' :
-               'Your account is not active'
-    });
-  }
-  
-  next();
-};
-
-// Middleware to check user role
-const requireRole = (roles: string | string[]) => {
-  return (req: any, res: any, next: any) => {
-    if (!req.user) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    const allowedRoles = Array.isArray(roles) ? roles : [roles];
-    if (!allowedRoles.includes(req.user.role)) {
-      return res.status(403).json({ 
-        error: 'Insufficient permissions',
-        required: allowedRoles,
-        current: req.user.role
-      });
-    }
-
-    next();
-  };
-};
+// Role middleware is now imported from ./middleware/authMiddleware
 
 // Health check
 app.get('/api/health', (_req, res) => {

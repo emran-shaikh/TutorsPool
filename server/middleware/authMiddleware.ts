@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { dataManager } from '../dataManager';
 
 // Simple JWT-like token generation (for development)
 const generateToken = (userId: string, email: string, role: string) => {
@@ -36,18 +37,48 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 };
 
 // Role-based authorization middleware
-export const requireRole = (requiredRole: string) => {
+export const requireRole = (roles: string | string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
-    if (req.user.role !== requiredRole) {
-      return res.status(403).json({ error: 'Insufficient permissions' });
+    const allowedRoles = Array.isArray(roles) ? roles : [roles];
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ 
+        error: 'Insufficient permissions',
+        required: allowedRoles,
+        current: req.user.role
+      });
     }
 
     next();
   };
+};
+
+// Middleware to check user status (ACTIVE users only)
+export const requireActiveUser = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  
+  const user = dataManager.getUserById(req.user.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+  
+  if (user.status !== 'ACTIVE') {
+    return res.status(403).json({ 
+      error: 'Account not approved', 
+      status: user.status,
+      message: user.status === 'PENDING' ? 'Your account is pending approval' :
+               user.status === 'REJECTED' ? 'Your account has been rejected' :
+               user.status === 'SUSPENDED' ? 'Your account has been suspended' :
+               'Your account is not active'
+    });
+  }
+  
+  next();
 };
 
 export { generateToken, verifyToken };

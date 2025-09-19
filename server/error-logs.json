@@ -3283,5 +3283,33 @@
       "serverTime": "2025-09-18T07:25:52.324Z",
       "processId": 51400
     }
+  },
+  {
+    "id": "info_1758192114278_hnbv626pt",
+    "timestamp": "2025-09-18T10:41:54.278Z",
+    "type": "info",
+    "message": "User user-21 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-21",
+      "serverTime": "2025-09-18T10:41:54.278Z",
+      "processId": 51400
+    }
+  },
+  {
+    "id": "info_1758202043575_tybfq5p36",
+    "timestamp": "2025-09-18T13:27:23.575Z",
+    "type": "info",
+    "message": "User user-27 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-27",
+      "serverTime": "2025-09-18T13:27:23.575Z",
+      "processId": 4848
+    }
   }
 ]

@@ -16,7 +16,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "supabase:setup": "node scripts/setup-supabase.js",
+    "supabase:migrate": "node scripts/migrate-to-supabase.js"
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
@@ -65,6 +67,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "dotenv": "^17.2.2",
     "embla-carousel-react": "^8.3.0",
     "express": "^5.1.0",
     "highlight.js": "^11.9.0",
