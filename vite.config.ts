@@ -34,8 +34,8 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Split vendor libraries into separate chunks
           if (id.includes('node_modules')) {
-            // React core
-            if (id.includes('react') && !id.includes('react-')) {
+            // React core - ensure React is bundled together
+            if (id.includes('react/') || (id.includes('react') && !id.includes('react-'))) {
               return 'react-core';
             }
             
@@ -58,9 +58,13 @@ export default defineConfig(({ mode }) => ({
               return 'ui-utils';
             }
             
-            // Query and state management
-            if (id.includes('@tanstack/react-query') || id.includes('react-hook-form')) {
-              return 'state-management';
+            // Query and state management - but keep React context separate
+            if (id.includes('@tanstack/react-query')) {
+              return 'query-management';
+            }
+            
+            if (id.includes('react-hook-form')) {
+              return 'form-management';
             }
             
             // Socket and real-time

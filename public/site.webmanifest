@@ -4,12 +4,12 @@
   "description": "A professional tutoring platform connecting students with qualified tutors worldwide",
   "icons": [
     {
-      "src": "/fav-icon.png",
+      "src": "/logo.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/fav-icon.png",
+      "src": "/logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
