@@ -133,6 +133,76 @@
       "approvedAt": "2025-09-18T13:27:23.572Z",
       "approvedBy": "user-4",
       "avatarUrl": null
+    },
+    {
+      "name": "Priscilla Lang",
+      "email": "cimota@mailinator.com",
+      "phone": "+1 (976) 611-9404",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-29",
+      "createdAt": "2025-09-19T06:06:49.792Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T06:06:56.608Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Cailin Alvarez",
+      "email": "buhygyli@mailinator.com",
+      "phone": "+1 (128) 281-8103",
+      "country": "Chile",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-31",
+      "createdAt": "2025-09-19T06:12:08.060Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T06:12:12.180Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Yvette Coleman",
+      "email": "pigubo@mailinator.com",
+      "phone": "+1 (925) 601-6634",
+      "country": "Nigeria",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-35",
+      "createdAt": "2025-09-19T08:21:20.651Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T08:21:25.562Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Cally Doyle",
+      "email": "tyvalicado@mailinator.com",
+      "phone": "+1 (203) 302-4033",
+      "country": "Denmark",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-37",
+      "createdAt": "2025-09-19T08:24:27.513Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T08:24:57.770Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Levi Gilbert",
+      "email": "tocexi@mailinator.com",
+      "phone": "+1 (126) 738-2128",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-39",
+      "createdAt": "2025-09-19T11:29:24.005Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -216,6 +286,67 @@
       "id": "tutor-16",
       "createdAt": "2025-09-18T07:24:06.680Z",
       "status": "ACTIVE"
+    },
+    {
+      "userId": "user-29",
+      "headline": "Eiusmod quae molesti",
+      "bio": "Veritatis earum exerVeritatis earum exerVeritatis earum exerVeritatis earum exerVeritatis earum exer",
+      "hourlyRateCents": 1600,
+      "currency": "GBP",
+      "yearsExperience": 1998,
+      "subjects": [
+        "Chemistry",
+        "Literature"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "priscilla-lang",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-30",
+      "createdAt": "2025-09-19T06:06:49.806Z",
+      "status": "ACTIVE"
+    },
+    {
+      "userId": "user-39",
+      "headline": "Et eius exercitation",
+      "bio": "Laudantium consequaLaudantium consequaLaudantium consequaLaudantium consequaLaudantium consequa",
+      "hourlyRateCents": 10000,
+      "currency": "CAD",
+      "yearsExperience": 2002,
+      "subjects": [
+        "Literature",
+        "Economics"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "levi-gilbert",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-40",
+      "createdAt": "2025-09-19T11:29:24.020Z"
     }
   ],
   "students": [
@@ -254,6 +385,42 @@
       "uploads": [],
       "id": "student-28",
       "createdAt": "2025-09-18T13:26:52.361Z"
+    },
+    {
+      "userId": "user-31",
+      "gradeLevel": "College/University",
+      "learningGoals": "Et magni anim ut sun",
+      "preferredMode": "ONLINE",
+      "budgetMin": 9200,
+      "budgetMax": 300,
+      "specialRequirements": "Rem voluptatem perfe",
+      "uploads": [],
+      "id": "student-32",
+      "createdAt": "2025-09-19T06:12:08.070Z"
+    },
+    {
+      "userId": "user-35",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Perferendis ipsum n",
+      "preferredMode": "ONLINE",
+      "budgetMin": 300,
+      "budgetMax": 7600,
+      "specialRequirements": "Ut ut et suscipit in",
+      "uploads": [],
+      "id": "student-36",
+      "createdAt": "2025-09-19T08:21:20.668Z"
+    },
+    {
+      "userId": "user-37",
+      "gradeLevel": "High School (9-12)",
+      "learningGoals": "Quia in cupidatat co",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 900,
+      "budgetMax": 2100,
+      "specialRequirements": "Corporis quis aut qu",
+      "uploads": [],
+      "id": "student-38",
+      "createdAt": "2025-09-19T08:24:27.528Z"
     }
   ],
   "bookings": [
@@ -374,6 +541,20 @@
       "paymentRequired": true,
       "id": "booking-25",
       "createdAt": "2025-09-18T10:43:21.346Z"
+    },
+    {
+      "studentId": "user-31",
+      "tutorId": "tutor-30",
+      "subjectId": "chemistry",
+      "startAtUTC": "2025-09-19T05:00:00.000Z",
+      "endAtUTC": "2025-09-19T06:00:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 1600,
+      "currency": "USD",
+      "paymentStatus": "PAID",
+      "paymentRequired": true,
+      "id": "booking-33",
+      "createdAt": "2025-09-19T06:23:23.497Z"
     }
   ],
   "learningProgress": {
@@ -533,6 +714,23 @@
       },
       "read": false,
       "createdAt": "2025-09-18T10:43:21.348Z"
+    },
+    {
+      "id": "notification-34",
+      "userId": "user-29",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Cailin Alvarez has requested a chemistry session with you.",
+      "data": {
+        "bookingId": "booking-33",
+        "studentId": "user-31",
+        "studentName": "Cailin Alvarez",
+        "subject": "chemistry",
+        "startAt": "2025-09-19T05:00:00.000Z",
+        "endAt": "2025-09-19T06:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-09-19T06:23:23.500Z"
     }
   ],
   "messages": [],
@@ -570,6 +768,23 @@
         "tutorAmount": 40.5
       },
       "stripeChargeId": "ch_1758180294531_v3pjfl34n"
+    },
+    {
+      "id": "payment_1758263006786_uoyha69hn",
+      "bookingId": "booking-33",
+      "studentId": "user-31",
+      "tutorId": "tutor-30",
+      "amount": 76,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_1758263006786_dee1muk9o",
+      "status": "COMPLETED",
+      "createdAt": "2025-09-19T06:23:26.786Z",
+      "updatedAt": "2025-09-19T06:23:28.798Z",
+      "metadata": {
+        "platformFee": 7.6000000000000005,
+        "tutorAmount": 68.4
+      },
+      "stripeChargeId": "ch_1758263008798_phjp9cuzy"
     }
   ],
   "payouts": [
@@ -600,6 +815,20 @@
       "metadata": {
         "platformFee": 4.5
       }
+    },
+    {
+      "id": "payout_1758263008798_7p9754hg8",
+      "paymentId": "payment_1758263006786_uoyha69hn",
+      "tutorId": "tutor-30",
+      "amount": 68.4,
+      "currency": "USD",
+      "status": "PENDING",
+      "holdUntil": "2025-09-26T06:23:28.798Z",
+      "createdAt": "2025-09-19T06:23:28.798Z",
+      "updatedAt": "2025-09-19T06:23:28.798Z",
+      "metadata": {
+        "platformFee": 7.6000000000000005
+      }
     }
   ],
   "disputes": [
@@ -617,5 +846,5 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 28
+  "lastId": 40
 }

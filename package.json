@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "vercel-build": "vite build",
+    "vercel-build": "vite build --mode production",
     "server:dev": "tsx watch server/index.ts",
     "server:start": "node dist-server/index.js",
     "server:build": "tsc -p tsconfig.server.json",
@@ -121,6 +121,7 @@
     "jsdom": "^26.1.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
+    "terser": "^5.44.0",
     "tsx": "^4.20.5",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",

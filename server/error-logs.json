@@ -3311,5 +3311,121 @@
       "serverTime": "2025-09-18T13:27:23.575Z",
       "processId": 4848
     }
+  },
+  {
+    "id": "info_1758262016613_egws041lj",
+    "timestamp": "2025-09-19T06:06:56.613Z",
+    "type": "info",
+    "message": "User user-29 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-29",
+      "serverTime": "2025-09-19T06:06:56.613Z",
+      "processId": 4848
+    }
+  },
+  {
+    "id": "info_1758262332181_pup5fjqsf",
+    "timestamp": "2025-09-19T06:12:12.181Z",
+    "type": "info",
+    "message": "User user-31 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-31",
+      "serverTime": "2025-09-19T06:12:12.181Z",
+      "processId": 4848
+    }
+  },
+  {
+    "id": "info_1758270085565_o9y8iruus",
+    "timestamp": "2025-09-19T08:21:25.565Z",
+    "type": "info",
+    "message": "User user-35 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-35",
+      "serverTime": "2025-09-19T08:21:25.565Z",
+      "processId": 3888
+    }
+  },
+  {
+    "id": "info_1758270297773_ng51v5856",
+    "timestamp": "2025-09-19T08:24:57.773Z",
+    "type": "info",
+    "message": "User user-37 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-37",
+      "serverTime": "2025-09-19T08:24:57.773Z",
+      "processId": 3888
+    }
+  },
+  {
+    "id": "api_1758281321568_slkvpto7h",
+    "timestamp": "2025-09-19T11:28:41.568Z",
+    "type": "api_error",
+    "endpoint": "/api/tutors/bookings",
+    "method": "GET",
+    "statusCode": 404,
+    "error": "Tutor profile not found",
+    "context": {
+      "userId": "user-37",
+      "userRole": "STUDENT",
+      "serverTime": "2025-09-19T11:28:41.568Z",
+      "processId": 3888
+    }
+  },
+  {
+    "id": "api_1758281321573_m1mbn8gjk",
+    "timestamp": "2025-09-19T11:28:41.573Z",
+    "type": "api_error",
+    "endpoint": "/api/tutors/stats",
+    "method": "GET",
+    "statusCode": 404,
+    "error": "Tutor profile not found",
+    "context": {
+      "userId": "user-37",
+      "userRole": "STUDENT",
+      "serverTime": "2025-09-19T11:28:41.573Z",
+      "processId": 3888
+    }
+  },
+  {
+    "id": "api_1758281322581_n360qbjlx",
+    "timestamp": "2025-09-19T11:28:42.581Z",
+    "type": "api_error",
+    "endpoint": "/api/tutors/bookings",
+    "method": "GET",
+    "statusCode": 404,
+    "error": "Tutor profile not found",
+    "context": {
+      "userId": "user-37",
+      "userRole": "STUDENT",
+      "serverTime": "2025-09-19T11:28:42.582Z",
+      "processId": 3888
+    }
+  },
+  {
+    "id": "api_1758281322590_z6pcbuvbf",
+    "timestamp": "2025-09-19T11:28:42.590Z",
+    "type": "api_error",
+    "endpoint": "/api/tutors/stats",
+    "method": "GET",
+    "statusCode": 404,
+    "error": "Tutor profile not found",
+    "context": {
+      "userId": "user-37",
+      "userRole": "STUDENT",
+      "serverTime": "2025-09-19T11:28:42.590Z",
+      "processId": 3888
+    }
   }
 ]
