@@ -7,6 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+firebase-admin-key.json
+firebase-service-account.json
+service-account-key.json
+
 node_modules
 dist
 dist-ssr

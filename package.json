@@ -18,7 +18,12 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "supabase:setup": "node scripts/setup-supabase.js",
-    "supabase:migrate": "node scripts/migrate-to-supabase.js"
+    "supabase:migrate": "node scripts/migrate-to-supabase.js",
+    "start": "npm run build && npm run server:start",
+    "production": "NODE_ENV=production npm run start",
+    "security:check": "echo 'Checking for hardcoded secrets...' && node -e \"const fs=require('fs'); const files = fs.readdirSync('src').filter(f => f.endsWith('.ts') || f.endsWith('.tsx')); const hasSecrets = files.some(f => fs.readFileSync('src/'+f, 'utf8').match(/AIzaSy|sk_live|sk_test/)); if(hasSecrets) { console.error('❌ Found hardcoded secrets!'); process.exit(1); } else console.log('✅ No hardcoded secrets found');\"",
+    "firebase:test": "tsx -e \"import('./server/services/firebaseService.js').then(({firebaseService}) => console.log('Firebase configured:', firebaseService.isConfigured()))\"",
+    "deploy:secure": "npm run security:check && npm run build && npm run firebase:test"
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
@@ -72,6 +77,7 @@
     "dotenv": "^17.2.2",
     "embla-carousel-react": "^8.3.0",
     "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
     "highlight.js": "^11.9.0",
     "input-otp": "^1.2.4",
     "jsonwebtoken": "^9.0.2",
