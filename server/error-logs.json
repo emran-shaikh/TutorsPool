@@ -3515,5 +3515,160 @@
       "serverTime": "2025-10-03T10:52:19.507Z",
       "processId": 41652
     }
+  },
+  {
+    "id": "info_1759490616112_9razdwhj8",
+    "timestamp": "2025-10-03T11:23:36.112Z",
+    "type": "info",
+    "message": "Booking booking-1 status updated to CANCELLED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-1",
+      "newStatus": "CANCELLED",
+      "reason": "Cancelled by admin",
+      "serverTime": "2025-10-03T11:23:36.112Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490619097_tdx9oorgj",
+    "timestamp": "2025-10-03T11:23:39.098Z",
+    "type": "info",
+    "message": "Booking booking-2 status updated to CANCELLED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-2",
+      "newStatus": "CANCELLED",
+      "reason": "Cancelled by admin",
+      "serverTime": "2025-10-03T11:23:39.098Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490623202_mnwfv7ojf",
+    "timestamp": "2025-10-03T11:23:43.202Z",
+    "type": "info",
+    "message": "Booking booking-3 status updated to REFUNDED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-3",
+      "newStatus": "REFUNDED",
+      "reason": "Refunded by admin",
+      "serverTime": "2025-10-03T11:23:43.202Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490625327_iatpm42ms",
+    "timestamp": "2025-10-03T11:23:45.327Z",
+    "type": "info",
+    "message": "Booking booking-3 status updated to REFUNDED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-3",
+      "newStatus": "REFUNDED",
+      "reason": "Refund closed",
+      "serverTime": "2025-10-03T11:23:45.327Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490627959_acb5p6801",
+    "timestamp": "2025-10-03T11:23:47.959Z",
+    "type": "info",
+    "message": "Booking booking-3 status updated to REFUNDED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-3",
+      "newStatus": "REFUNDED",
+      "reason": "Refund processed",
+      "serverTime": "2025-10-03T11:23:47.959Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490629177_h8hx4ygan",
+    "timestamp": "2025-10-03T11:23:49.177Z",
+    "type": "info",
+    "message": "Booking booking-3 status updated to REFUNDED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-3",
+      "newStatus": "REFUNDED",
+      "reason": "Refund processed",
+      "serverTime": "2025-10-03T11:23:49.177Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490629864_9coq177jg",
+    "timestamp": "2025-10-03T11:23:49.864Z",
+    "type": "info",
+    "message": "Booking booking-3 status updated to COMPLETED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-3",
+      "newStatus": "COMPLETED",
+      "reason": "Reopened after refund",
+      "serverTime": "2025-10-03T11:23:49.864Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490651992_rjtrs0z5j",
+    "timestamp": "2025-10-03T11:24:11.992Z",
+    "type": "info",
+    "message": "User user-5 rejected by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/reject",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-5",
+      "serverTime": "2025-10-03T11:24:11.992Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490658882_k9xp6jmgi",
+    "timestamp": "2025-10-03T11:24:18.882Z",
+    "type": "info",
+    "message": "User user-39 rejected by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/reject",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-39",
+      "serverTime": "2025-10-03T11:24:18.882Z",
+      "processId": 9028
+    }
+  },
+  {
+    "id": "info_1759490675274_ndghrwynf",
+    "timestamp": "2025-10-03T11:24:35.274Z",
+    "type": "info",
+    "message": "User user-6 rejected by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/reject",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-6",
+      "reason": "",
+      "serverTime": "2025-10-03T11:24:35.274Z",
+      "processId": 9028
+    }
   }
 ]

@@ -37,10 +37,12 @@
       "role": "TUTOR",
       "id": "user-39",
       "createdAt": "2025-09-19T11:29:24.005Z",
-      "status": "PENDING",
+      "status": "REJECTED",
       "approvedAt": null,
       "approvedBy": null,
-      "avatarUrl": null
+      "avatarUrl": null,
+      "rejectedAt": "2025-10-03T11:24:18.880Z",
+      "rejectedBy": "user-4"
     },
     {
       "name": "Cally Doyle",
@@ -214,10 +216,13 @@
       "country": "USA",
       "timezone": "America/New_York",
       "role": "STUDENT",
-      "status": "PENDING",
+      "status": "REJECTED",
       "createdAt": "2025-09-17T07:11:06.013Z",
       "approvedAt": null,
-      "approvedBy": null
+      "approvedBy": null,
+      "rejectedAt": "2025-10-03T11:24:35.272Z",
+      "rejectedBy": "user-4",
+      "rejectionReason": ""
     },
     {
       "id": "user-5",
@@ -227,10 +232,12 @@
       "country": "USA",
       "timezone": "America/New_York",
       "role": "TUTOR",
-      "status": "PENDING",
+      "status": "REJECTED",
       "createdAt": "2025-09-16T07:11:06.013Z",
       "approvedAt": null,
-      "approvedBy": null
+      "approvedBy": null,
+      "rejectedAt": "2025-10-03T11:24:11.991Z",
+      "rejectedBy": "user-4"
     },
     {
       "name": "Noelle Powers",
@@ -575,10 +582,12 @@
       "subjectId": "math-algebra",
       "startAtUTC": "2025-09-19T07:11:06.013Z",
       "endAtUTC": "2025-09-19T08:11:06.013Z",
-      "status": "PENDING",
+      "status": "CANCELLED",
       "priceCents": 2500,
       "currency": "USD",
-      "createdAt": "2025-09-18T07:11:06.013Z"
+      "createdAt": "2025-09-18T07:11:06.013Z",
+      "updatedAt": "2025-10-03T11:23:36.110Z",
+      "statusReason": "Cancelled by admin"
     },
     {
       "id": "booking-2",
@@ -587,10 +596,12 @@
       "subjectId": "science-physics",
       "startAtUTC": "2025-09-20T07:11:06.013Z",
       "endAtUTC": "2025-09-20T08:11:06.013Z",
-      "status": "CONFIRMED",
+      "status": "CANCELLED",
       "priceCents": 3000,
       "currency": "USD",
-      "createdAt": "2025-09-18T07:11:06.013Z"
+      "createdAt": "2025-09-18T07:11:06.013Z",
+      "updatedAt": "2025-10-03T11:23:39.096Z",
+      "statusReason": "Cancelled by admin"
     },
     {
       "id": "booking-3",
@@ -602,7 +613,9 @@
       "status": "COMPLETED",
       "priceCents": 2500,
       "currency": "USD",
-      "createdAt": "2025-09-18T07:11:06.014Z"
+      "createdAt": "2025-09-18T07:11:06.014Z",
+      "updatedAt": "2025-10-03T11:23:49.862Z",
+      "statusReason": "Reopened after refund"
     },
     {
       "id": "booking-student-1",
@@ -1069,8 +1082,9 @@
         "startAt": "2025-10-03T09:00:00.000Z",
         "endAt": "2025-10-03T10:00:00.000Z"
       },
-      "read": false,
-      "createdAt": "2025-10-03T10:48:02.881Z"
+      "read": true,
+      "createdAt": "2025-10-03T10:48:02.881Z",
+      "readAt": "2025-10-03T10:58:37.615Z"
     }
   ],
   "messages": [],
@@ -1293,13 +1307,15 @@
       "tutorId": "tutor-57",
       "amount": 79.2,
       "currency": "USD",
-      "status": "PENDING",
+      "status": "PAID",
       "holdUntil": "2025-10-10T10:48:08.372Z",
       "createdAt": "2025-10-03T10:48:08.372Z",
-      "updatedAt": "2025-10-03T10:48:08.372Z",
+      "updatedAt": "2025-10-03T10:59:00.417Z",
       "metadata": {
         "platformFee": 8.8
-      }
+      },
+      "stripeTransferId": "tr_1759489140417_dr5azf222",
+      "paidAt": "2025-10-03T10:59:00.417Z"
     }
   ],
   "disputes": [
