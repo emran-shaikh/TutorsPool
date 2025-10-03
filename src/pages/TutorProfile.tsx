@@ -11,6 +11,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useErrorLogger } from '@/hooks/useErrorLogger';
 import { AvailabilityManager } from '@/components/tutors/AvailabilityManager';
 import { TutorReviews } from '@/components/tutors/TutorReviews';
+import BookingForm from '@/components/tutors/BookingForm';
+import TutorLocationCard from '@/components/tutors/TutorLocationCard';
 import { reviewsApi } from '@/lib/api';
 import { 
   Star, 
@@ -40,7 +42,7 @@ const TutorProfile: React.FC = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const { logError } = useErrorLogger({ component: 'TutorProfile' });
-  const [activeTab, setActiveTab] = useState<'overview' | 'subjects' | 'reviews' | 'availability'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'subjects' | 'reviews' | 'availability' | 'booking'>('overview');
 
   // Fetch tutor profile
   const { data: tutorData, isLoading, error, refetch: refetchProfile } = useQuery({
@@ -304,6 +306,7 @@ const TutorProfile: React.FC = () => {
             { id: 'subjects', label: 'Subjects', icon: BookOpen },
             { id: 'reviews', label: 'Reviews', icon: Star },
             { id: 'availability', label: 'Availability', icon: Clock },
+            { id: 'booking', label: 'Book Session', icon: Calendar },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -445,6 +448,51 @@ const TutorProfile: React.FC = () => {
                 readOnly={true}
               />
             )}
+
+            {activeTab === 'booking' && (
+              <div className="space-y-6">
+                {!user ? (
+                  <Card className="text-center">
+                    <CardContent className="py-8">
+                      <AlertCircle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Sign In Required</h3>
+                      <p className="text-gray-600 mb-4">
+                        Please sign in to book a session with this tutor.
+                      </p>
+                      <Button onClick={() => navigate('/login')}>
+                        Sign In
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : user.role !== 'STUDENT' ? (
+                  <Card className="text-center">
+                    <CardContent className="py-8">
+                      <AlertCircle className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Student Access Required</h3>
+                      <p className="text-gray-600 mb-4">
+                        Only students can book sessions. Admins can create bookings in the admin panel.
+                      </p>
+                      <Button onClick={() => navigate('/app')}>
+                        Go to Dashboard
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <BookingForm 
+                    tutorId={tutorId!} 
+                    tutor={tutor}
+                    onBookingSuccess={(booking) => {
+                      toast({
+                        title: 'Booking Successful',
+                        description: 'Your session has been confirmed!',
+                      });
+                      // Optionally switch back to overview
+                      setActiveTab('overview');
+                    }}
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -538,6 +586,14 @@ const TutorProfile: React.FC = () => {
                 </Button>
               </CardContent>
             </Card>
+
+            {/* Tutor Location Card */}
+            <TutorLocationCard
+              tutorName={tutor.user?.name || 'Tutor'}
+              tutorLocation={tutor.inPersonLocation}
+              onContact={handleContactTutor}
+              showDirections={true}
+            />
           </div>
         </div>
       </div>

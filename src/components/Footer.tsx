@@ -13,10 +13,10 @@ const Footer: React.FC = () => {
               <img 
                 src="/logo.png" 
                 alt="TutorsPool Logo" 
-                className="h-8 w-auto"
+                className="h-12 w-auto"
               />
-              {/* <span className="text-2xl font-bold text-white">
-                Tutors<span className="text-orange-500">Pool</span>
+              {/*                 <span className="text-2xl font-bold text-white">
+                  Tutors<span className="text-gradient-brand-secondary">Pool</span>
               </span> */}
             </Link>
             <p className="text-gray-300 mb-6 leading-relaxed">

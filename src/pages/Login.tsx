@@ -19,7 +19,7 @@ const Login: React.FC = () => {
           <img 
             src="/logo.png" 
             alt="TutorsPool Logo" 
-            className="h-8 w-auto"
+            className="h-12 w-auto"
           />
           {/* <h1 className="text-2xl font-semibold text-gray-900">Sign in</h1> */}
         </div>

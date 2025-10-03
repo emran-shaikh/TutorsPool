@@ -65,7 +65,7 @@ class ErrorBoundary extends Component<Props, State> {
               <img 
                 src="/logo.png" 
                 alt="TutorsPool Logo" 
-                className="h-8 w-auto"
+                className="h-12 w-auto"
               />
               {/* <span className="text-xl font-bold text-blue-900">
                 Tutors<span className="text-orange-500">Pool</span>

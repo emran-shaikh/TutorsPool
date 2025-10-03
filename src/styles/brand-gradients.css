@@ -1,0 +1,146 @@
+/* TutorsPool Brand Gradients and Colors */
+/* Extracted from logo.png and modern education branding */
+
+:root {
+  /* Primary Brand Colors */
+  --brand-primary: #2C2E71; /* Dark Blue */
+  --brand-secondary: #F47B2F; /* Orange */
+  --brand-accent: #8b5cf6; /* Purple */
+  --brand-success: #10b981; /* Emerald */
+  
+  /* Gradient Variations */
+  --gradient-primary: linear-gradient(135deg, #2C2E71 0%, #F47B2F 100%);
+  --gradient-ocean: linear-gradient(135deg, #2C2E71 0%, #4a5bb8 100%);
+  --gradient-sunset: linear-gradient(135deg, #F47B2F 0%, #ff6b35 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #4facfe 100%);
+  --gradient-warm: linear-gradient(135deg, #F47B2F 0%, #ff9a56 100%);
+  --gradient-professional: linear-gradient(135deg, #2C2E71 0%, #4a5bb8 100%);
+  --gradient-education: linear-gradient(135deg, #2C2E71 0%, #8b5cf6 100%);
+  --gradient-coral: linear-gradient(135deg, #F47B2F 0%, #ff6b35 100%);
+  
+  /* Logo-inspired gradients */
+  --gradient-logo-primary: linear-gradient(135deg, #2C2E71 0%, #F47B2F 100%);
+  --gradient-logo-secondary: linear-gradient(135deg, #F47B2F 0%, #ff9a56 100%);
+  --gradient-logo-accent: linear-gradient(135deg, #2C2E71 0%, #8b5cf6 100%);
+  
+  /* Neutral Colors */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+}
+
+/* Utility Classes */
+.bg-gradient-brand-primary {
+  background: var(--gradient-logo-primary);
+}
+
+.bg-gradient-brand-secondary {
+  background: var(--gradient-logo-secondary);
+}
+
+.bg-gradient-brand-accent {
+  background: var(--gradient-logo-accent);
+}
+
+.bg-gradient-professional {
+  background: var(--gradient-professional);
+}
+
+.bg-gradient-education {
+  background: var(--gradient-education);
+}
+
+.bg-gradient-ocean {
+  background: var(--gradient-ocean);
+}
+
+.bg-gradient-warm {
+  background: var(--gradient-warm);
+}
+
+.bg-gradient-sunset {
+  background: var(--gradient-sunset);
+}
+
+.bg-gradient-coral {
+  background: var(--gradient-coral);
+}
+
+/* Text Gradients */
+.text-gradient-brand-primary {
+  background: var(--gradient-logo-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-brand-secondary {
+  background: var(--gradient-logo-secondary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-brand-accent {
+  background: var(--gradient-logo-accent);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Button Gradients */
+.btn-gradient-primary {
+  background: var(--gradient-logo-primary);
+  color: white;
+  border: none;
+}
+
+.btn-gradient-primary:hover {
+  background: linear-gradient(135deg, #1e3a8a 0%, #ea580c 100%);
+}
+
+.btn-gradient-secondary {
+  background: var(--gradient-logo-secondary);
+  color: white;
+  border: none;
+}
+
+.btn-gradient-secondary:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #ff8c42 100%);
+}
+
+.btn-gradient-accent {
+  background: var(--gradient-logo-accent);
+  color: white;
+  border: none;
+}
+
+.btn-gradient-accent:hover {
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+}
+
+/* Animated Gradients */
+.gradient-animate {
+  background: linear-gradient(-45deg, #2C2E71, #4a5bb8, #F47B2F, #ff6b35);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

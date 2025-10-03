@@ -394,6 +394,23 @@ class ApiClient {
   async healthCheck() {
     return this.request('/health');
   }
+
+  // Availability methods
+  async checkTutorAvailability(tutorId: string, data: { startTime: string; duration: number }) {
+    return this.request(`/tutors/${tutorId}/availability/check`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  async getAvailableTimeSlots(tutorId: string, params: { date: string; duration?: number }) {
+    const queryString = new URLSearchParams();
+    queryString.append('date', params.date);
+    if (params.duration) {
+      queryString.append('duration', params.duration.toString());
+    }
+    return this.request(`/tutors/${tutorId}/availability/slots?${queryString}`);
+  }
 }
 
 // Create and export a singleton instance
@@ -457,6 +474,21 @@ export interface TutorProfile {
   ratingCount?: number;
   createdAt: string;
   user?: User;
+  // In-Person Location Support
+  inPersonLocation?: {
+    enabled: boolean;
+    address?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    zipCode?: string;
+    coordinates?: {
+      latitude: number;
+      longitude: number;
+    };
+    meetingPoint?: string; // e.g., "Starbucks Downtown", "Community Center Room 1"
+    additionalInfo?: string; // Parking instructions, accessibility info, etc.
+  };
 }
 
 export interface StudentProfile {

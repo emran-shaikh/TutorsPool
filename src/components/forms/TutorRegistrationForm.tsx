@@ -43,6 +43,22 @@ const tutorRegistrationSchema = z.object({
     endTimeUTC: z.string(),
     isRecurring: z.boolean().default(true),
   })).min(1, 'Set at least one availability block'),
+  
+  // Step 5: In-Person Location (Optional)
+  inPersonLocation: z.object({
+    enabled: z.boolean().default(false),
+    address: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    country: z.string().optional(),
+    zipCode: z.string().optional(),
+    coordinates: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+    }).optional(),
+    meetingPoint: z.string().optional(),
+    additionalInfo: z.string().optional(),
+  }).optional(),
 });
 
 // Step-specific validation schemas
@@ -73,6 +89,22 @@ const tutorStepSchemas = {
       isRecurring: z.boolean().default(true),
     })).min(1, 'Set at least one availability block'),
   }),
+  5: z.object({
+    inPersonLocation: z.object({
+      enabled: z.boolean().default(false),
+      address: z.string().optional(),
+      city: z.string().optional(),
+      state: z.string().optional(),
+      country: z.string().optional(),
+      zipCode: z.string().optional(),
+      coordinates: z.object({
+        latitude: z.number(),
+        longitude: z.number(),
+      }).optional(),
+      meetingPoint: z.string().optional(),
+      additionalInfo: z.string().optional(),
+    }).optional(),
+  }),
 };
 
 type TutorRegistrationForm = z.infer<typeof tutorRegistrationSchema>;
@@ -82,6 +114,7 @@ const STEPS = [
   { id: 2, title: 'Professional Details', icon: GraduationCap },
   { id: 3, title: 'Subjects & Pricing', icon: DollarSign },
   { id: 4, title: 'Availability', icon: Calendar },
+  { id: 5, title: 'In-Person Location', icon: Upload },
 ];
 
 const SUBJECTS = [
@@ -765,6 +798,125 @@ export const TutorRegistrationForm: React.FC = () => {
                       <Calendar className="mx-auto h-12 w-12 mb-4" />
                       <p>No availability blocks added yet.</p>
                       <p className="text-sm">Click "Add Time Block" to set your availability.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Step 5: In-Person Location */}
+            {currentStep === 5 && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">In-Person Location (Optional)</h3>
+                <p className="text-sm text-muted-foreground">
+                  If you're willing to offer in-person tutoring, please provide your location details.
+                  Students will see this information when booking offline sessions.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="enableInPerson"
+                      checked={watch('inPersonLocation.enabled') || false}
+                      onCheckedChange={(checked) => {
+                        setValue('inPersonLocation.enabled', checked as boolean);
+                        if (!checked) {
+                          // Clear location data if disabled
+                          setValue('inPersonLocation.address', '');
+                          setValue('inPersonLocation.city', '');
+                          setValue('inPersonLocation.state', '');
+                          setValue('inPersonLocation.country', '');
+                          setValue('inPersonLocation.zipCode', '');
+                          setValue('inPersonLocation.meetingPoint', '');
+                          setValue('inPersonLocation.additionalInfo', '');
+                        }
+                      }}
+                    />
+                    <Label htmlFor="enableInPerson">
+                      Enable in-person tutoring at this location
+                    </Label>
+                  </div>
+
+                  {watch('inPersonLocation.enabled') && (
+                    <div className="space-y-4 border rounded-lg p-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="address">Street Address</Label>
+                          <Input
+                            id="address"
+                            {...register('inPersonLocation.address')}
+                            placeholder="123 Main Street"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="city">City</Label>
+                          <Input
+                            id="city"
+                            {...register('inPersonLocation.city')}
+                            placeholder="New York"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="state">State/Province</Label>
+                          <Input
+                            id="state"
+                            {...register('inPersonLocation.state')}
+                            placeholder="NY"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="country">Country</Label>
+                          <Input
+                            id="country"
+                            {...register('inPersonLocation.country')}
+                            placeholder="United States"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="zipCode">Postal Code</Label>
+                          <Input
+                            id="zipCode"
+                            {...register('inPersonLocation.zipCode')}
+                            placeholder="10001"
+                          />
+                        </div>
+
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="meetingPoint">Meeting Point</Label>
+                          <Input
+                            id="meetingPoint"
+                            {...register('inPersonLocation.meetingPoint')}
+                            placeholder="e.g., Starbucks Downtown, Library Conference Room"
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            Specific location where you'll meet students (café, library, etc.)
+                          </p>
+                        </div>
+
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="additionalInfo">Additional Information</Label>
+                          <Textarea
+                            id="additionalInfo"
+                            {...register('inPersonLocation.additionalInfo')}
+                            placeholder="Parking instructions, accessibility info, public transport directions..."
+                            rows={3}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="bg-blue-50 p-3 rounded-lg">
+                        <h4 className="font-medium text-blue-900 mb-2">💡 Location Tips:</h4>
+                        <div className="text-sm text-blue-800 space-y-1">
+                          <p>• Choose a safe, accessible location</p>
+                          <p>• Prefer public places like libraries or cafes</p>
+                          <p>• Include parking and transport info</p>
+                          <p>• Consider accessibility needs</p>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

@@ -592,7 +592,19 @@ app.get('/api/students/stats', authenticateToken, async (req, res) => {
 
 app.post('/api/tutors', authenticateToken, async (req, res) => {
   try {
-    const { headline, bio, hourlyRateCents, currency, yearsExperience, subjects, levels, slug, certifications, availabilityBlocks } = req.body;
+    const { 
+      headline, 
+      bio, 
+      hourlyRateCents, 
+      currency, 
+      yearsExperience, 
+      subjects, 
+      levels, 
+      slug, 
+      certifications, 
+      availabilityBlocks,
+      inPersonLocation 
+    } = req.body;
 
     const profile = {
       userId: req.user?.userId,
@@ -606,6 +618,7 @@ app.post('/api/tutors', authenticateToken, async (req, res) => {
       slug,
       certifications,
       availabilityBlocks: availabilityBlocks || [],
+      inPersonLocation: inPersonLocation || null,
       ratingAvg: 0,
       ratingCount: 0,
     };
@@ -617,6 +630,123 @@ app.post('/api/tutors', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Tutor profile creation error:', error);
     res.status(400).json({ error: 'Failed to create tutor profile' });
+  }
+});
+
+// Check tutor availability
+app.post('/api/tutors/:tutorId/availability/check', async (req, res) => {
+  try {
+    const { tutorId } = req.params;
+    const { startTime, duration } = req.body;
+
+    if (!startTime || !duration) {
+      return res.status(400).json({ error: 'Start time and duration are required' });
+    }
+
+    const startDate = new Date(startTime);
+    if (isNaN(startDate.getTime())) {
+      return res.status(400).json({ error: 'Invalid start time format' });
+    }
+
+    // Simplified availability check - in production would use proper tutor service
+    res.json({ 
+      isAvailable: true,
+      reason: 'Basic availability check - implement full logic in production'
+    });
+  } catch (error) {
+    console.error('Availability check error:', error);
+    res.status(500).json({ error: 'Failed to check availability' });
+  }
+});
+
+// Get available time slots for a tutor
+app.get('/api/tutors/:tutorId/availability/slots', async (req, res) => {
+  try {
+    const { tutorId } = req.params;
+    const { date, duration = 60 } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ error: 'Date is required' });
+    }
+
+    const targetDate = new Date(date as string);
+    if (isNaN(targetDate.getTime())) {
+      return res.status(400).json({ error: 'Invalid date format' });
+    }
+
+    // Generate basic time slots
+    const slots: string[] = [];
+    const baseTime = new Date(targetDate);
+    baseTime.setHours(9, 0, 0, 0);
+    
+    for (let i = 0; i < 8; i++) {
+      const slotTime = new Date(baseTime.getTime() + i * 60 * 60 * 1000);
+      slots.push(slotTime.toISOString());
+    }
+
+    res.json({ slots });
+  } catch (error) {
+    console.error('Available slots error:', error);
+    res.status(500).json({ error: 'Failed to get available slots' });
+  }
+});
+
+// Create Google Meet link for a session
+app.post('/api/google-meet/create-link', authenticateToken, async (req, res) => {
+  try {
+    const { tutorEmail, studentEmail, startTime, endTime, meetingTitle, description } = req.body;
+
+    if (!tutorEmail || !studentEmail || !startTime || !endTime) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      return res.status(400).json({ error: 'Invalid date format' });
+    }
+
+    // Generate Google Meet link
+    const generateMeetCode = () => {
+      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      const generatePart = () => {
+        let part = '';
+        for (let i = 0; i < 3; i++) {
+          part += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return part;
+      };
+      return `${generatePart()}-${generatePart()}-${generatePart()}`;
+    };
+
+    const meetCode = generateMeetCode();
+    const meetingId = `tutorspool-${Date.now()}-${meetCode}`;
+    const meetingLink = `https://meet.google.com/${meetCode}`;
+    const password = Math.random().toString(36).substr(2, 8).toUpperCase();
+
+    const meetingDetails = {
+      meetingId,
+      meetCode,
+      meetingLink,
+      password,
+      instructions: `Welcome to your tutoring session!\n\nMeeting Details:\n📅 Date: ${start.toLocaleDateString()}\n🕐 Time: ${start.toLocaleTimeString()} - ${end.toLocaleTimeString()}\n👨‍🏫 Tutor: ${tutorEmail}\n👨‍🎓 Student: ${studentEmail}\n\nJoin Instructions:\n1. Click the meeting link: ${meetingLink}\n2. Use password if prompted: ${password}\n3. Enable your camera and microphone\n4. Wait for your tutor/student to join\n\n📝 Session Notes:\n${description || 'Please prepare any questions or materials you want to discuss during the session.'}\n\nNeed help? Contact TutorsPool support.`,
+      startTime: start.toISOString(),
+      endTime: end.toISOString(),
+      tutorEmail,
+      studentEmail,
+      createdAt: new Date().toISOString(),
+      title: meetingTitle || `Tutoring Session: ${studentEmail} with ${tutorEmail}`
+    };
+
+    res.status(201).json({
+      success: true,
+      meetingDetails
+    });
+
+  } catch (error) {
+    console.error('Google Meet link creation error:', error);
+    res.status(500).json({ error: 'Failed to create Google Meet link' });
   }
 });
 

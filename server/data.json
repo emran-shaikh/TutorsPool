@@ -1,17 +1,158 @@
 {
   "users": [
     {
-      "id": "user-1",
-      "name": "John Smith",
-      "email": "john@example.com",
-      "phone": "+1234567890",
-      "country": "USA",
-      "timezone": "America/New_York",
+      "name": "Kylynn Mcpherson",
+      "email": "julizoga@mailinator.com",
+      "phone": "+1 (463) 117-7732",
+      "country": "Canada",
+      "timezone": "Asia/Karachi",
       "role": "TUTOR",
+      "id": "user-43",
+      "createdAt": "2025-10-02T18:50:58.886Z",
       "status": "ACTIVE",
-      "createdAt": "2025-09-18T07:11:06.012Z",
-      "approvedAt": "2025-09-18T07:11:06.013Z",
-      "approvedBy": "user-4"
+      "approvedAt": "2025-10-02T18:51:29.403Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Aspen Cooke",
+      "email": "socyse@mailinator.com",
+      "phone": "+1 (306) 832-1907",
+      "country": "Argentina",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-41",
+      "createdAt": "2025-10-02T18:48:56.930Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-02T18:49:19.428Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Levi Gilbert",
+      "email": "tocexi@mailinator.com",
+      "phone": "+1 (126) 738-2128",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-39",
+      "createdAt": "2025-09-19T11:29:24.005Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Cally Doyle",
+      "email": "tyvalicado@mailinator.com",
+      "phone": "+1 (203) 302-4033",
+      "country": "Denmark",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-37",
+      "createdAt": "2025-09-19T08:24:27.513Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T08:24:57.770Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Yvette Coleman",
+      "email": "pigubo@mailinator.com",
+      "phone": "+1 (925) 601-6634",
+      "country": "Nigeria",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-35",
+      "createdAt": "2025-09-19T08:21:20.651Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T08:21:25.562Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Cailin Alvarez",
+      "email": "buhygyli@mailinator.com",
+      "phone": "+1 (128) 281-8103",
+      "country": "Chile",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-31",
+      "createdAt": "2025-09-19T06:12:08.060Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T06:12:12.180Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Priscilla Lang",
+      "email": "cimota@mailinator.com",
+      "phone": "+1 (976) 611-9404",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-29",
+      "createdAt": "2025-09-19T06:06:49.792Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-19T06:06:56.608Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Bree Stanley",
+      "email": "doryzypabo@mailinator.com",
+      "phone": "+1 (393) 154-1719",
+      "country": "Egypt",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-27",
+      "createdAt": "2025-09-18T13:26:52.351Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-18T13:27:23.572Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Rafael Lyons",
+      "email": "memedo@mailinator.com",
+      "phone": "+1 (839) 569-6935",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-21",
+      "createdAt": "2025-09-18T10:41:21.699Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-18T10:41:54.277Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Walker Roach",
+      "email": "kadykeku@mailinator.com",
+      "phone": "+1 (845) 769-6689",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-15",
+      "createdAt": "2025-09-18T07:24:06.653Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-18T07:24:10.665Z",
+      "approvedBy": "user-74",
+      "avatarUrl": null
+    },
+    {
+      "name": "Keiko Sampson",
+      "email": "suze@mailinator.com",
+      "phone": "+1 (346) 916-5879",
+      "country": "Nigeria",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-11",
+      "createdAt": "2025-09-18T07:21:10.519Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-09-18T07:21:20.353Z",
+      "approvedBy": "user-74",
+      "avatarUrl": null
     },
     {
       "id": "user-2",
@@ -53,17 +194,17 @@
       "approvedBy": "system"
     },
     {
-      "id": "user-5",
-      "name": "Pending Tutor",
-      "email": "pending.tutor@example.com",
-      "phone": "+1234567894",
+      "id": "user-1",
+      "name": "John Smith",
+      "email": "john@example.com",
+      "phone": "+1234567890",
       "country": "USA",
       "timezone": "America/New_York",
       "role": "TUTOR",
-      "status": "PENDING",
-      "createdAt": "2025-09-16T07:11:06.013Z",
-      "approvedAt": null,
-      "approvedBy": null
+      "status": "ACTIVE",
+      "createdAt": "2025-09-18T07:11:06.012Z",
+      "approvedAt": "2025-09-18T07:11:06.013Z",
+      "approvedBy": "user-4"
     },
     {
       "id": "user-6",
@@ -79,126 +220,27 @@
       "approvedBy": null
     },
     {
-      "name": "Keiko Sampson",
-      "email": "suze@mailinator.com",
-      "phone": "+1 (346) 916-5879",
-      "country": "Nigeria",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-11",
-      "createdAt": "2025-09-18T07:21:10.519Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-18T07:21:20.353Z",
-      "approvedBy": "user-74",
-      "avatarUrl": null
-    },
-    {
-      "name": "Walker Roach",
-      "email": "kadykeku@mailinator.com",
-      "phone": "+1 (845) 769-6689",
-      "country": "Other",
-      "timezone": "Asia/Karachi",
+      "id": "user-5",
+      "name": "Pending Tutor",
+      "email": "pending.tutor@example.com",
+      "phone": "+1234567894",
+      "country": "USA",
+      "timezone": "America/New_York",
       "role": "TUTOR",
-      "id": "user-15",
-      "createdAt": "2025-09-18T07:24:06.653Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-18T07:24:10.665Z",
-      "approvedBy": "user-74",
-      "avatarUrl": null
+      "status": "PENDING",
+      "createdAt": "2025-09-16T07:11:06.013Z",
+      "approvedAt": null,
+      "approvedBy": null
     },
     {
-      "name": "Rafael Lyons",
-      "email": "memedo@mailinator.com",
-      "phone": "+1 (839) 569-6935",
-      "country": "Other",
+      "name": "Noelle Powers",
+      "email": "sebyme@mailinator.com",
+      "phone": "+1 (825) 591-5593",
+      "country": "South Korea",
       "timezone": "Asia/Karachi",
       "role": "STUDENT",
-      "id": "user-21",
-      "createdAt": "2025-09-18T10:41:21.699Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-18T10:41:54.277Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Bree Stanley",
-      "email": "doryzypabo@mailinator.com",
-      "phone": "+1 (393) 154-1719",
-      "country": "Egypt",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-27",
-      "createdAt": "2025-09-18T13:26:52.351Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-18T13:27:23.572Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Priscilla Lang",
-      "email": "cimota@mailinator.com",
-      "phone": "+1 (976) 611-9404",
-      "country": "United States",
-      "timezone": "Asia/Karachi",
-      "role": "TUTOR",
-      "id": "user-29",
-      "createdAt": "2025-09-19T06:06:49.792Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-19T06:06:56.608Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Cailin Alvarez",
-      "email": "buhygyli@mailinator.com",
-      "phone": "+1 (128) 281-8103",
-      "country": "Chile",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-31",
-      "createdAt": "2025-09-19T06:12:08.060Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-19T06:12:12.180Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Yvette Coleman",
-      "email": "pigubo@mailinator.com",
-      "phone": "+1 (925) 601-6634",
-      "country": "Nigeria",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-35",
-      "createdAt": "2025-09-19T08:21:20.651Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-19T08:21:25.562Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Cally Doyle",
-      "email": "tyvalicado@mailinator.com",
-      "phone": "+1 (203) 302-4033",
-      "country": "Denmark",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-37",
-      "createdAt": "2025-09-19T08:24:27.513Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-09-19T08:24:57.770Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Levi Gilbert",
-      "email": "tocexi@mailinator.com",
-      "phone": "+1 (126) 738-2128",
-      "country": "Other",
-      "timezone": "Asia/Karachi",
-      "role": "TUTOR",
-      "id": "user-39",
-      "createdAt": "2025-09-19T11:29:24.005Z",
+      "id": "user-54",
+      "createdAt": "2025-10-03T08:14:40.172Z",
       "status": "PENDING",
       "approvedAt": null,
       "approvedBy": null,
@@ -347,6 +389,37 @@
       "ratingCount": 0,
       "id": "tutor-40",
       "createdAt": "2025-09-19T11:29:24.020Z"
+    },
+    {
+      "userId": "user-43",
+      "headline": "Qui laboris maxime r",
+      "bio": "Molestiae laborum Molestiae laborum Molestiae laborum eo",
+      "hourlyRateCents": 4400,
+      "currency": "GBP",
+      "yearsExperience": 1992,
+      "subjects": [
+        "Psychology",
+        "Philosophy"
+      ],
+      "levels": [
+        "Middle School (6-8)",
+        "Graduate School"
+      ],
+      "slug": "kylynn-mcpherson",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-44",
+      "createdAt": "2025-10-02T18:50:58.909Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -421,6 +494,30 @@
       "uploads": [],
       "id": "student-38",
       "createdAt": "2025-09-19T08:24:27.528Z"
+    },
+    {
+      "userId": "user-41",
+      "gradeLevel": "College/University",
+      "learningGoals": "Quo est rerum volupt",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 2800,
+      "budgetMax": 9100,
+      "specialRequirements": "Magni similique volu",
+      "uploads": [],
+      "id": "student-42",
+      "createdAt": "2025-10-02T18:48:56.948Z"
+    },
+    {
+      "userId": "user-54",
+      "gradeLevel": "High School (9-12)",
+      "learningGoals": "Fugit nihil aliquip",
+      "preferredMode": "ONLINE",
+      "budgetMin": 7100,
+      "budgetMax": 500,
+      "specialRequirements": "Ducimus fugiat omn",
+      "uploads": [],
+      "id": "student-55",
+      "createdAt": "2025-10-03T08:14:40.204Z"
     }
   ],
   "bookings": [
@@ -555,10 +652,64 @@
       "paymentRequired": true,
       "id": "booking-33",
       "createdAt": "2025-09-19T06:23:23.497Z"
+    },
+    {
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "subjectId": "Do explicabo Quia v",
+      "startAtUTC": "2025-10-02T05:07:00.000Z",
+      "endAtUTC": "2025-10-02T06:07:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 4400,
+      "currency": "GBP",
+      "paymentStatus": "PAID",
+      "paymentRequired": true,
+      "id": "booking-45",
+      "createdAt": "2025-10-02T18:54:14.953Z",
+      "updatedAt": "2025-10-02T18:55:06.559Z",
+      "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "subjectId": "Eu ducimus nemo est",
+      "startAtUTC": "2025-10-03T00:46:00.000Z",
+      "endAtUTC": "2025-10-03T01:46:00.000Z",
+      "status": "CONFIRMED",
+      "priceCents": 4400,
+      "currency": "GBP",
+      "paymentStatus": "PAID",
+      "paymentRequired": true,
+      "id": "booking-47",
+      "createdAt": "2025-10-02T18:56:19.512Z"
+    },
+    {
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "subjectId": "history",
+      "startAtUTC": "2025-10-03T12:00:00.000Z",
+      "endAtUTC": "2025-10-03T14:00:00.000Z",
+      "status": "REFUNDED",
+      "priceCents": 8800,
+      "currency": "USD",
+      "paymentStatus": "REFUNDED",
+      "paymentRequired": true,
+      "id": "booking-50",
+      "createdAt": "2025-10-02T19:02:38.322Z"
     }
   ],
   "learningProgress": {
     "user-21": {
+      "totalGoals": 0,
+      "completedGoals": 0,
+      "totalSessions": 0,
+      "completedSessions": 0,
+      "currentStreak": 0,
+      "totalHours": 0,
+      "recentGoals": [],
+      "upcomingSessions": []
+    },
+    "user-41": {
       "totalGoals": 0,
       "completedGoals": 0,
       "totalSessions": 0,
@@ -630,6 +781,17 @@
       "studentName": "Keiko Sampson",
       "id": "review-19",
       "createdAt": "2025-09-18T07:25:37.963Z",
+      "status": "PENDING"
+    },
+    {
+      "tutorId": "tutor-44",
+      "studentId": "user-41",
+      "bookingId": "booking-45",
+      "rating": 4,
+      "comment": "bmbbmnb",
+      "studentName": "Aspen Cooke",
+      "id": "review-49",
+      "createdAt": "2025-10-02T18:58:49.340Z",
       "status": "PENDING"
     }
   ],
@@ -731,6 +893,83 @@
       },
       "read": false,
       "createdAt": "2025-09-19T06:23:23.500Z"
+    },
+    {
+      "id": "notification-46",
+      "userId": "user-43",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Aspen Cooke has requested a Do explicabo Quia v session with you.",
+      "data": {
+        "bookingId": "booking-45",
+        "studentId": "user-41",
+        "studentName": "Aspen Cooke",
+        "subject": "Do explicabo Quia v",
+        "startAt": "2025-10-02T05:07:00.000Z",
+        "endAt": "2025-10-02T06:07:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-02T18:54:14.955Z"
+    },
+    {
+      "id": "notification-48",
+      "userId": "user-43",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Aspen Cooke has requested a Eu ducimus nemo est session with you.",
+      "data": {
+        "bookingId": "booking-47",
+        "studentId": "user-41",
+        "studentName": "Aspen Cooke",
+        "subject": "Eu ducimus nemo est",
+        "startAt": "2025-10-03T00:46:00.000Z",
+        "endAt": "2025-10-03T01:46:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-02T18:56:19.514Z"
+    },
+    {
+      "id": "notification-51",
+      "userId": "user-43",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Aspen Cooke has requested a history session with you.",
+      "data": {
+        "bookingId": "booking-50",
+        "studentId": "user-41",
+        "studentName": "Aspen Cooke",
+        "subject": "history",
+        "startAt": "2025-10-03T12:00:00.000Z",
+        "endAt": "2025-10-03T14:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-02T19:02:38.323Z"
+    },
+    {
+      "id": "notification-52",
+      "userId": "admin",
+      "type": "NEW_MESSAGE",
+      "title": "New Payment Dispute",
+      "message": "Student Aspen Cooke has created a dispute for payment payment_1759431383975_yrucd69p0",
+      "data": {
+        "disputeId": "dispute_1759431943175_oc4wg12sv",
+        "paymentId": "payment_1759431383975_yrucd69p0"
+      },
+      "read": false,
+      "createdAt": "2025-10-02T19:05:43.176Z"
+    },
+    {
+      "id": "notification-53",
+      "userId": "admin",
+      "type": "NEW_MESSAGE",
+      "title": "New Payment Dispute",
+      "message": "Student Aspen Cooke has created a dispute for payment payment_1759431383975_yrucd69p0",
+      "data": {
+        "disputeId": "dispute_1759431972066_wc0bzftfl",
+        "paymentId": "payment_1759431383975_yrucd69p0"
+      },
+      "read": false,
+      "createdAt": "2025-10-02T19:06:12.067Z"
     }
   ],
   "messages": [],
@@ -785,6 +1024,60 @@
         "tutorAmount": 68.4
       },
       "stripeChargeId": "ch_1758263008798_phjp9cuzy"
+    },
+    {
+      "id": "payment_1759431261470_g13gav66h",
+      "bookingId": "booking-45",
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "amount": 44,
+      "currency": "GBP",
+      "stripePaymentIntentId": "pi_1759431261470_he4vzogsj",
+      "status": "COMPLETED",
+      "createdAt": "2025-10-02T18:54:21.470Z",
+      "updatedAt": "2025-10-02T18:54:23.499Z",
+      "metadata": {
+        "platformFee": 4.4,
+        "tutorAmount": 39.6
+      },
+      "stripeChargeId": "ch_1759431263499_opg3tcy6e"
+    },
+    {
+      "id": "payment_1759431383975_yrucd69p0",
+      "bookingId": "booking-47",
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "amount": 44,
+      "currency": "GBP",
+      "stripePaymentIntentId": "pi_1759431383975_yy9dxqbh7",
+      "status": "COMPLETED",
+      "createdAt": "2025-10-02T18:56:23.975Z",
+      "updatedAt": "2025-10-02T18:56:25.990Z",
+      "metadata": {
+        "platformFee": 4.4,
+        "tutorAmount": 39.6
+      },
+      "stripeChargeId": "ch_1759431385990_afg996yn1"
+    },
+    {
+      "id": "payment_1759431765673_m5qr0hfs1",
+      "bookingId": "booking-50",
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "amount": 38,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_1759431765673_fm7vvkbzu",
+      "status": "REFUNDED",
+      "createdAt": "2025-10-02T19:02:45.673Z",
+      "updatedAt": "2025-10-02T19:03:48.023Z",
+      "metadata": {
+        "platformFee": 3.8000000000000003,
+        "tutorAmount": 34.2
+      },
+      "stripeChargeId": "ch_1759431767701_vw71s8ys4",
+      "refundId": "re_1759431828023_tc0v4vv9c",
+      "refundAmount": 38,
+      "refundReason": "test"
     }
   ],
   "payouts": [
@@ -794,13 +1087,15 @@
       "tutorId": "tutor-1",
       "amount": 40.5,
       "currency": "USD",
-      "status": "PENDING",
+      "status": "PAID",
       "holdUntil": "2025-09-25T07:22:02.363Z",
       "createdAt": "2025-09-18T07:22:02.363Z",
-      "updatedAt": "2025-09-18T07:22:02.363Z",
+      "updatedAt": "2025-10-02T18:58:20.360Z",
       "metadata": {
         "platformFee": 4.5
-      }
+      },
+      "stripeTransferId": "tr_1759431500360_hryxgf493",
+      "paidAt": "2025-10-02T18:58:20.360Z"
     },
     {
       "id": "payout_1758180294531_0f3b96rmz",
@@ -829,6 +1124,50 @@
       "metadata": {
         "platformFee": 7.6000000000000005
       }
+    },
+    {
+      "id": "payout_1759431263499_vvadgyor5",
+      "paymentId": "payment_1759431261470_g13gav66h",
+      "tutorId": "tutor-44",
+      "amount": 39.6,
+      "currency": "GBP",
+      "status": "PAID",
+      "holdUntil": "2025-10-09T18:54:23.499Z",
+      "createdAt": "2025-10-02T18:54:23.499Z",
+      "updatedAt": "2025-10-02T18:57:20.597Z",
+      "metadata": {
+        "platformFee": 4.4
+      },
+      "stripeTransferId": "tr_1759431440597_9eu08h9sz",
+      "paidAt": "2025-10-02T18:57:20.597Z"
+    },
+    {
+      "id": "payout_1759431385990_sk5qdr89h",
+      "paymentId": "payment_1759431383975_yrucd69p0",
+      "tutorId": "tutor-44",
+      "amount": 39.6,
+      "currency": "GBP",
+      "status": "PENDING",
+      "holdUntil": "2025-10-09T18:56:25.990Z",
+      "createdAt": "2025-10-02T18:56:25.990Z",
+      "updatedAt": "2025-10-02T18:56:25.990Z",
+      "metadata": {
+        "platformFee": 4.4
+      }
+    },
+    {
+      "id": "payout_1759431767701_mrib2mhq4",
+      "paymentId": "payment_1759431765673_m5qr0hfs1",
+      "tutorId": "tutor-44",
+      "amount": 34.2,
+      "currency": "USD",
+      "status": "PENDING",
+      "holdUntil": "2025-10-09T19:02:47.701Z",
+      "createdAt": "2025-10-02T19:02:47.701Z",
+      "updatedAt": "2025-10-02T19:02:47.701Z",
+      "metadata": {
+        "platformFee": 3.8000000000000003
+      }
     }
   ],
   "disputes": [
@@ -841,10 +1180,36 @@
       "description": "test",
       "status": "CLOSED",
       "createdAt": "2025-09-18T09:38:20.097Z",
-      "updatedAt": "2025-09-18T09:43:17.463Z",
+      "updatedAt": "2025-10-02T18:58:08.755Z",
       "adminNotes": "ticket closed",
+      "resolution": "STUDENT_WINS"
+    },
+    {
+      "id": "dispute_1759431943175_oc4wg12sv",
+      "paymentId": "payment_1759431383975_yrucd69p0",
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "reason": "jhj",
+      "description": "hjjhjhjgj",
+      "status": "OPEN",
+      "createdAt": "2025-10-02T19:05:43.175Z",
+      "updatedAt": "2025-10-02T19:05:43.175Z",
+      "adminNotes": null,
+      "resolution": null
+    },
+    {
+      "id": "dispute_1759431972066_wc0bzftfl",
+      "paymentId": "payment_1759431383975_yrucd69p0",
+      "studentId": "user-41",
+      "tutorId": "tutor-44",
+      "reason": "tes",
+      "description": "test",
+      "status": "RESOLVED",
+      "createdAt": "2025-10-02T19:06:12.066Z",
+      "updatedAt": "2025-10-02T19:07:59.477Z",
+      "adminNotes": "Dolor sint duis nos",
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 40
+  "lastId": 55
 }

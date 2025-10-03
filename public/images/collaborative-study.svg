@@ -1,0 +1,44 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f3f4f6"/>
+      <stop offset="100%" style="stop-color:#e5e7eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  
+  <!-- Table -->
+  <rect x="80" y="180" width="240" height="40" rx="5" fill="#d1d5db"/>
+  
+  <!-- Students -->
+  <g fill="#8b5cf6">
+    <circle cx="150" cy="160" r="25"/>
+    <rect x="140" y="180" width="20" height="30" rx="10"/>
+  </g>
+  
+  <g fill="#f59e0b">
+    <circle cx="250" cy="160" r="25"/>
+    <rect x="240" y="180" width="20" height="30" rx="10"/>
+  </g>
+  
+  <!-- Teacher -->
+  <g fill="#10b981">
+    <circle cx="200" cy="140" r="30"/>
+    <rect x="185" y="160" width="30" height="35" rx="15"/>
+  </g>
+  
+  <!-- Books/Objects on table -->
+  <rect x="160" y="170" width="15" height="8" fill="#6366f1"/>
+  <rect x="200" y="170" width="15" height="8" fill="#ef4444"/>
+  <rect x="240" y="170" width="15" height="8" fill="#f59e0b"/>
+  
+  <!-- Speech bubbles -->
+  <path d="M 130 120 Q 120 110 130 120 Q 140 110 150 120 Q 160 110 150 120 Q 150 100 140 100 Q 130 100 130 120" fill="#e5e7eb" opacity="0.8"/>
+  <text x="140" y="110" text-anchor="middle" font-size="8" fill="#374151">...</text>
+  
+  <path d="M 290 120 Q 300 110 290 120 Q 280 110 270 120 Q 260 110 270 120 Q 270 100 280 100 Q 290 100 290 120" fill="#e5e7eb" opacity="0.8"/>
+  <text x="280" y="110" text-anchor="middle" font-size="8" fill="#374151">!</text>
+  
+  <!-- Title -->
+  <text x="200" y="260" text-anchor="middle" font-size="16" font-weight="bold" fill="#374151">Collaborative Learning</text>
+</svg>
