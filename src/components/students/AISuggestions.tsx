@@ -47,7 +47,7 @@ export const AISuggestions: React.FC<AISuggestionsProps> = ({ onSubjectSelect })
       
       // Get AI suggestions from backend
       const response = await apiClient.getAISuggestions();
-      setSuggestions(response.data);
+      setSuggestions(response);
       
     } catch (error) {
       console.error('Error generating AI suggestions:', error);

@@ -3471,5 +3471,49 @@
       "serverTime": "2025-10-02T18:55:06.561Z",
       "processId": 9832
     }
+  },
+  {
+    "id": "info_1759486542626_xyu616wzr",
+    "timestamp": "2025-10-03T10:15:42.626Z",
+    "type": "info",
+    "message": "User user-54 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-54",
+      "serverTime": "2025-10-03T10:15:42.626Z",
+      "processId": 15352
+    }
+  },
+  {
+    "id": "info_1759487443307_f10ybsz66",
+    "timestamp": "2025-10-03T10:30:43.307Z",
+    "type": "info",
+    "message": "User user-56 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-56",
+      "serverTime": "2025-10-03T10:30:43.307Z",
+      "processId": 41652
+    }
+  },
+  {
+    "id": "info_1759488739507_t1v7mb0mw",
+    "timestamp": "2025-10-03T10:52:19.507Z",
+    "type": "info",
+    "message": "Booking booking-58 status updated to COMPLETED by tutor user-56",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-56",
+      "bookingId": "booking-58",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-10-03T10:52:19.507Z",
+      "processId": 41652
+    }
   }
 ]

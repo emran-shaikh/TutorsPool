@@ -321,12 +321,31 @@ app.get('/api/students/ai-suggestions', authenticateToken, async (req, res) => {
       return res.status(401).json({ error: 'User not authenticated' });
     }
 
-    // Get student profile
-    const studentProfile = dataManager.getStudentProfileByUserId(userId);
+    // Get user (required)
     const user = dataManager.getUserById(userId);
-    
-    if (!studentProfile || !user) {
-      return res.status(404).json({ error: 'Student profile not found' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if user has student profile, if not create a default one
+    let studentProfile = dataManager.getStudentProfileByUserId(userId);
+    if (!studentProfile) {
+      // Create a default student profile for AI suggestions
+      studentProfile = {
+        id: `student-${userId}`,
+        userId: userId,
+        gradeLevel: 'high-school',
+        learningGoals: 'Academic improvement and skill development',
+        preferredMode: 'ONLINE',
+        interests: ['general-education'],
+        strengths: [],
+        weaknesses: [],
+        careerGoals: [],
+        createdAt: new Date().toISOString()
+      };
+      
+      // Add to data manager
+      dataManager.addStudent(studentProfile);
     }
 
     // Get student's booking history for analysis
@@ -606,6 +625,10 @@ app.post('/api/tutors', authenticateToken, async (req, res) => {
       inPersonLocation 
     } = req.body;
 
+    // Get user info to generate slug if not provided
+    const user = dataManager.getUserById(req.user?.userId || '');
+    const generatedSlug = user ? generateSlug(user.name) : slug;
+
     const profile = {
       userId: req.user?.userId,
       headline,
@@ -615,7 +638,7 @@ app.post('/api/tutors', authenticateToken, async (req, res) => {
       yearsExperience,
       subjects,
       levels,
-      slug,
+      slug: slug || generatedSlug, // Use provided slug or generate one
       certifications,
       availabilityBlocks: availabilityBlocks || [],
       inPersonLocation: inPersonLocation || null,
@@ -1773,10 +1796,39 @@ app.get('/api/tutors/stats', authenticateToken, async (req, res) => {
   }
 });
 
+// Helper function to generate slug from name
+function generateSlug(name: string): string {
+  return name.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Helper function to find tutor by ID or slug
+function findTutorByIdOrSlug(identifier: string) {
+  const tutors = dataManager.getAllTutors();
+  
+  // First try to find by exact ID
+  let tutor = tutors.find(t => t.id === identifier);
+  
+  if (!tutor) {
+    // If not found by ID, try to find by slug
+    tutor = tutors.find(t => {
+      const user = dataManager.getUserById(t.userId);
+      if (!user) return false;
+      const slug = generateSlug(user.name);
+      return slug === identifier;
+    });
+  }
+  
+  return tutor;
+}
+
 app.get('/api/tutors/:tutorId', (req, res) => {
   try {
     const { tutorId } = req.params;
-    const tutor = dataManager.getAllTutors().find(t => t.id === tutorId);
+    const tutor = findTutorByIdOrSlug(tutorId);
     
     if (!tutor) {
       return res.status(404).json({ error: 'Tutor not found' });
@@ -1789,6 +1841,7 @@ app.get('/api/tutors/:tutorId', (req, res) => {
 
     res.json({
       ...tutor,
+      slug: generateSlug(user.name), // Include slug in response
       user: {
         id: user.id,
         name: user.name,

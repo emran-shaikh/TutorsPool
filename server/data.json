@@ -241,9 +241,23 @@
       "role": "STUDENT",
       "id": "user-54",
       "createdAt": "2025-10-03T08:14:40.172Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-03T10:15:42.623Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Clare Powers",
+      "email": "xycyfomuzu@mailinator.com",
+      "phone": "+1 (298) 639-5874",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-56",
+      "createdAt": "2025-10-03T10:29:55.371Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-03T10:30:43.303Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     }
   ],
@@ -419,6 +433,39 @@
       "ratingCount": 0,
       "id": "tutor-44",
       "createdAt": "2025-10-02T18:50:58.909Z",
+      "status": "ACTIVE"
+    },
+    {
+      "userId": "user-56",
+      "headline": "Vel sequi enim id pe",
+      "bio": "Et suscipit quia con gggggggggggggggggggggdfgfhfdghdjgdghjdjdghjgdhj",
+      "hourlyRateCents": 800,
+      "currency": "GBP",
+      "yearsExperience": 2008,
+      "subjects": [
+        "Physics",
+        "English",
+        "Geography"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Graduate School"
+      ],
+      "slug": "clare-powers",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-57",
+      "createdAt": "2025-10-03T10:29:55.385Z",
       "status": "ACTIVE"
     }
   ],
@@ -696,6 +743,22 @@
       "paymentRequired": true,
       "id": "booking-50",
       "createdAt": "2025-10-02T19:02:38.322Z"
+    },
+    {
+      "studentId": "user-54",
+      "tutorId": "tutor-57",
+      "subjectId": "biology",
+      "startAtUTC": "2025-10-03T09:00:00.000Z",
+      "endAtUTC": "2025-10-03T10:00:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 800,
+      "currency": "USD",
+      "paymentStatus": "PAID",
+      "paymentRequired": true,
+      "id": "booking-58",
+      "createdAt": "2025-10-03T10:48:02.879Z",
+      "updatedAt": "2025-10-03T10:52:19.503Z",
+      "statusReason": "Session completed"
     }
   ],
   "learningProgress": {
@@ -710,6 +773,16 @@
       "upcomingSessions": []
     },
     "user-41": {
+      "totalGoals": 0,
+      "completedGoals": 0,
+      "totalSessions": 0,
+      "completedSessions": 0,
+      "currentStreak": 0,
+      "totalHours": 0,
+      "recentGoals": [],
+      "upcomingSessions": []
+    },
+    "user-54": {
       "totalGoals": 0,
       "completedGoals": 0,
       "totalSessions": 0,
@@ -792,6 +865,17 @@
       "studentName": "Aspen Cooke",
       "id": "review-49",
       "createdAt": "2025-10-02T18:58:49.340Z",
+      "status": "PENDING"
+    },
+    {
+      "tutorId": "tutor-57",
+      "studentId": "user-54",
+      "bookingId": "booking-58",
+      "rating": 5,
+      "comment": "Excellent",
+      "studentName": "Noelle Powers",
+      "id": "review-60",
+      "createdAt": "2025-10-03T10:52:55.496Z",
       "status": "PENDING"
     }
   ],
@@ -970,6 +1054,23 @@
       },
       "read": false,
       "createdAt": "2025-10-02T19:06:12.067Z"
+    },
+    {
+      "id": "notification-59",
+      "userId": "user-56",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Noelle Powers has requested a biology session with you.",
+      "data": {
+        "bookingId": "booking-58",
+        "studentId": "user-54",
+        "studentName": "Noelle Powers",
+        "subject": "biology",
+        "startAt": "2025-10-03T09:00:00.000Z",
+        "endAt": "2025-10-03T10:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-03T10:48:02.881Z"
     }
   ],
   "messages": [],
@@ -1078,6 +1179,23 @@
       "refundId": "re_1759431828023_tc0v4vv9c",
       "refundAmount": 38,
       "refundReason": "test"
+    },
+    {
+      "id": "payment_1759488486356_i17d5kts4",
+      "bookingId": "booking-58",
+      "studentId": "user-54",
+      "tutorId": "tutor-57",
+      "amount": 88,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_1759488486356_fltnb9el4",
+      "status": "COMPLETED",
+      "createdAt": "2025-10-03T10:48:06.356Z",
+      "updatedAt": "2025-10-03T10:48:08.372Z",
+      "metadata": {
+        "platformFee": 8.8,
+        "tutorAmount": 79.2
+      },
+      "stripeChargeId": "ch_1759488488372_aieq3qfb0"
     }
   ],
   "payouts": [
@@ -1168,6 +1286,20 @@
       "metadata": {
         "platformFee": 3.8000000000000003
       }
+    },
+    {
+      "id": "payout_1759488488372_qvoqsd7ka",
+      "paymentId": "payment_1759488486356_i17d5kts4",
+      "tutorId": "tutor-57",
+      "amount": 79.2,
+      "currency": "USD",
+      "status": "PENDING",
+      "holdUntil": "2025-10-10T10:48:08.372Z",
+      "createdAt": "2025-10-03T10:48:08.372Z",
+      "updatedAt": "2025-10-03T10:48:08.372Z",
+      "metadata": {
+        "platformFee": 8.8
+      }
     }
   ],
   "disputes": [
@@ -1211,5 +1343,5 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 55
+  "lastId": 60
 }
