@@ -266,6 +266,48 @@
       "approvedAt": "2025-10-03T10:30:43.303Z",
       "approvedBy": "user-4",
       "avatarUrl": null
+    },
+    {
+      "name": "Meredith Gates",
+      "email": "cary@mailinator.com",
+      "phone": "+1 (388) 272-9681",
+      "country": "Sweden",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-61",
+      "createdAt": "2025-10-07T10:25:11.522Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T10:28:30.779Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Elaine Wells",
+      "email": "meryhupy@mailinator.com",
+      "phone": "+1 (881) 621-4747",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-63",
+      "createdAt": "2025-10-07T10:29:20.992Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T10:31:50.564Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Natalie Hughes",
+      "email": "gyjudyk@mailinator.com",
+      "phone": "+1 (131) 216-3419",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-65",
+      "createdAt": "2025-10-07T10:31:31.413Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T10:31:49.742Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -474,6 +516,38 @@
       "id": "tutor-57",
       "createdAt": "2025-10-03T10:29:55.385Z",
       "status": "ACTIVE"
+    },
+    {
+      "userId": "user-65",
+      "headline": "Numquam sunt anim eo",
+      "bio": "Architecto quae et hArchitecto quae et hArchitecto quae et hArchitecto quae et h",
+      "hourlyRateCents": 600,
+      "currency": "GBP",
+      "yearsExperience": 1974,
+      "subjects": [
+        "Chemistry",
+        "Literature"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "natalie-hughes",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-66",
+      "createdAt": "2025-10-07T10:31:31.452Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -572,6 +646,30 @@
       "uploads": [],
       "id": "student-55",
       "createdAt": "2025-10-03T08:14:40.204Z"
+    },
+    {
+      "userId": "user-61",
+      "gradeLevel": "Professional Development",
+      "learningGoals": "Eum dolor illo est ",
+      "preferredMode": "ONLINE",
+      "budgetMin": 5500,
+      "budgetMax": 5200,
+      "specialRequirements": "Velit mollit consequ",
+      "uploads": [],
+      "id": "student-62",
+      "createdAt": "2025-10-07T10:25:11.543Z"
+    },
+    {
+      "userId": "user-63",
+      "gradeLevel": "Elementary (K-5)",
+      "learningGoals": "Vitae laudantium un",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 7300,
+      "budgetMax": 3400,
+      "specialRequirements": "Quam occaecat iure s",
+      "uploads": [],
+      "id": "student-64",
+      "createdAt": "2025-10-07T10:29:21.002Z"
     }
   ],
   "bookings": [
@@ -771,6 +869,22 @@
       "id": "booking-58",
       "createdAt": "2025-10-03T10:48:02.879Z",
       "updatedAt": "2025-10-03T10:52:19.503Z",
+      "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-63",
+      "tutorId": "tutor-66",
+      "subjectId": "math",
+      "startAtUTC": "2025-10-07T12:00:00.000Z",
+      "endAtUTC": "2025-10-07T14:00:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 1200,
+      "currency": "USD",
+      "paymentStatus": "PAID",
+      "paymentRequired": true,
+      "id": "booking-67",
+      "createdAt": "2025-10-07T10:33:33.243Z",
+      "updatedAt": "2025-10-07T10:35:05.694Z",
       "statusReason": "Session completed"
     }
   ],
@@ -1085,6 +1199,23 @@
       "read": true,
       "createdAt": "2025-10-03T10:48:02.881Z",
       "readAt": "2025-10-03T10:58:37.615Z"
+    },
+    {
+      "id": "notification-68",
+      "userId": "user-65",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Elaine Wells has requested a math session with you.",
+      "data": {
+        "bookingId": "booking-67",
+        "studentId": "user-63",
+        "studentName": "Elaine Wells",
+        "subject": "math",
+        "startAt": "2025-10-07T12:00:00.000Z",
+        "endAt": "2025-10-07T14:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-07T10:33:33.244Z"
     }
   ],
   "messages": [],
@@ -1210,6 +1341,23 @@
         "tutorAmount": 79.2
       },
       "stripeChargeId": "ch_1759488488372_aieq3qfb0"
+    },
+    {
+      "id": "payment_1759833216701_syvc4mi3o",
+      "bookingId": "booking-67",
+      "studentId": "user-63",
+      "tutorId": "tutor-66",
+      "amount": 44,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_1759833216701_0efh7r7iv",
+      "status": "COMPLETED",
+      "createdAt": "2025-10-07T10:33:36.701Z",
+      "updatedAt": "2025-10-07T10:33:38.733Z",
+      "metadata": {
+        "platformFee": 4.4,
+        "tutorAmount": 39.6
+      },
+      "stripeChargeId": "ch_1759833218733_gqz2yd6xw"
     }
   ],
   "payouts": [
@@ -1316,6 +1464,22 @@
       },
       "stripeTransferId": "tr_1759489140417_dr5azf222",
       "paidAt": "2025-10-03T10:59:00.417Z"
+    },
+    {
+      "id": "payout_1759833218733_3e1lx8wi2",
+      "paymentId": "payment_1759833216701_syvc4mi3o",
+      "tutorId": "tutor-66",
+      "amount": 39.6,
+      "currency": "USD",
+      "status": "PAID",
+      "holdUntil": "2025-10-14T10:33:38.733Z",
+      "createdAt": "2025-10-07T10:33:38.733Z",
+      "updatedAt": "2025-10-07T10:37:13.964Z",
+      "metadata": {
+        "platformFee": 4.4
+      },
+      "stripeTransferId": "tr_1759833433964_ecj231mey",
+      "paidAt": "2025-10-07T10:37:13.964Z"
     }
   ],
   "disputes": [
@@ -1359,5 +1523,5 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 60
+  "lastId": 68
 }
