@@ -5,15 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
+    "build:production": "NODE_ENV=production tsc && vite build --mode production",
     "vercel-build": "vite build --mode production",
-    "build:vercel": "vite build --mode production && npm run server:build",
+    "build:vercel": "vite build --mode production",
     "server:dev": "tsx watch server/index.ts",
     "server:start": "node dist-server/index.js",
     "server:build": "tsc -p tsconfig.server.json",
     "dev:all": "concurrently \"npm:server:dev\" \"npm:dev\"",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
@@ -24,8 +27,9 @@
     "production": "NODE_ENV=production npm run start",
     "security:check": "echo 'Checking for hardcoded secrets...' && node -e \"const fs=require('fs'); const files = fs.readdirSync('src').filter(f => f.endsWith('.ts') || f.endsWith('.tsx')); const hasSecrets = files.some(f => fs.readFileSync('src/'+f, 'utf8').match(/AIzaSy|sk_live|sk_test/)); if(hasSecrets) { console.error('❌ Found hardcoded secrets!'); process.exit(1); } else console.log('✅ No hardcoded secrets found');\"",
     "firebase:test": "tsx -e \"import('./server/services/firebaseService.js').then(({firebaseService}) => console.log('Firebase configured:', firebaseService.isConfigured()))\"",
-    "deploy:secure": "npm run security:check && npm run build && npm run firebase:test",
-    "install:ai": "npm install openai"
+    "deploy:check": "npm run type-check && npm run lint && npm run security:check",
+    "deploy:build": "npm run deploy:check && npm run build:production",
+    "deploy:vercel": "npm run deploy:check && vercel --prod"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",

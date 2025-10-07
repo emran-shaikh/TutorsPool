@@ -12,7 +12,7 @@
       "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
-        "runtime": "nodejs18.x"
+        "runtime": "nodejs20.x"
       }
     }
   ],
@@ -79,9 +79,11 @@
   ],
   "functions": {
     "api/index.js": {
-      "maxDuration": 30
+      "maxDuration": 60,
+      "memory": 1024
     }
   },
+  "regions": ["iad1"],
   "env": {
     "NODE_ENV": "production"
   }

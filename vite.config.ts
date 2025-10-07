@@ -24,17 +24,25 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     chunkSizeWarningLimit: 1500, // Increase chunk size warning limit to 1500kb
-    target: 'esnext',
+    target: 'es2015',
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: mode === 'production',
         drop_debugger: mode === 'production',
-        pure_funcs: mode === 'production' ? ['console.log', 'console.info'] : [],
+        pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
+        passes: 2,
+      },
+      mangle: {
+        safari10: true,
+      },
+      format: {
+        comments: false,
       },
     },
     sourcemap: mode !== 'production',
     reportCompressedSize: false,
+    assetsInlineLimit: 4096, // 4kb - inline smaller assets as base64
     rollupOptions: {
       output: {
         manualChunks: (id) => {
