@@ -4,13 +4,15 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
+import { PerformanceMonitor } from "@/components/PerformanceMonitor";
+import { ChatBotProvider } from "@/components/chatbot/ChatBotProvider";
+import ChatBot from "@/components/chatbot/ChatBot";
 import React, { Suspense } from 'react';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import FloatingChat from "@/components/chat/FloatingChat";
 import LandingPage from "./pages/LandingPage";
 import Subjects from "./pages/Subjects";
 import About from "./pages/About";
@@ -55,10 +57,12 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <AuthProvider>
-          <BrowserRouter>
-            <FloatingChat />
-            <Suspense fallback={<div className="p-6">Loading...</div>}>
+        <ChatBotProvider>
+          <AuthProvider>
+            <PerformanceMonitor />
+            <BrowserRouter>
+              <ChatBot />
+              <Suspense fallback={<div className="p-6">Loading...</div>}>
               <Routes>
                 {/* Public Pages */}
                 <Route path="/" element={<LandingPage />} />
@@ -101,9 +105,10 @@ const App = () => (
                 {/* 404 Route */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </Suspense>
-          </BrowserRouter>
-        </AuthProvider>
+              </Suspense>
+            </BrowserRouter>
+          </AuthProvider>
+        </ChatBotProvider>
       </TooltipProvider>
     </QueryClientProvider>
   </ThemeProvider>

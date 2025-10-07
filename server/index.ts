@@ -24,7 +24,13 @@ declare global {
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 5174;
 
-app.use(cors());
+// CORS configuration
+app.use(cors({
+  origin: ["http://localhost:5173", "http://localhost:5175", "http://localhost:8080", "http://localhost:3000"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 
 // Debug middleware to log all requests
@@ -46,10 +52,16 @@ dataManager.initializeSampleData();
 
 // Role middleware is now imported from ./middleware/authMiddleware
 
+// Import AI Chat routes
+import aiChatRouter from './routes/aiChat';
+
 // Health check
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, timestamp: new Date().toISOString() });
 });
+
+// AI Chatbot routes
+app.use('/api/ai-chat', aiChatRouter);
 
 // Reset sample data endpoint (for development)
 app.post('/api/admin/reset-sample-data', authenticateToken, requireRole('ADMIN'), async (req, res) => {
@@ -3122,8 +3134,9 @@ const server = createServer(app);
 // Initialize Socket.IO
 const io = new SocketIOServer(server, {
   cors: {
-    origin: "http://localhost:8080",
-    methods: ["GET", "POST"]
+    origin: ["http://localhost:5173", "http://localhost:5175", "http://localhost:8080"],
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 

@@ -3728,5 +3728,76 @@
       "serverTime": "2025-10-07T10:35:05.696Z",
       "processId": 6668
     }
+  },
+  {
+    "id": "info_1759858167483_5ho4oilh6",
+    "timestamp": "2025-10-07T17:29:27.483Z",
+    "type": "info",
+    "message": "User user-69 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-69",
+      "serverTime": "2025-10-07T17:29:27.483Z",
+      "processId": 22896
+    }
+  },
+  {
+    "id": "info_1759858223906_gxchbkwfi",
+    "timestamp": "2025-10-07T17:30:23.906Z",
+    "type": "info",
+    "message": "User user-71 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-71",
+      "serverTime": "2025-10-07T17:30:23.906Z",
+      "processId": 22896
+    }
+  },
+  {
+    "id": "info_1759858358470_ne34e7w4k",
+    "timestamp": "2025-10-07T17:32:38.470Z",
+    "type": "info",
+    "message": "Booking booking-73 status updated to COMPLETED by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-4",
+      "bookingId": "booking-73",
+      "newStatus": "COMPLETED",
+      "serverTime": "2025-10-07T17:32:38.470Z",
+      "processId": 22896
+    }
+  },
+  {
+    "id": "info_1759866172691_jaljz0r1c",
+    "timestamp": "2025-10-07T19:42:52.691Z",
+    "type": "info",
+    "message": "User user-76 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-76",
+      "serverTime": "2025-10-07T19:42:52.691Z",
+      "processId": 8936
+    }
+  },
+  {
+    "id": "info_1759866220796_hzovb37th",
+    "timestamp": "2025-10-07T19:43:40.796Z",
+    "type": "info",
+    "message": "User user-78 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-78",
+      "serverTime": "2025-10-07T19:43:40.796Z",
+      "processId": 8936
+    }
   }
 ]

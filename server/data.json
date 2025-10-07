@@ -308,6 +308,62 @@
       "approvedAt": "2025-10-07T10:31:49.742Z",
       "approvedBy": "user-4",
       "avatarUrl": null
+    },
+    {
+      "name": "Elliott Whitney",
+      "email": "gyhesimo@mailinator.com",
+      "phone": "+1 (144) 321-6402",
+      "country": "UAE",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-69",
+      "createdAt": "2025-10-07T17:29:16.558Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T17:29:27.480Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Judith Beach",
+      "email": "vorazelo@mailinator.com",
+      "phone": "+1 (814) 815-8035",
+      "country": "Canada",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-71",
+      "createdAt": "2025-10-07T17:30:11.512Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T17:30:23.904Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Maris Oneal",
+      "email": "nofonyraxy@mailinator.com",
+      "phone": "+1 (149) 333-5161",
+      "country": "Mexico",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-76",
+      "createdAt": "2025-10-07T19:42:40.292Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T19:42:52.689Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Carson Booth",
+      "email": "dabudowit@mailinator.com",
+      "phone": "+1 (809) 394-4447",
+      "country": "Canada",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-78",
+      "createdAt": "2025-10-07T19:43:29.132Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T19:43:40.793Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -548,6 +604,68 @@
       "id": "tutor-66",
       "createdAt": "2025-10-07T10:31:31.452Z",
       "status": "ACTIVE"
+    },
+    {
+      "userId": "user-71",
+      "headline": "Amet sapiente ex ni",
+      "bio": "Commodi id quo dolorCommodi id quo dolorCommodi id quo dolorCommodi id quo dolor",
+      "hourlyRateCents": 1000,
+      "currency": "GBP",
+      "yearsExperience": 2018,
+      "subjects": [
+        "Statistics",
+        "Marketing"
+      ],
+      "levels": [
+        "High School (9-12)"
+      ],
+      "slug": "judith-beach",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-72",
+      "createdAt": "2025-10-07T17:30:11.524Z",
+      "status": "ACTIVE"
+    },
+    {
+      "userId": "user-78",
+      "headline": "Ab minima repudianda",
+      "bio": "Eiusmod dolore sed eEiusmod dolore sed eEiusmod dolore sed eEiusmod dolore sed eEiusmod dolore sed e",
+      "hourlyRateCents": 9600,
+      "currency": "USD",
+      "yearsExperience": 1978,
+      "subjects": [
+        "Economics",
+        "Programming"
+      ],
+      "levels": [
+        "High School (9-12)"
+      ],
+      "slug": "carson-booth",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-79",
+      "createdAt": "2025-10-07T19:43:29.155Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -670,6 +788,30 @@
       "uploads": [],
       "id": "student-64",
       "createdAt": "2025-10-07T10:29:21.002Z"
+    },
+    {
+      "userId": "user-69",
+      "gradeLevel": "Middle School (6-8)",
+      "learningGoals": "Cupiditate excepteur",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 5600,
+      "budgetMax": 4700,
+      "specialRequirements": "Deleniti voluptates ",
+      "uploads": [],
+      "id": "student-70",
+      "createdAt": "2025-10-07T17:29:16.572Z"
+    },
+    {
+      "userId": "user-76",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Rem aliqua Debitis ",
+      "preferredMode": "ONLINE",
+      "budgetMin": 9500,
+      "budgetMax": 6400,
+      "specialRequirements": "Mollit cillum harum ",
+      "uploads": [],
+      "id": "student-77",
+      "createdAt": "2025-10-07T19:42:40.306Z"
     }
   ],
   "bookings": [
@@ -886,6 +1028,22 @@
       "createdAt": "2025-10-07T10:33:33.243Z",
       "updatedAt": "2025-10-07T10:35:05.694Z",
       "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-69",
+      "tutorId": "tutor-72",
+      "subjectId": "economics",
+      "startAtUTC": "2025-10-07T07:00:00.000Z",
+      "endAtUTC": "2025-10-07T08:00:00.000Z",
+      "status": "COMPLETED",
+      "priceCents": 1000,
+      "currency": "USD",
+      "paymentStatus": "PAID",
+      "paymentRequired": true,
+      "id": "booking-73",
+      "createdAt": "2025-10-07T17:31:03.188Z",
+      "updatedAt": "2025-10-07T17:32:38.468Z",
+      "statusReason": null
     }
   ],
   "learningProgress": {
@@ -910,6 +1068,16 @@
       "upcomingSessions": []
     },
     "user-54": {
+      "totalGoals": 0,
+      "completedGoals": 0,
+      "totalSessions": 0,
+      "completedSessions": 0,
+      "currentStreak": 0,
+      "totalHours": 0,
+      "recentGoals": [],
+      "upcomingSessions": []
+    },
+    "user-69": {
       "totalGoals": 0,
       "completedGoals": 0,
       "totalSessions": 0,
@@ -1003,6 +1171,17 @@
       "studentName": "Noelle Powers",
       "id": "review-60",
       "createdAt": "2025-10-03T10:52:55.496Z",
+      "status": "PENDING"
+    },
+    {
+      "tutorId": "tutor-72",
+      "studentId": "user-69",
+      "bookingId": "booking-73",
+      "rating": 1,
+      "comment": "Not good",
+      "studentName": "Elliott Whitney",
+      "id": "review-75",
+      "createdAt": "2025-10-07T17:33:08.318Z",
       "status": "PENDING"
     }
   ],
@@ -1216,6 +1395,23 @@
       },
       "read": false,
       "createdAt": "2025-10-07T10:33:33.244Z"
+    },
+    {
+      "id": "notification-74",
+      "userId": "user-71",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Elliott Whitney has requested a economics session with you.",
+      "data": {
+        "bookingId": "booking-73",
+        "studentId": "user-69",
+        "studentName": "Elliott Whitney",
+        "subject": "economics",
+        "startAt": "2025-10-07T07:00:00.000Z",
+        "endAt": "2025-10-07T08:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-07T17:31:03.190Z"
     }
   ],
   "messages": [],
@@ -1358,6 +1554,23 @@
         "tutorAmount": 39.6
       },
       "stripeChargeId": "ch_1759833218733_gqz2yd6xw"
+    },
+    {
+      "id": "payment_1759858266030_jmcy4ccgu",
+      "bookingId": "booking-73",
+      "studentId": "user-69",
+      "tutorId": "tutor-72",
+      "amount": 37.5,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_1759858266030_fr0to4wjv",
+      "status": "COMPLETED",
+      "createdAt": "2025-10-07T17:31:06.030Z",
+      "updatedAt": "2025-10-07T17:31:08.046Z",
+      "metadata": {
+        "platformFee": 3.75,
+        "tutorAmount": 33.75
+      },
+      "stripeChargeId": "ch_1759858268046_j26dl0k9w"
     }
   ],
   "payouts": [
@@ -1480,6 +1693,20 @@
       },
       "stripeTransferId": "tr_1759833433964_ecj231mey",
       "paidAt": "2025-10-07T10:37:13.964Z"
+    },
+    {
+      "id": "payout_1759858268046_c9if1hk78",
+      "paymentId": "payment_1759858266030_jmcy4ccgu",
+      "tutorId": "tutor-72",
+      "amount": 33.75,
+      "currency": "USD",
+      "status": "PENDING",
+      "holdUntil": "2025-10-14T17:31:08.046Z",
+      "createdAt": "2025-10-07T17:31:08.046Z",
+      "updatedAt": "2025-10-07T17:31:08.046Z",
+      "metadata": {
+        "platformFee": 3.75
+      }
     }
   ],
   "disputes": [
@@ -1523,5 +1750,5 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 68
+  "lastId": 79
 }

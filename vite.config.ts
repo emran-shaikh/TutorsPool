@@ -14,6 +14,9 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react()
   ].filter(Boolean),
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -27,8 +30,11 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: mode === 'production',
         drop_debugger: mode === 'production',
+        pure_funcs: mode === 'production' ? ['console.log', 'console.info'] : [],
       },
     },
+    sourcemap: mode !== 'production',
+    reportCompressedSize: false,
     rollupOptions: {
       output: {
         manualChunks: (id) => {

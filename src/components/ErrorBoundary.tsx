@@ -1,10 +1,10 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { errorLogger } from '@/lib/errorLogger';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
 interface State {
@@ -14,107 +14,97 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false };
+  public state: State = {
+    hasError: false
+  };
+
+  public static getDerivedStateFromError(error: Error): State {
+    // Update state so the next render will show the fallback UI
+    return { hasError: true, error };
   }
 
-  static getDerivedStateFromError(error: Error): State {
-    return {
-      hasError: true,
-      error,
-    };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log error to our error logging system
-    errorLogger.logError({
-      message: error.message,
-      stack: error.stack,
-      component: 'ErrorBoundary',
-      action: 'component_did_catch',
-      metadata: {
-        componentStack: errorInfo.componentStack,
-        errorBoundary: true,
-      }
-    });
-
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    
     this.setState({
       error,
-      errorInfo,
+      errorInfo
     });
 
-    // Call custom error handler if provided
-    if (this.props.onError) {
-      this.props.onError(error, errorInfo);
+    // Log error to external service in production
+    if (process.env.NODE_ENV === 'production') {
+      // You can integrate with services like Sentry, LogRocket, etc.
+      console.error('Production error:', {
+        error: error.message,
+        stack: error.stack,
+        componentStack: errorInfo.componentStack
+      });
     }
   }
 
-  render() {
+  private handleReset = () => {
+    this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+  };
+
+  private handleReload = () => {
+    window.location.reload();
+  };
+
+  public render() {
     if (this.state.hasError) {
-      // Custom fallback UI
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
-      // Default fallback UI
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
-            <div className="flex items-center justify-center space-x-3 mb-6">
-              <img 
-                src="/logo.png" 
-                alt="TutorsPool Logo" 
-                className="h-12 w-auto"
-              />
-              {/* <span className="text-xl font-bold text-blue-900">
-                Tutors<span className="text-orange-500">Pool</span>
-              </span> */}
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+          <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
+            <div className="flex justify-center mb-4">
+              <AlertTriangle className="h-12 w-12 text-red-500" />
             </div>
-            <div className="flex items-center mb-4">
-              <div className="flex-shrink-0">
-                <svg className="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-lg font-medium text-gray-900">
-                  Something went wrong
-                </h3>
-              </div>
-            </div>
-            <div className="mb-4">
-              <p className="text-sm text-gray-600">
-                We're sorry, but something unexpected happened. Our team has been notified and is working to fix this issue.
-              </p>
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => window.location.reload()}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Reload Page
-              </button>
-              <button
-                onClick={() => this.setState({ hasError: false, error: undefined, errorInfo: undefined })}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Try Again
-              </button>
-            </div>
+            
+            <h1 className="text-xl font-semibold text-gray-900 mb-2">
+              Something went wrong
+            </h1>
+            
+            <p className="text-gray-600 mb-6">
+              We're sorry, but something unexpected happened. Please try refreshing the page or contact support if the problem persists.
+            </p>
+
             {process.env.NODE_ENV === 'development' && this.state.error && (
-              <details className="mt-4">
-                <summary className="text-sm text-gray-500 cursor-pointer">Error Details (Development)</summary>
-                <pre className="mt-2 text-xs text-gray-600 bg-gray-100 p-2 rounded overflow-auto">
-                  {this.state.error.stack}
+              <details className="mb-6 text-left">
+                <summary className="cursor-pointer text-sm text-gray-500 mb-2">
+                  Error Details (Development)
+                </summary>
+                <pre className="text-xs bg-gray-100 p-3 rounded overflow-auto max-h-32">
+                  {this.state.error.message}
+                  {this.state.error.stack && '\n\n' + this.state.error.stack}
                 </pre>
-                {this.state.errorInfo && (
-                  <pre className="mt-2 text-xs text-gray-600 bg-gray-100 p-2 rounded overflow-auto">
-                    {this.state.errorInfo.componentStack}
-                  </pre>
-                )}
               </details>
             )}
+
+            <div className="space-y-3">
+              <Button 
+                onClick={this.handleReset}
+                className="w-full"
+                variant="default"
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Try Again
+              </Button>
+              
+              <Button 
+                onClick={this.handleReload}
+                className="w-full"
+                variant="outline"
+              >
+                Reload Page
+              </Button>
+            </div>
+
+            <p className="text-xs text-gray-500 mt-4">
+              If this problem continues, please contact support with the error details above.
+            </p>
           </div>
         </div>
       );
