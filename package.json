@@ -32,7 +32,6 @@
     "deploy:vercel": "npm run deploy:check && vercel --prod"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^6.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.4",
@@ -88,7 +87,7 @@
     "@types/react-dom": "^19.0.5",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-swc": "^3.8.1",
-    "@vitest/ui": "^2.2.0",
+    "@vitest/ui": "^2.1.0",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
