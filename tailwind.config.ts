@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
-import typography from "@tailwindcss/typography";
 
 export default {
   darkMode: ["class"],
@@ -98,17 +97,9 @@ export default {
         'fade-in': 'fade-in 0.3s ease-out',
         'slide-in': 'slide-in 0.3s ease-out',
       },
-      typography: {
-        DEFAULT: {
-          css: {
-            maxWidth: 'none',
-          },
-        },
-      },
     }
   },
   plugins: [
     animate,
-    typography,
   ],
 } satisfies Config;
