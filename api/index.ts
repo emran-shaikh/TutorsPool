@@ -267,6 +267,145 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  if (pathname === '/api/tutors/profile') {
+    res.status(200).json({
+      success: true,
+      profile: {
+        id: 'tutor-1',
+        name: 'Dr. Sarah Johnson',
+        email: 'sarah.johnson@example.com',
+        role: 'TUTOR',
+        headline: 'Mathematics & Physics Expert',
+        bio: 'PhD in Mathematics with 10+ years of teaching experience. Specialized in calculus, algebra, and physics.',
+        subjects: ['Mathematics', 'Physics', 'Statistics'],
+        levels: ['High School', 'University', 'Graduate'],
+        hourlyRateCents: 7500, // $75/hour
+        currency: 'USD',
+        yearsExperience: 12,
+        rating: 4.9,
+        totalStudents: 156,
+        totalSessions: 1247,
+        availability: 'Available',
+        timezone: 'America/New_York',
+        certifications: [
+          {
+            name: 'PhD Mathematics',
+            issuer: 'MIT',
+            year: 2012
+          },
+          {
+            name: 'Teaching Excellence Award',
+            issuer: 'National Education Association',
+            year: 2020
+          }
+        ],
+        createdAt: '2020-03-15T00:00:00Z',
+        preferences: {
+          notificationEmail: true,
+          notificationSms: true,
+          autoAcceptBookings: false,
+          maxStudentsPerDay: 8
+        }
+      }
+    });
+    return;
+  }
+
+  if (pathname === '/api/tutors/stats') {
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalBookings: 89,
+        completedSessions: 82,
+        upcomingSessions: 7,
+        totalHours: 164,
+        totalEarnings: 12300, // in cents
+        currency: 'USD',
+        averageRating: 4.9,
+        totalStudents: 45,
+        thisMonth: {
+          bookings: 12,
+          hours: 24,
+          earnings: 1800
+        },
+        lastMonth: {
+          bookings: 15,
+          hours: 30,
+          earnings: 2250
+        },
+        topSubjects: [
+          { subject: 'Mathematics', sessions: 45 },
+          { subject: 'Physics', sessions: 32 },
+          { subject: 'Statistics', sessions: 12 }
+        ],
+        weeklySchedule: {
+          monday: 4,
+          tuesday: 6,
+          wednesday: 5,
+          thursday: 7,
+          friday: 3,
+          saturday: 2,
+          sunday: 1
+        }
+      }
+    });
+    return;
+  }
+
+  if (pathname === '/api/tutors/bookings') {
+    res.status(200).json({
+      success: true,
+      bookings: [
+        {
+          id: 'booking-t1',
+          studentId: 'student-1',
+          studentName: 'Alex Thompson',
+          subject: 'Mathematics',
+          date: '2024-01-16',
+          time: '10:00 AM',
+          duration: 60,
+          status: 'confirmed',
+          price: 75,
+          currency: 'USD',
+          studentLevel: 'High School',
+          topics: ['Calculus', 'Derivatives'],
+          notes: 'Need help with chain rule and implicit differentiation'
+        },
+        {
+          id: 'booking-t2',
+          studentId: 'student-2',
+          studentName: 'Maria Garcia',
+          subject: 'Physics',
+          date: '2024-01-17',
+          time: '2:00 PM',
+          duration: 90,
+          status: 'pending',
+          price: 112.50,
+          currency: 'USD',
+          studentLevel: 'University',
+          topics: ['Mechanics', 'Kinematics'],
+          notes: 'Preparing for midterm exam'
+        },
+        {
+          id: 'booking-t3',
+          studentId: 'student-3',
+          studentName: 'David Chen',
+          subject: 'Statistics',
+          date: '2024-01-18',
+          time: '4:00 PM',
+          duration: 60,
+          status: 'completed',
+          price: 75,
+          currency: 'USD',
+          studentLevel: 'Graduate',
+          topics: ['Hypothesis Testing', 'Regression Analysis'],
+          notes: 'Great session! Student understood the concepts well.'
+        }
+      ]
+    });
+    return;
+  }
+
   // Default response for unknown endpoints
   res.status(404).json({
     error: 'Endpoint not found',
