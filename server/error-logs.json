@@ -3814,5 +3814,64 @@
       "serverTime": "2025-10-08T05:56:48.755Z",
       "processId": 18104
     }
+  },
+  {
+    "id": "info_1759943253584_pq9s7lh13",
+    "timestamp": "2025-10-08T17:07:33.585Z",
+    "type": "info",
+    "message": "User user-80 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-80",
+      "serverTime": "2025-10-08T17:07:33.585Z",
+      "processId": 18104
+    }
+  },
+  {
+    "id": "auth_1759943279403_0bp8ptd3k",
+    "timestamp": "2025-10-08T17:07:59.403Z",
+    "type": "auth_error",
+    "email": "tutor@example.com",
+    "reason": "User not found",
+    "context": {
+      "endpoint": "/api/auth/login",
+      "method": "POST",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "serverTime": "2025-10-08T17:07:59.403Z",
+      "processId": 18104
+    }
+  },
+  {
+    "id": "info_1759943686277_ij0s9ole4",
+    "timestamp": "2025-10-08T17:14:46.277Z",
+    "type": "info",
+    "message": "User user-82 approved by admin user-4",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-4",
+      "targetUserId": "user-82",
+      "serverTime": "2025-10-08T17:14:46.277Z",
+      "processId": 22896
+    }
+  },
+  {
+    "id": "info_1759943875203_aguwd8tzv",
+    "timestamp": "2025-10-08T17:17:55.203Z",
+    "type": "info",
+    "message": "Booking booking-84 status updated to COMPLETED by tutor user-82",
+    "context": {
+      "endpoint": "/api/tutors/bookings/:bookingId/status",
+      "method": "PUT",
+      "tutorId": "user-82",
+      "bookingId": "booking-84",
+      "newStatus": "COMPLETED",
+      "reason": "Session completed",
+      "serverTime": "2025-10-08T17:17:55.203Z",
+      "processId": 22896
+    }
   }
 ]

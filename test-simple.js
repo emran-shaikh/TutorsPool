@@ -6,6 +6,7 @@
  */
 
 const https = require('https');
+const http = require('http');
 
 async function testEndpoint(url, method = 'GET', body = null) {
   return new Promise((resolve) => {
@@ -17,7 +18,9 @@ async function testEndpoint(url, method = 'GET', body = null) {
       }
     };
 
-    const req = https.request(url, options, (res) => {
+    const isHttps = url.startsWith('https://');
+    const client = isHttps ? https : http;
+    const req = client.request(url, options, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -42,9 +45,9 @@ async function testEndpoint(url, method = 'GET', body = null) {
 }
 
 async function runTests() {
-  console.log('🚀 Starting Simple E2E Tests...');
+  console.log('🚀 Starting Simple E2E Tests (Local)...');
   
-  const baseUrl = 'https://tutors-pool.vercel.app';
+  const baseUrl = 'http://localhost:5173';
   const tests = [
     { name: 'Health Check', url: `${baseUrl}/api/health`, expected: 200 },
     { name: 'Home Page', url: `${baseUrl}/`, expected: 200 },

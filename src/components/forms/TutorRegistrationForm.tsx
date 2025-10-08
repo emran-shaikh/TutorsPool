@@ -61,6 +61,8 @@ const tutorRegistrationSchema = z.object({
   }).optional(),
 });
 
+type TutorRegistrationFormData = z.infer<typeof tutorRegistrationSchema>;
+
 // Step-specific validation schemas
 const tutorStepSchemas = {
   1: z.object({
@@ -163,7 +165,7 @@ export const TutorRegistrationForm: React.FC = () => {
     watch,
     setValue,
     trigger,
-  } = useForm<TutorRegistrationForm>({
+  } = useForm<TutorRegistrationFormData>({
     mode: 'onChange',
   });
 

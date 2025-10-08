@@ -35,6 +35,8 @@ const studentRegistrationSchema = z.object({
   specialRequirements: z.string().optional(),
 });
 
+type StudentRegistrationFormData = z.infer<typeof studentRegistrationSchema>;
+
 // Step-specific validation schemas
 const stepSchemas = {
   1: z.object({
@@ -99,7 +101,7 @@ export const StudentRegistrationForm: React.FC = () => {
     watch,
     setValue,
     trigger,
-  } = useForm<StudentRegistrationForm>({
+  } = useForm<StudentRegistrationFormData>({
     resolver: zodResolver(studentRegistrationSchema),
     mode: 'onChange',
   });

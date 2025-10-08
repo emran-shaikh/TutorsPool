@@ -213,10 +213,10 @@ const LandingPage: React.FC = () => {
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Link>
                 
-                <Button variant="outline" size="lg" className="px-8 py-4 text-lg border-gray-300 hover:bg-gray-50">
+                {/* <Button variant="outline" size="lg" className="px-8 py-4 text-lg border-gray-300 hover:bg-gray-50">
                   <Play className="h-5 w-5 mr-2" />
                   Book Free Trial
-                </Button>
+                </Button> */}
               </div>
 
               {/* Social Proof */}
@@ -384,9 +384,9 @@ const LandingPage: React.FC = () => {
                     <subject.icon className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="font-semibold text-lg mb-3">{subject.name}</h3>
-                  <Button variant="outline" size="sm" className="text-xs">
+                  {/* <Button variant="outline" size="sm" className="text-xs">
                     Learn More
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             ))}
@@ -576,9 +576,9 @@ const LandingPage: React.FC = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full bg-white text-[#2C2E71] hover:bg-gray-100">
+                <a href="/search" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full bg-white text-[#F47B2F] hover:bg-gray-100">
                   Start Online Learning
-                </Button>
+                </a>
               </CardContent>
             </Card>
 
@@ -607,9 +607,10 @@ const LandingPage: React.FC = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full bg-white text-[#F47B2F] hover:bg-gray-100">
-                  Find Local Tutors
-                </Button>
+                
+                <a href="/search" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full bg-white text-[#F47B2F] hover:bg-gray-100">
+                Find Local Tutors
+                </a>
               </CardContent>
             </Card>
           </div>
@@ -645,9 +646,9 @@ const LandingPage: React.FC = () => {
                   ))}
                 </div>
                 
-                <Button variant="outline" className="w-full border-[#2C2E71] text-[#2C2E71] hover:bg-[#2C2E71] hover:text-white">
+                {/* <Button variant="outline" className="w-full border-[#2C2E71] text-[#2C2E71] hover:bg-[#2C2E71] hover:text-white">
                   Book Now
-                </Button>
+                </Button> */}
               </CardContent>
             </Card>
 
@@ -672,9 +673,9 @@ const LandingPage: React.FC = () => {
                   ))}
                 </div>
                 
-                <Button className="w-full bg-[#2C2E71] hover:bg-[#1e3a8a] text-white">
+                {/* <Button className="w-full bg-[#2C2E71] hover:bg-[#1e3a8a] text-white">
                   Book Now
-                </Button>
+                </Button> */}
               </CardContent>
             </Card>
 
@@ -696,9 +697,9 @@ const LandingPage: React.FC = () => {
                   ))}
                 </div>
                 
-                <Button variant="outline" className="w-full border-[#2C2E71] text-[#2C2E71] hover:bg-[#2C2E71] hover:text-white">
+                {/* <Button variant="outline" className="w-full border-[#2C2E71] text-[#2C2E71] hover:bg-[#2C2E71] hover:text-white">
                   Book Now
-                </Button>
+                </Button> */}
               </CardContent>
             </Card>
           </div>
@@ -714,14 +715,14 @@ const LandingPage: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button className="bg-white text-[#2C2E71] hover:bg-gray-100 px-8 py-3 text-lg">
+            {/* <Button className="bg-white text-[#2C2E71] hover:bg-gray-100 px-8 py-3 text-lg">
               Join Online Learning
               <ArrowRight className="h-5 w-5 ml-2" />
-            </Button>
+            </Button> */}
             
-            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-[#2C2E71] px-8 py-3 text-lg">
+            {/* <Button variant="outline" className="border-white text-white hover:bg-white hover:text-[#2C2E71] px-8 py-3 text-lg">
               Find Offline Tutors
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>
@@ -783,10 +784,10 @@ const LandingPage: React.FC = () => {
                 </div>
                 
                 <div className="pt-4">
-                  <Button className="bg-green-500 hover:bg-green-600 text-white text-sm">
+                  {/* <Button className="bg-green-500 hover:bg-green-600 text-white text-sm">
                     <MessageCircle className="h-4 w-4 mr-2" />
                     WhatsApp Support
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>
