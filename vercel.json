@@ -17,12 +17,10 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/index.ts"
-    },
-    {
-      "source": "/((?!site\\.webmanifest|fav-icon\\.png|logo\\.png|robots\\.txt|.*\\.(js|css|png|jpg|jpeg|gif|svg|webp|ico|json|woff|woff2|ttf|eot)).*)",
-      "destination": "/index.html"
     }
   ],
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/static/(.*)",
