@@ -67,10 +67,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(userData)
       // Set user ID in error logger for session tracking
       errorLogger.setUserId(userData.id)
+      console.log('Auth check successful for user:', userData.role)
     } catch (error) {
       console.error('Auth check failed:', error)
-      // Clear invalid token
-      apiClient.clearToken()
+      // Only clear token if it's a 401/403 error (invalid token)
+      if (error instanceof Error && (
+        error.message.includes('401') || 
+        error.message.includes('403') ||
+        error.message.includes('Invalid token') ||
+        error.message.includes('Unauthorized')
+      )) {
+        console.log('Invalid token detected, clearing auth')
+        apiClient.clearToken()
+        setUser(null)
+      } else {
+        // For other errors (network issues), keep the token and user
+        console.log('Network or temporary error, keeping auth state')
+      }
     } finally {
       setLoading(false)
     }

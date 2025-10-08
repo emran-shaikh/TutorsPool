@@ -30,17 +30,32 @@ class ApiClient {
       headers.Authorization = `Bearer ${this.token}`;
     }
 
-    const response = await fetch(url, {
-      ...options,
-      headers,
-  });
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+      });
 
-  if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Network error' }));
-      throw new Error(error.error || `HTTP ${response.status}`);
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: 'Network error' }));
+        
+        // Only clear token for authentication errors
+        if (response.status === 401 || response.status === 403) {
+          console.log('Authentication error, clearing token')
+          this.clearToken();
+        }
+        
+        throw new Error(error.error || `HTTP ${response.status}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      // Don't clear token for network errors
+      if (error instanceof Error && !error.message.includes('HTTP')) {
+        console.log('Network error, keeping token:', error.message);
+      }
+      throw error;
     }
-
-    return response.json();
   }
 
   // Authentication methods
