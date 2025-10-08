@@ -80,7 +80,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
-    "@tailwindcss/typography": "^0.5.19",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.5",
