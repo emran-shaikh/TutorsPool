@@ -112,7 +112,7 @@ export const useRenderPerformance = (componentName: string) => {
 
 // Hook for monitoring API call performance
 export const useAPIPerformance = () => {
-  const trackAPICall = async <T>(
+  const trackAPICall = async <T,>(
     apiCall: () => Promise<T>,
     endpoint: string
   ): Promise<T> => {

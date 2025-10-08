@@ -3799,5 +3799,20 @@
       "serverTime": "2025-10-07T19:43:40.796Z",
       "processId": 8936
     }
+  },
+  {
+    "id": "auth_1759903008755_n47kxd9ha",
+    "timestamp": "2025-10-08T05:56:48.755Z",
+    "type": "auth_error",
+    "email": "test@test.com",
+    "reason": "User not found",
+    "context": {
+      "endpoint": "/api/auth/login",
+      "method": "POST",
+      "userAgent": "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.19041.5965",
+      "ip": "::1",
+      "serverTime": "2025-10-08T05:56:48.755Z",
+      "processId": 18104
+    }
   }
 ]

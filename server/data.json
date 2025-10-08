@@ -364,6 +364,20 @@
       "approvedAt": "2025-10-07T19:43:40.793Z",
       "approvedBy": "user-4",
       "avatarUrl": null
+    },
+    {
+      "name": "Rebekah Boyle",
+      "email": "qygabyvez@mailinator.com",
+      "phone": "+1 (546) 515-7598",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-80",
+      "createdAt": "2025-10-08T05:58:38.370Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -812,6 +826,18 @@
       "uploads": [],
       "id": "student-77",
       "createdAt": "2025-10-07T19:42:40.306Z"
+    },
+    {
+      "userId": "user-80",
+      "gradeLevel": "High School (9-12)",
+      "learningGoals": "Aliqua Voluptas ut ",
+      "preferredMode": "ONLINE",
+      "budgetMin": 5000,
+      "budgetMax": 2600,
+      "specialRequirements": "Quo consectetur cons",
+      "uploads": [],
+      "id": "student-81",
+      "createdAt": "2025-10-08T05:58:38.381Z"
     }
   ],
   "bookings": [
@@ -1750,5 +1776,5 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 79
+  "lastId": 81
 }
