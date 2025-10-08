@@ -19,6 +19,12 @@
       "destination": "/api/index.ts"
     }
   ],
+  "redirects": [
+    {
+      "source": "/site.webmanifest",
+      "destination": "/public/site.webmanifest"
+    }
+  ],
   "headers": [
     {
       "source": "/static/(.*)",

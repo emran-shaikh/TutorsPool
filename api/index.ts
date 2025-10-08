@@ -82,6 +82,84 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  if (pathname === '/api/students') {
+    if (req.method === 'POST') {
+      res.status(201).json({
+        success: true,
+        message: 'Student profile created successfully',
+        student: {
+          id: 'student-new',
+          email: req.body?.email || 'student@example.com',
+          name: req.body?.name || 'New Student',
+          role: 'student'
+        }
+      });
+      return;
+    }
+    
+    if (req.method === 'GET') {
+      res.status(200).json({
+        success: true,
+        students: [
+          {
+            id: 'student-1',
+            name: 'Alice Johnson',
+            email: 'alice@example.com',
+            role: 'student',
+            subjects: ['Mathematics', 'Physics']
+          },
+          {
+            id: 'student-2',
+            name: 'Bob Wilson',
+            email: 'bob@example.com',
+            role: 'student',
+            subjects: ['Chemistry', 'Biology']
+          }
+        ]
+      });
+      return;
+    }
+  }
+
+  if (pathname === '/api/bookings') {
+    if (req.method === 'GET') {
+      res.status(200).json({
+        success: true,
+        bookings: [
+          {
+            id: 'booking-1',
+            tutorId: 'tutor-1',
+            studentId: 'student-1',
+            subject: 'Mathematics',
+            date: '2024-01-15',
+            time: '10:00 AM',
+            duration: 60,
+            status: 'confirmed'
+          }
+        ]
+      });
+      return;
+    }
+    
+    if (req.method === 'POST') {
+      res.status(201).json({
+        success: true,
+        message: 'Booking created successfully',
+        booking: {
+          id: 'booking-new',
+          tutorId: req.body?.tutorId || 'tutor-1',
+          studentId: req.body?.studentId || 'student-1',
+          subject: req.body?.subject || 'Mathematics',
+          date: req.body?.date || '2024-01-20',
+          time: req.body?.time || '2:00 PM',
+          duration: req.body?.duration || 60,
+          status: 'pending'
+        }
+      });
+      return;
+    }
+  }
+
   // Default response for unknown endpoints
   res.status(404).json({
     error: 'Endpoint not found',
