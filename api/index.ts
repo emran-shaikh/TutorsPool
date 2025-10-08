@@ -142,26 +142,147 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (pathname === '/api/tutors') {
+    const url = new URL(req.url || '', `http://${req.headers.host}`);
+    const searchParams = url.searchParams;
+    
+    // Get search parameters
+    const q = searchParams.get('q');
+    const priceMin = searchParams.get('priceMin');
+    const priceMax = searchParams.get('priceMax');
+    const ratingMin = searchParams.get('ratingMin');
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '20');
+    
+    // Mock tutor data
+    let tutors = [
+      {
+        id: 'tutor-1',
+        name: 'Dr. Sarah Johnson',
+        headline: 'Mathematics & Physics Expert',
+        bio: 'PhD in Mathematics with 10+ years of teaching experience. Specialized in calculus, algebra, and physics.',
+        subjects: ['Mathematics', 'Physics', 'Statistics'],
+        levels: ['High School', 'University', 'Graduate'],
+        hourlyRateCents: 7500, // $75/hour
+        currency: 'USD',
+        rating: 4.9,
+        totalStudents: 156,
+        totalSessions: 1247,
+        yearsExperience: 12,
+        availability: 'Available',
+        profileImage: '/avatars/sarah.svg',
+        location: 'New York, NY',
+        mode: ['ONLINE', 'OFFLINE']
+      },
+      {
+        id: 'tutor-2',
+        name: 'Prof. Michael Chen',
+        headline: 'Chemistry & Biology Specialist',
+        bio: 'Professor of Chemistry with extensive research background. Expert in organic chemistry and biochemistry.',
+        subjects: ['Chemistry', 'Biology', 'Organic Chemistry'],
+        levels: ['University', 'Graduate'],
+        hourlyRateCents: 8000, // $80/hour
+        currency: 'USD',
+        rating: 4.8,
+        totalStudents: 98,
+        totalSessions: 892,
+        yearsExperience: 15,
+        availability: 'Available',
+        profileImage: '/avatars/michael.svg',
+        location: 'San Francisco, CA',
+        mode: ['ONLINE']
+      },
+      {
+        id: 'tutor-3',
+        name: 'Dr. Emily Rodriguez',
+        headline: 'Language Arts & Literature Expert',
+        bio: 'PhD in English Literature with passion for helping students excel in writing and critical thinking.',
+        subjects: ['English', 'Literature', 'Writing'],
+        levels: ['High School', 'University'],
+        hourlyRateCents: 6000, // $60/hour
+        currency: 'USD',
+        rating: 4.7,
+        totalStudents: 134,
+        totalSessions: 678,
+        yearsExperience: 8,
+        availability: 'Available',
+        profileImage: '/avatars/emily.svg',
+        location: 'Austin, TX',
+        mode: ['ONLINE', 'OFFLINE']
+      },
+      {
+        id: 'tutor-4',
+        name: 'Dr. James Wilson',
+        headline: 'Computer Science & Programming',
+        bio: 'Senior Software Engineer with expertise in multiple programming languages and computer science fundamentals.',
+        subjects: ['Computer Science', 'Programming', 'Data Structures'],
+        levels: ['High School', 'University', 'Graduate'],
+        hourlyRateCents: 8500, // $85/hour
+        currency: 'USD',
+        rating: 4.9,
+        totalStudents: 89,
+        totalSessions: 456,
+        yearsExperience: 10,
+        availability: 'Available',
+        profileImage: '/avatars/james.svg',
+        location: 'Seattle, WA',
+        mode: ['ONLINE']
+      },
+      {
+        id: 'tutor-5',
+        name: 'Ms. Lisa Thompson',
+        headline: 'Elementary & Middle School Math',
+        bio: 'Certified teacher with 12 years of experience helping young students build strong math foundations.',
+        subjects: ['Mathematics', 'Arithmetic', 'Algebra'],
+        levels: ['Elementary', 'Middle School'],
+        hourlyRateCents: 4500, // $45/hour
+        currency: 'USD',
+        rating: 4.8,
+        totalStudents: 203,
+        totalSessions: 1456,
+        yearsExperience: 12,
+        availability: 'Available',
+        profileImage: '/avatars/lisa.svg',
+        location: 'Chicago, IL',
+        mode: ['ONLINE', 'OFFLINE']
+      }
+    ];
+    
+    // Apply search filters
+    if (q) {
+      const query = q.toLowerCase();
+      tutors = tutors.filter(tutor => 
+        tutor.name.toLowerCase().includes(query) ||
+        tutor.headline.toLowerCase().includes(query) ||
+        tutor.bio.toLowerCase().includes(query) ||
+        tutor.subjects.some(subject => subject.toLowerCase().includes(query))
+      );
+    }
+    
+    if (priceMin) {
+      tutors = tutors.filter(tutor => tutor.hourlyRateCents >= parseInt(priceMin) * 100);
+    }
+    
+    if (priceMax) {
+      tutors = tutors.filter(tutor => tutor.hourlyRateCents <= parseInt(priceMax) * 100);
+    }
+    
+    if (ratingMin) {
+      tutors = tutors.filter(tutor => tutor.rating >= parseFloat(ratingMin));
+    }
+    
+    // Apply pagination
+    const total = tutors.length;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedTutors = tutors.slice(startIndex, endIndex);
+    
     res.status(200).json({
       success: true,
-      tutors: [
-        {
-          id: 'tutor-1',
-          name: 'John Doe',
-          subject: 'Mathematics',
-          rating: 4.8,
-          pricePerHour: 50,
-          availability: 'Available'
-        },
-        {
-          id: 'tutor-2',
-          name: 'Jane Smith',
-          subject: 'Physics',
-          rating: 4.9,
-          pricePerHour: 60,
-          availability: 'Available'
-        }
-      ]
+      items: paginatedTutors,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
     });
     return;
   }
@@ -484,6 +605,72 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
           studentLevel: 'Graduate',
           topics: ['Hypothesis Testing', 'Regression Analysis'],
           notes: 'Great session! Student understood the concepts well.'
+        }
+      ]
+    });
+    return;
+  }
+
+  // Subjects endpoint
+  if (pathname === '/api/subjects') {
+    res.status(200).json({
+      success: true,
+      items: [
+        {
+          id: 'math',
+          name: 'Mathematics',
+          description: 'Algebra, Calculus, Geometry, Statistics',
+          category: 'STEM',
+          icon: '📊'
+        },
+        {
+          id: 'physics',
+          name: 'Physics',
+          description: 'Mechanics, Thermodynamics, Electromagnetism',
+          category: 'STEM',
+          icon: '⚛️'
+        },
+        {
+          id: 'chemistry',
+          name: 'Chemistry',
+          description: 'Organic, Inorganic, Physical Chemistry',
+          category: 'STEM',
+          icon: '🧪'
+        },
+        {
+          id: 'biology',
+          name: 'Biology',
+          description: 'Cell Biology, Genetics, Ecology',
+          category: 'STEM',
+          icon: '🧬'
+        },
+        {
+          id: 'english',
+          name: 'English',
+          description: 'Literature, Writing, Grammar',
+          category: 'Language Arts',
+          icon: '📚'
+        },
+        {
+          id: 'computer-science',
+          name: 'Computer Science',
+          description: 'Programming, Data Structures, Algorithms',
+          category: 'STEM',
+          icon: '💻'
+        },
+        {
+          id: 'history',
+          name: 'History',
+          description: 'World History, US History, European History',
+          category: 'Social Sciences',
+          icon: '🏛️'
+        },
+        {
+          id: 'economics',
+          name: 'Economics',
+          description: 'Microeconomics, Macroeconomics, Finance',
+          category: 'Social Sciences',
+          icon: '💰'
         }
       ]
     });
