@@ -19,14 +19,8 @@
       "destination": "/api/index.ts"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!site\\.webmanifest|fav-icon\\.png|logo\\.png|robots\\.txt|.*\\.(js|css|png|jpg|jpeg|gif|svg|webp|ico|json|woff|woff2|ttf|eot)).*)",
       "destination": "/index.html"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/site.webmanifest",
-      "destination": "/public/site.webmanifest"
     }
   ],
   "headers": [
