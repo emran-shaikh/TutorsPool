@@ -160,6 +160,113 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
+  if (pathname === '/api/students/profile') {
+    res.status(200).json({
+      success: true,
+      profile: {
+        id: 'student-1',
+        name: 'John Student',
+        email: 'student@example.com',
+        role: 'STUDENT',
+        subjects: ['Mathematics', 'Physics'],
+        level: 'High School',
+        timezone: 'America/New_York',
+        createdAt: '2024-01-01T00:00:00Z',
+        preferences: {
+          notificationEmail: true,
+          notificationSms: false,
+          reminderTime: 30
+        }
+      }
+    });
+    return;
+  }
+
+  if (pathname === '/api/students/stats') {
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalBookings: 12,
+        completedSessions: 10,
+        upcomingSessions: 2,
+        totalHours: 25,
+        averageRating: 4.8,
+        favoriteSubjects: ['Mathematics', 'Physics'],
+        thisMonth: {
+          bookings: 3,
+          hours: 6
+        }
+      }
+    });
+    return;
+  }
+
+  if (pathname === '/api/students/bookings') {
+    res.status(200).json({
+      success: true,
+      bookings: [
+        {
+          id: 'booking-1',
+          tutorId: 'tutor-1',
+          tutorName: 'Dr. Jane Smith',
+          subject: 'Mathematics',
+          date: '2024-01-15',
+          time: '10:00 AM',
+          duration: 60,
+          status: 'confirmed',
+          price: 50,
+          currency: 'USD'
+        },
+        {
+          id: 'booking-2',
+          tutorId: 'tutor-2',
+          tutorName: 'Prof. John Doe',
+          subject: 'Physics',
+          date: '2024-01-20',
+          time: '2:00 PM',
+          duration: 90,
+          status: 'pending',
+          price: 75,
+          currency: 'USD'
+        }
+      ]
+    });
+    return;
+  }
+
+  if (pathname === '/api/notifications') {
+    res.status(200).json({
+      success: true,
+      notifications: [
+        {
+          id: 'notif-1',
+          type: 'booking_confirmed',
+          title: 'Booking Confirmed',
+          message: 'Your session with Dr. Jane Smith has been confirmed for tomorrow.',
+          read: false,
+          createdAt: '2024-01-14T10:00:00Z'
+        },
+        {
+          id: 'notif-2',
+          type: 'reminder',
+          title: 'Session Reminder',
+          message: 'You have a session with Prof. John Doe in 1 hour.',
+          read: false,
+          createdAt: '2024-01-14T09:00:00Z'
+        },
+        {
+          id: 'notif-3',
+          type: 'payment_received',
+          title: 'Payment Received',
+          message: 'Payment of $50 has been processed successfully.',
+          read: true,
+          createdAt: '2024-01-13T15:30:00Z'
+        }
+      ]
+    });
+    return;
+  }
+
   // Default response for unknown endpoints
   res.status(404).json({
     error: 'Endpoint not found',
