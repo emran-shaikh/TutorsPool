@@ -28,18 +28,102 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   // Mock API responses for now
   if (pathname === '/api/auth/login') {
     if (req.method === 'POST') {
+      const { email, password } = req.body;
+      
+      // Mock admin login
+      if (email === 'admin@example.com' && password === 'admin') {
+        res.status(200).json({
+          success: true,
+          token: 'mock-admin-jwt-token',
+          user: {
+            id: 'admin-1',
+            email: 'admin@example.com',
+            role: 'ADMIN',
+            name: 'Admin User'
+          }
+        });
+        return;
+      }
+      
+      // Mock tutor login
+      if (email === 'tutor@example.com' && password === 'tutor') {
+        res.status(200).json({
+          success: true,
+          token: 'mock-tutor-jwt-token',
+          user: {
+            id: 'tutor-1',
+            email: 'tutor@example.com',
+            role: 'TUTOR',
+            name: 'Dr. Sarah Johnson'
+          }
+        });
+        return;
+      }
+      
+      // Mock student login
       res.status(200).json({
         success: true,
-        token: 'mock-jwt-token',
+        token: 'mock-student-jwt-token',
         user: {
-          id: 'user-1',
-          email: 'demo@example.com',
-          role: 'student',
-          name: 'Demo User'
+          id: 'student-1',
+          email: email || 'demo@example.com',
+          role: 'STUDENT',
+          name: 'Demo Student'
         }
       });
       return;
     }
+  }
+
+  if (pathname === '/api/auth/me') {
+    // Extract token from Authorization header
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (!token) {
+      res.status(401).json({
+        success: false,
+        error: 'No token provided'
+      });
+      return;
+    }
+    
+    // Mock token validation - in real app, you'd verify the JWT
+    let user;
+    if (token === 'mock-admin-jwt-token') {
+      user = {
+        id: 'admin-1',
+        email: 'admin@example.com',
+        role: 'ADMIN',
+        name: 'Admin User'
+      };
+    } else if (token === 'mock-tutor-jwt-token') {
+      user = {
+        id: 'tutor-1',
+        email: 'tutor@example.com',
+        role: 'TUTOR',
+        name: 'Dr. Sarah Johnson'
+      };
+    } else if (token === 'mock-student-jwt-token') {
+      user = {
+        id: 'student-1',
+        email: 'demo@example.com',
+        role: 'STUDENT',
+        name: 'Demo Student'
+      };
+    } else {
+      res.status(401).json({
+        success: false,
+        error: 'Invalid token'
+      });
+      return;
+    }
+    
+    res.status(200).json({
+      success: true,
+      user
+    });
+    return;
   }
 
   if (pathname === '/api/auth/register') {
@@ -402,6 +486,30 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
           notes: 'Great session! Student understood the concepts well.'
         }
       ]
+    });
+    return;
+  }
+
+  // Admin endpoints
+  if (pathname === '/api/admin/dashboard') {
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalUsers: 156,
+        totalTutors: 23,
+        totalStudents: 133,
+        totalBookings: 487,
+        totalRevenue: 45600, // in cents
+        currency: 'USD',
+        thisMonth: {
+          newUsers: 12,
+          newTutors: 3,
+          bookings: 45,
+          revenue: 3400
+        },
+        pendingApprovals: 5,
+        activeSessions: 8
+      }
     });
     return;
   }
