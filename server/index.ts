@@ -54,6 +54,8 @@ dataManager.initializeSampleData();
 
 // Import AI Chat routes
 import aiChatRouter from './routes/aiChat';
+import blogRouter from './routes/blog';
+import paymentsRouter from './routes/payments';
 
 // Health check
 app.get('/api/health', (_req, res) => {
@@ -63,7 +65,150 @@ app.get('/api/health', (_req, res) => {
 // AI Chatbot routes
 app.use('/api/ai-chat', aiChatRouter);
 
-// Reset sample data endpoint (for development)
+// Blog routes
+app.use('/api/blog', blogRouter);
+
+// Payments routes
+app.use('/api/payments', paymentsRouter);
+
+// Admin dashboard (aggregated stats)
+app.get('/api/admin/dashboard', authenticateToken, requireRole(['ADMIN']), (_req, res) => {
+  try {
+    const users = dataManager.getAllUsers();
+    const tutors = dataManager.getAllTutors();
+    const students = dataManager.getAllStudents();
+    const bookings = dataManager.getAllBookings();
+
+    res.json({
+      stats: {
+        totalUsers: users.length,
+        totalTutors: tutors.length,
+        totalStudents: students.length,
+        totalBookings: bookings.length,
+      }
+    });
+  } catch (error) {
+    console.error('Admin dashboard error:', error);
+    res.status(500).json({ error: 'Failed to load dashboard' });
+  }
+});
+
+// User profile update
+app.put('/api/users/profile', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user?.userId || '';
+    const user = dataManager.getUserById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    dataManager.updateUser(userId, { ...req.body, updatedAt: new Date().toISOString() });
+    res.json({ success: true });
+  } catch (error) {
+    console.error('User update error:', error);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+// Reviews endpoints
+app.post('/api/reviews', authenticateToken, async (req, res) => {
+  try {
+    const { tutorId, bookingId, rating, comment, subject, improvement } = req.body;
+    if (!tutorId || !rating) return res.status(400).json({ error: 'tutorId and rating are required' });
+    const review = dataManager.addReview({ tutorId, bookingId, studentId: req.user?.userId, rating, comment, subject, improvement });
+    res.status(201).json({ success: true, review });
+  } catch (error) {
+    console.error('Create review error:', error);
+    res.status(500).json({ error: 'Failed to submit review' });
+  }
+});
+
+app.get('/api/reviews/featured', async (_req, res) => {
+  try {
+    const items = dataManager.getFeaturedReviews();
+    res.json({ items, total: items.length });
+  } catch (error) {
+    console.error('Featured reviews error:', error);
+    res.status(500).json({ error: 'Failed to fetch reviews' });
+  }
+});
+
+app.get('/api/tutors/:tutorId/reviews', async (req, res) => {
+  try {
+    const { tutorId } = req.params;
+    const items = dataManager.getReviewsByTutor(tutorId);
+    res.json({ items, total: items.length });
+  } catch (error) {
+    console.error('Tutor reviews error:', error);
+    res.status(500).json({ error: 'Failed to fetch tutor reviews' });
+  }
+});
+
+app.get('/api/students/:studentId/reviews', authenticateToken, async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    if (studentId !== req.user?.userId && req.user?.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    const items = dataManager.getReviewsByStudent(studentId);
+    res.json({ items, total: items.length });
+  } catch (error) {
+    console.error('Student reviews error:', error);
+    res.status(500).json({ error: 'Failed to fetch student reviews' });
+  }
+});
+
+// Admin review moderation
+app.get('/api/admin/reviews', authenticateToken, requireRole(['ADMIN']), (req, res) => {
+  const { status } = req.query;
+  const items = dataManager.getAllReviews(status as string | undefined);
+  res.json({ items, total: items.length });
+});
+
+app.put('/api/admin/reviews/:reviewId/status', authenticateToken, requireRole(['ADMIN']), (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const { status } = req.body;
+    const updated = dataManager.updateReviewStatus(reviewId, status, req.user?.userId || '');
+    if (!updated) return res.status(404).json({ error: 'Review not found' });
+    // Recompute tutor rating stats if needed
+    const review = dataManager.getReviewById(reviewId);
+    if (review?.tutorId) dataManager.updateTutorRatingStats(review.tutorId);
+    res.json({ success: true, review: updated });
+  } catch (error) {
+    console.error('Update review status error:', error);
+    res.status(500).json({ error: 'Failed to update review' });
+  }
+});
+
+app.delete('/api/admin/reviews/:reviewId', authenticateToken, requireRole(['ADMIN']), (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const ok = dataManager.deleteReview(reviewId);
+    if (!ok) return res.status(404).json({ error: 'Review not found' });
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Delete review error:', error);
+    res.status(500).json({ error: 'Failed to delete review' });
+  }
+});
+
+// Subjects custom request (simple notifier)
+app.post('/api/subjects/custom-request', authenticateToken, (req, res) => {
+  try {
+    const { subjectName, description, level } = req.body;
+    if (!subjectName || !level) return res.status(400).json({ error: 'subjectName and level are required' });
+    dataManager.addNotification({
+      userId: 'admin',
+      type: 'NEW_MESSAGE',
+      title: 'New subject request',
+      message: `${req.user?.email || req.user?.userId} requested ${subjectName} (${level})`,
+      data: { subjectName, description, level },
+    });
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error('Custom subject request error:', error);
+    res.status(500).json({ error: 'Failed to submit request' });
+  }
+});
 app.post('/api/admin/reset-sample-data', authenticateToken, requireRole('ADMIN'), async (req, res) => {
   try {
     // Clear existing data
@@ -1869,6 +2014,75 @@ app.get('/api/tutors/:tutorId', (req, res) => {
   }
 });
 
+// Tutor rating stats
+app.get('/api/tutors/:tutorId/rating-stats', (req, res) => {
+  try {
+    const { tutorId } = req.params;
+    const stats = dataManager.getTutorRatingStats(tutorId);
+    res.json(stats);
+  } catch (error) {
+    console.error('Tutor rating stats error:', error);
+    res.status(500).json({ error: 'Failed to fetch rating stats' });
+  }
+});
+
+// Chat endpoints
+app.get('/api/chat/messages/:userId1/:userId2', authenticateToken, (req, res) => {
+  try {
+    const { userId1, userId2 } = req.params;
+    // Only allow if requester is one of the users or admin
+    if (req.user?.userId !== userId1 && req.user?.userId !== userId2 && req.user?.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    const items = dataManager.getMessagesByUsers(userId1, userId2);
+    res.json({ items, total: items.length });
+  } catch (error) {
+    console.error('Chat messages error:', error);
+    res.status(500).json({ error: 'Failed to fetch messages' });
+  }
+});
+
+app.put('/api/chat/messages/read', authenticateToken, (req, res) => {
+  try {
+    const { senderId } = req.body;
+    if (!senderId) return res.status(400).json({ error: 'senderId required' });
+    dataManager.markMessagesAsRead(req.user?.userId || '', senderId);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Mark messages read error:', error);
+    res.status(500).json({ error: 'Failed to mark messages as read' });
+  }
+});
+
+app.get('/api/chat/unread-count', authenticateToken, (req, res) => {
+  try {
+    const count = dataManager.getUnreadMessageCount(req.user?.userId || '');
+    res.json({ count });
+  } catch (error) {
+    console.error('Unread count error:', error);
+    res.status(500).json({ error: 'Failed to fetch unread count' });
+  }
+});
+
+app.get('/api/chat/conversations', authenticateToken, (req, res) => {
+  try {
+    const all = dataManager.getAllMessages();
+    const myId = req.user?.userId || '';
+    const peers = new Set<string>();
+    all.forEach(m => {
+      if (m.senderId === myId) peers.add(m.recipientId);
+      if (m.recipientId === myId) peers.add(m.senderId);
+    });
+    const conversations = Array.from(peers).map(peerId => ({
+      peerId,
+      unread: dataManager.getUnreadMessageCount(myId),
+    }));
+    res.json({ conversations });
+  } catch (error) {
+    console.error('Conversations list error:', error);
+    res.status(500).json({ error: 'Failed to fetch conversations' });
+  }
+});
 
 // Tutor profile update endpoint
 app.put('/api/tutors/profile', authenticateToken, (req, res) => {

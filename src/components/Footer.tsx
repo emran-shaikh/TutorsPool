@@ -43,11 +43,12 @@ const Footer: React.FC = () => {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3">
               <li><Link to="/search" className="text-gray-300 hover:text-white transition-colors">Find Tutors</Link></li>
-              <li><Link to="/signup" className="text-gray-300 hover:text-white transition-colors">Become a Tutor</Link></li>
-              <li><Link to="/#subjects" className="text-gray-300 hover:text-white transition-colors">Subjects</Link></li>
-              <li><Link to="/#about" className="text-gray-300 hover:text-white transition-colors">How It Works</Link></li>
+              <li><Link to="/tutor/register" className="text-gray-300 hover:text-white transition-colors">Become a Tutor</Link></li>
+              <li><Link to="/subjects" className="text-gray-300 hover:text-white transition-colors">Subjects</Link></li>
+              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">About</Link></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
               <li><Link to="/#reviews" className="text-gray-300 hover:text-white transition-colors">Success Stories</Link></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Blog</a></li>
+              <li><Link to="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
             </ul>
           </div>
 

@@ -1,6 +1,216 @@
 {
   "users": [
     {
+      "name": "Jessica Bowen",
+      "email": "vasifi@mailinator.com",
+      "phone": "+1 (416) 139-8329",
+      "country": "Germany",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-93",
+      "createdAt": "2025-10-17T05:21:47.695Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-17T05:22:24.395Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Dai Poole",
+      "email": "himymoj@mailinator.com",
+      "phone": "+1 (859) 261-4883",
+      "country": "Saudi Arabia",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-91",
+      "createdAt": "2025-10-16T18:09:30.317Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-16T18:14:34.531Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Xavier Morrow",
+      "email": "laji@mailinator.com",
+      "phone": "+1 (292) 596-2407",
+      "country": "Sweden",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-89",
+      "createdAt": "2025-10-16T17:36:33.381Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Nathaniel Cain",
+      "email": "kewuletu@mailinator.com",
+      "phone": "+1 (386) 508-6627",
+      "country": "Norway",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-87",
+      "createdAt": "2025-10-09T20:15:26.401Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-09T20:17:39.035Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Ali Erickson",
+      "email": "vedohyry@mailinator.com",
+      "phone": "+1 (808) 663-4567",
+      "country": "Australia",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-82",
+      "createdAt": "2025-10-08T17:14:28.858Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-08T17:14:46.272Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Rebekah Boyle",
+      "email": "qygabyvez@mailinator.com",
+      "phone": "+1 (546) 515-7598",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-80",
+      "createdAt": "2025-10-08T05:58:38.370Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-08T17:07:33.582Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Carson Booth",
+      "email": "dabudowit@mailinator.com",
+      "phone": "+1 (809) 394-4447",
+      "country": "Canada",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-78",
+      "createdAt": "2025-10-07T19:43:29.132Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T19:43:40.793Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Maris Oneal",
+      "email": "nofonyraxy@mailinator.com",
+      "phone": "+1 (149) 333-5161",
+      "country": "Mexico",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-76",
+      "createdAt": "2025-10-07T19:42:40.292Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T19:42:52.689Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Judith Beach",
+      "email": "vorazelo@mailinator.com",
+      "phone": "+1 (814) 815-8035",
+      "country": "Canada",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-71",
+      "createdAt": "2025-10-07T17:30:11.512Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T17:30:23.904Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Elliott Whitney",
+      "email": "gyhesimo@mailinator.com",
+      "phone": "+1 (144) 321-6402",
+      "country": "UAE",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-69",
+      "createdAt": "2025-10-07T17:29:16.558Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T17:29:27.480Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Natalie Hughes",
+      "email": "gyjudyk@mailinator.com",
+      "phone": "+1 (131) 216-3419",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-65",
+      "createdAt": "2025-10-07T10:31:31.413Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T10:31:49.742Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Elaine Wells",
+      "email": "meryhupy@mailinator.com",
+      "phone": "+1 (881) 621-4747",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-63",
+      "createdAt": "2025-10-07T10:29:20.992Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T10:31:50.564Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Meredith Gates",
+      "email": "cary@mailinator.com",
+      "phone": "+1 (388) 272-9681",
+      "country": "Sweden",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-61",
+      "createdAt": "2025-10-07T10:25:11.522Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-07T10:28:30.779Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Clare Powers",
+      "email": "xycyfomuzu@mailinator.com",
+      "phone": "+1 (298) 639-5874",
+      "country": "United States",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-56",
+      "createdAt": "2025-10-03T10:29:55.371Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-03T10:30:43.303Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Noelle Powers",
+      "email": "sebyme@mailinator.com",
+      "phone": "+1 (825) 591-5593",
+      "country": "South Korea",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-54",
+      "createdAt": "2025-10-03T08:14:40.172Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-03T10:15:42.623Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
       "name": "Kylynn Mcpherson",
       "email": "julizoga@mailinator.com",
       "phone": "+1 (463) 117-7732",
@@ -240,156 +450,16 @@
       "rejectedBy": "user-4"
     },
     {
-      "name": "Noelle Powers",
-      "email": "sebyme@mailinator.com",
-      "phone": "+1 (825) 591-5593",
-      "country": "South Korea",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-54",
-      "createdAt": "2025-10-03T08:14:40.172Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-03T10:15:42.623Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Clare Powers",
-      "email": "xycyfomuzu@mailinator.com",
-      "phone": "+1 (298) 639-5874",
-      "country": "United States",
-      "timezone": "Asia/Karachi",
-      "role": "TUTOR",
-      "id": "user-56",
-      "createdAt": "2025-10-03T10:29:55.371Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-03T10:30:43.303Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Meredith Gates",
-      "email": "cary@mailinator.com",
-      "phone": "+1 (388) 272-9681",
-      "country": "Sweden",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-61",
-      "createdAt": "2025-10-07T10:25:11.522Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-07T10:28:30.779Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Elaine Wells",
-      "email": "meryhupy@mailinator.com",
-      "phone": "+1 (881) 621-4747",
-      "country": "Other",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-63",
-      "createdAt": "2025-10-07T10:29:20.992Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-07T10:31:50.564Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Natalie Hughes",
-      "email": "gyjudyk@mailinator.com",
-      "phone": "+1 (131) 216-3419",
-      "country": "United States",
-      "timezone": "Asia/Karachi",
-      "role": "TUTOR",
-      "id": "user-65",
-      "createdAt": "2025-10-07T10:31:31.413Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-07T10:31:49.742Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Elliott Whitney",
-      "email": "gyhesimo@mailinator.com",
-      "phone": "+1 (144) 321-6402",
-      "country": "UAE",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-69",
-      "createdAt": "2025-10-07T17:29:16.558Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-07T17:29:27.480Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Judith Beach",
-      "email": "vorazelo@mailinator.com",
-      "phone": "+1 (814) 815-8035",
+      "name": "Erich Grant",
+      "email": "nuseby@mailinator.com",
+      "phone": "+1 (731) 342-9059",
       "country": "Canada",
       "timezone": "Asia/Karachi",
       "role": "TUTOR",
-      "id": "user-71",
-      "createdAt": "2025-10-07T17:30:11.512Z",
+      "id": "user-99",
+      "createdAt": "2025-10-17T05:28:20.523Z",
       "status": "ACTIVE",
-      "approvedAt": "2025-10-07T17:30:23.904Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Maris Oneal",
-      "email": "nofonyraxy@mailinator.com",
-      "phone": "+1 (149) 333-5161",
-      "country": "Mexico",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-76",
-      "createdAt": "2025-10-07T19:42:40.292Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-07T19:42:52.689Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Carson Booth",
-      "email": "dabudowit@mailinator.com",
-      "phone": "+1 (809) 394-4447",
-      "country": "Canada",
-      "timezone": "Asia/Karachi",
-      "role": "TUTOR",
-      "id": "user-78",
-      "createdAt": "2025-10-07T19:43:29.132Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-07T19:43:40.793Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Rebekah Boyle",
-      "email": "qygabyvez@mailinator.com",
-      "phone": "+1 (546) 515-7598",
-      "country": "United States",
-      "timezone": "Asia/Karachi",
-      "role": "STUDENT",
-      "id": "user-80",
-      "createdAt": "2025-10-08T05:58:38.370Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-08T17:07:33.582Z",
-      "approvedBy": "user-4",
-      "avatarUrl": null
-    },
-    {
-      "name": "Ali Erickson",
-      "email": "vedohyry@mailinator.com",
-      "phone": "+1 (808) 663-4567",
-      "country": "Australia",
-      "timezone": "Asia/Karachi",
-      "role": "TUTOR",
-      "id": "user-82",
-      "createdAt": "2025-10-08T17:14:28.858Z",
-      "status": "ACTIVE",
-      "approvedAt": "2025-10-08T17:14:46.272Z",
+      "approvedAt": "2025-10-17T05:28:40.859Z",
       "approvedBy": "user-4",
       "avatarUrl": null
     }
@@ -726,6 +796,38 @@
       "id": "tutor-83",
       "createdAt": "2025-10-08T17:14:29.053Z",
       "status": "ACTIVE"
+    },
+    {
+      "userId": "user-99",
+      "headline": "Et laborum Illum i",
+      "bio": "Architecto voluptas Architecto voluptas Architecto voluptas Architecto voluptas Architecto voluptas ",
+      "hourlyRateCents": 9500,
+      "currency": "CAD",
+      "yearsExperience": 2008,
+      "subjects": [
+        "Economics",
+        "Programming"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "erich-grant",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-100",
+      "createdAt": "2025-10-17T05:28:20.535Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -884,6 +986,54 @@
       "uploads": [],
       "id": "student-81",
       "createdAt": "2025-10-08T05:58:38.381Z"
+    },
+    {
+      "userId": "user-87",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Est sint aliquam exp",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 9100,
+      "budgetMax": 300,
+      "specialRequirements": "Maiores voluptas non",
+      "uploads": [],
+      "id": "student-88",
+      "createdAt": "2025-10-09T20:15:26.433Z"
+    },
+    {
+      "userId": "user-89",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Ea in nobis voluptat",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 1000,
+      "budgetMax": 6200,
+      "specialRequirements": "Voluptas est minima",
+      "uploads": [],
+      "id": "student-90",
+      "createdAt": "2025-10-16T17:36:33.395Z"
+    },
+    {
+      "userId": "user-91",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Dolore aliquid iure ",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 5000,
+      "budgetMax": 9600,
+      "specialRequirements": "Reiciendis ad ipsum",
+      "uploads": [],
+      "id": "student-92",
+      "createdAt": "2025-10-16T18:09:30.325Z"
+    },
+    {
+      "userId": "user-93",
+      "gradeLevel": "College/University",
+      "learningGoals": "Odit expedita cupidi",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 8300,
+      "budgetMax": 1900,
+      "specialRequirements": "Dignissimos dolore m",
+      "uploads": [],
+      "id": "student-94",
+      "createdAt": "2025-10-17T05:21:47.709Z"
     }
   ],
   "bookings": [
@@ -1132,6 +1282,48 @@
       "createdAt": "2025-10-08T17:16:53.006Z",
       "updatedAt": "2025-10-08T17:17:55.200Z",
       "statusReason": "Session completed"
+    },
+    {
+      "studentId": "user-93",
+      "tutorId": "tutor-66",
+      "subjectId": "economics",
+      "startAtUTC": "2025-10-17T07:00:00.000Z",
+      "endAtUTC": "2025-10-17T08:30:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 900,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-95",
+      "createdAt": "2025-10-17T05:22:54.642Z"
+    },
+    {
+      "studentId": "user-93",
+      "tutorId": "tutor-83",
+      "subjectId": "english",
+      "startAtUTC": "2025-10-17T13:00:00.000Z",
+      "endAtUTC": "2025-10-17T14:30:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 4050,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-97",
+      "createdAt": "2025-10-17T05:23:07.526Z"
+    },
+    {
+      "studentId": "user-93",
+      "tutorId": "tutor-100",
+      "subjectId": "history",
+      "startAtUTC": "2025-10-17T08:00:00.000Z",
+      "endAtUTC": "2025-10-17T09:00:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 9500,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-101",
+      "createdAt": "2025-10-17T05:33:06.614Z"
     }
   ],
   "learningProgress": {
@@ -1550,6 +1742,57 @@
       },
       "read": false,
       "createdAt": "2025-10-08T17:16:53.007Z"
+    },
+    {
+      "id": "notification-96",
+      "userId": "user-65",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Jessica Bowen has requested a economics session with you.",
+      "data": {
+        "bookingId": "booking-95",
+        "studentId": "user-93",
+        "studentName": "Jessica Bowen",
+        "subject": "economics",
+        "startAt": "2025-10-17T07:00:00.000Z",
+        "endAt": "2025-10-17T08:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-17T05:22:54.644Z"
+    },
+    {
+      "id": "notification-98",
+      "userId": "user-82",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Jessica Bowen has requested a english session with you.",
+      "data": {
+        "bookingId": "booking-97",
+        "studentId": "user-93",
+        "studentName": "Jessica Bowen",
+        "subject": "english",
+        "startAt": "2025-10-17T13:00:00.000Z",
+        "endAt": "2025-10-17T14:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-17T05:23:07.528Z"
+    },
+    {
+      "id": "notification-102",
+      "userId": "user-99",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Jessica Bowen has requested a history session with you.",
+      "data": {
+        "bookingId": "booking-101",
+        "studentId": "user-93",
+        "studentName": "Jessica Bowen",
+        "subject": "history",
+        "startAt": "2025-10-17T08:00:00.000Z",
+        "endAt": "2025-10-17T09:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-17T05:33:06.616Z"
     }
   ],
   "messages": [],
@@ -1751,13 +1994,15 @@
       "tutorId": "tutor-16",
       "amount": 40.5,
       "currency": "USD",
-      "status": "PENDING",
+      "status": "PAID",
       "holdUntil": "2025-09-25T07:24:54.531Z",
       "createdAt": "2025-09-18T07:24:54.531Z",
-      "updatedAt": "2025-09-18T07:24:54.531Z",
+      "updatedAt": "2025-10-09T20:17:50.008Z",
       "metadata": {
         "platformFee": 4.5
-      }
+      },
+      "stripeTransferId": "tr_1760041070008_r3z302cck",
+      "paidAt": "2025-10-09T20:17:50.008Z"
     },
     {
       "id": "payout_1758263008798_7p9754hg8",
@@ -1765,13 +2010,15 @@
       "tutorId": "tutor-30",
       "amount": 68.4,
       "currency": "USD",
-      "status": "PENDING",
+      "status": "PAID",
       "holdUntil": "2025-09-26T06:23:28.798Z",
       "createdAt": "2025-09-19T06:23:28.798Z",
-      "updatedAt": "2025-09-19T06:23:28.798Z",
+      "updatedAt": "2025-10-09T20:17:56.913Z",
       "metadata": {
         "platformFee": 7.6000000000000005
-      }
+      },
+      "stripeTransferId": "tr_1760041076913_qqf3ah3n8",
+      "paidAt": "2025-10-09T20:17:56.913Z"
     },
     {
       "id": "payout_1759431263499_vvadgyor5",
@@ -1795,13 +2042,15 @@
       "tutorId": "tutor-44",
       "amount": 39.6,
       "currency": "GBP",
-      "status": "PENDING",
+      "status": "PAID",
       "holdUntil": "2025-10-09T18:56:25.990Z",
       "createdAt": "2025-10-02T18:56:25.990Z",
-      "updatedAt": "2025-10-02T18:56:25.990Z",
+      "updatedAt": "2025-10-09T20:18:01.053Z",
       "metadata": {
         "platformFee": 4.4
-      }
+      },
+      "stripeTransferId": "tr_1760041081053_q2fuat9sp",
+      "paidAt": "2025-10-09T20:18:01.053Z"
     },
     {
       "id": "payout_1759431767701_mrib2mhq4",
@@ -1809,13 +2058,15 @@
       "tutorId": "tutor-44",
       "amount": 34.2,
       "currency": "USD",
-      "status": "PENDING",
+      "status": "PAID",
       "holdUntil": "2025-10-09T19:02:47.701Z",
       "createdAt": "2025-10-02T19:02:47.701Z",
-      "updatedAt": "2025-10-02T19:02:47.701Z",
+      "updatedAt": "2025-10-09T20:18:04.239Z",
       "metadata": {
         "platformFee": 3.8000000000000003
-      }
+      },
+      "stripeTransferId": "tr_1760041084239_shof82fjb",
+      "paidAt": "2025-10-09T20:18:04.239Z"
     },
     {
       "id": "payout_1759488488372_qvoqsd7ka",
@@ -1855,13 +2106,15 @@
       "tutorId": "tutor-72",
       "amount": 33.75,
       "currency": "USD",
-      "status": "PENDING",
+      "status": "PAID",
       "holdUntil": "2025-10-14T17:31:08.046Z",
       "createdAt": "2025-10-07T17:31:08.046Z",
-      "updatedAt": "2025-10-07T17:31:08.046Z",
+      "updatedAt": "2025-10-09T20:18:13.462Z",
       "metadata": {
         "platformFee": 3.75
-      }
+      },
+      "stripeTransferId": "tr_1760041093462_8xrvemcv2",
+      "paidAt": "2025-10-09T20:18:13.462Z"
     },
     {
       "id": "payout_1759943819851_4dr3ozhqj",
@@ -1921,5 +2174,121 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 86
+  "lastId": 102,
+  "blogPosts": [
+    {
+      "id": "blog-4",
+      "title": "How to Choose the Right Tutor for Your Learning Needs",
+      "slug": "how-to-choose-right-tutor-learning-needs",
+      "content": "\n            <h2>Assess Your Learning Goals</h2>\n            <p>Before choosing a tutor, clearly define what you want to achieve. Are you looking to improve grades, prepare for exams, or develop a deeper understanding of a subject?</p>\n            \n            <h2>Consider Learning Style</h2>\n            <p>Everyone learns differently. Some students prefer visual learning, while others learn better through hands-on activities or discussions. Choose a tutor whose teaching style matches your learning preferences.</p>\n            \n            <h2>Check Qualifications and Experience</h2>\n            <p>Look for tutors with relevant qualifications and experience in the subject area. Don't hesitate to ask about their educational background and teaching experience.</p>\n            \n            <h2>Evaluate Communication Skills</h2>\n            <p>A good tutor should be able to explain complex concepts in simple terms and communicate effectively with students of different ages and skill levels.</p>\n            \n            <h2>Consider Availability and Flexibility</h2>\n            <p>Ensure the tutor's schedule aligns with yours and that they can accommodate your learning pace and needs.</p>\n            \n            <h2>Trust Your Instincts</h2>\n            <p>Personal connection matters. Choose a tutor you feel comfortable with and who motivates you to learn.</p>\n          ",
+      "excerpt": "Learn how to select the perfect tutor by considering your learning goals, style, and the tutor's qualifications and teaching approach.",
+      "authorId": "user-4",
+      "authorName": "Admin User",
+      "authorEmail": "admin@example.com",
+      "status": "PUBLISHED",
+      "featuredImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      "tags": [
+        "tutoring",
+        "learning",
+        "education",
+        "student success"
+      ],
+      "category": "Education",
+      "publishedAt": "2025-10-09T05:57:18.490Z",
+      "createdAt": "2025-10-09T05:57:18.490Z",
+      "updatedAt": "2025-10-09T05:57:18.490Z",
+      "viewCount": 44,
+      "readTime": 4
+    },
+    {
+      "id": "blog-3",
+      "title": "Building Confidence in Mathematics: A Student's Guide",
+      "slug": "building-confidence-mathematics-student-guide",
+      "content": "\n            <h2>Understanding Math Anxiety</h2>\n            <p>Many students struggle with mathematics due to anxiety and lack of confidence. Understanding that math anxiety is common and manageable is the first step toward overcoming it.</p>\n            \n            <h2>Start with the Basics</h2>\n            <p>Building a strong foundation is crucial. Don't rush through fundamental concepts - take time to understand them thoroughly before moving to more complex topics.</p>\n            \n            <h2>Practice Regularly</h2>\n            <p>Consistent practice is key to building confidence. Set aside time each day for math practice, even if it's just 15-20 minutes.</p>\n            \n            <h2>Seek Help When Needed</h2>\n            <p>Don't hesitate to ask for help from teachers, tutors, or classmates. Everyone learns at their own pace, and seeking assistance is a sign of strength, not weakness.</p>\n            \n            <h2>Celebrate Small Wins</h2>\n            <p>Acknowledge your progress, no matter how small. Each problem solved correctly is a step forward in your mathematical journey.</p>\n            \n            <h2>Conclusion</h2>\n            <p>Building confidence in mathematics takes time and patience. With the right approach and mindset, anyone can develop strong mathematical skills and confidence.</p>\n          ",
+      "excerpt": "Learn practical strategies to overcome math anxiety and build confidence in mathematics through consistent practice and the right mindset.",
+      "authorId": "user-4",
+      "authorName": "Admin User",
+      "authorEmail": "admin@example.com",
+      "status": "PUBLISHED",
+      "featuredImage": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      "tags": [
+        "mathematics",
+        "confidence",
+        "study tips",
+        "student success"
+      ],
+      "category": "Mathematics",
+      "publishedAt": "2025-10-07T05:57:18.490Z",
+      "createdAt": "2025-10-07T05:57:18.490Z",
+      "updatedAt": "2025-10-07T05:57:18.490Z",
+      "viewCount": 67,
+      "readTime": 3
+    },
+    {
+      "id": "blog-2",
+      "title": "test",
+      "slug": "test",
+      "content": "sdfsdfsdfsdfsdfsdf",
+      "excerpt": "dfsdfsdf",
+      "authorId": "user-4",
+      "authorName": "Admin User",
+      "authorEmail": "admin@example.com",
+      "status": "PUBLISHED",
+      "featuredImage": "http://localhost:5173/logo.png",
+      "tags": [
+        "education"
+      ],
+      "category": "Educationss",
+      "publishedAt": "2025-10-05T05:57:18.490Z",
+      "createdAt": "2025-10-05T05:57:18.490Z",
+      "updatedAt": "2025-10-10T06:05:03.756Z",
+      "viewCount": 89,
+      "readTime": 1
+    },
+    {
+      "id": "blog-1",
+      "title": "10 Tips for Effective Online Learning",
+      "slug": "10-tips-for-effective-online-learning",
+      "content": "\n            <h2>Introduction</h2>\n            <p>Online learning has become increasingly popular, especially in recent years. Whether you're a student or a professional looking to upskill, these tips will help you make the most of your online learning experience.</p>\n            \n            <h2>1. Create a Dedicated Learning Space</h2>\n            <p>Set up a quiet, comfortable space specifically for studying. This helps your brain associate the space with learning and improves focus.</p>\n            \n            <h2>2. Set Clear Goals</h2>\n            <p>Define what you want to achieve from your online learning. Break down larger goals into smaller, manageable milestones.</p>\n            \n            <h2>3. Manage Your Time Effectively</h2>\n            <p>Create a schedule and stick to it. Use time management techniques like the Pomodoro Technique to maintain focus.</p>\n            \n            <h2>4. Stay Engaged</h2>\n            <p>Participate in discussions, ask questions, and interact with instructors and fellow students. Active participation enhances learning.</p>\n            \n            <h2>5. Take Regular Breaks</h2>\n            <p>Don't forget to take breaks. Short breaks help maintain concentration and prevent burnout.</p>\n            \n            <h2>Conclusion</h2>\n            <p>Online learning requires discipline and self-motivation. By following these tips, you can create a successful online learning experience that helps you achieve your educational goals.</p>\n          ",
+      "excerpt": "Discover 10 essential tips to maximize your online learning experience and achieve better results in your studies.",
+      "authorId": "user-4",
+      "authorName": "Admin User",
+      "authorEmail": "admin@example.com",
+      "status": "PUBLISHED",
+      "featuredImage": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+      "tags": [
+        "online learning",
+        "education",
+        "study tips",
+        "productivity"
+      ],
+      "category": "Education",
+      "publishedAt": "2025-10-03T05:57:18.489Z",
+      "createdAt": "2025-10-03T05:57:18.490Z",
+      "updatedAt": "2025-10-03T05:57:18.490Z",
+      "viewCount": 125,
+      "readTime": 5
+    },
+    {
+      "id": "blog-1760679352334",
+      "title": "New blog post for testing",
+      "slug": "new-blog-post-for-testing",
+      "content": "test",
+      "excerpt": "Test",
+      "authorId": "user-4",
+      "authorName": "Admin User",
+      "authorEmail": "admin@example.com",
+      "status": "PUBLISHED",
+      "featuredImage": "http://localhost:5173/logo.png",
+      "tags": [
+        "education"
+      ],
+      "category": "Educations",
+      "publishedAt": "2025-10-17T05:35:52.334Z",
+      "createdAt": "2025-10-17T05:35:52.334Z",
+      "updatedAt": "2025-10-17T05:35:52.334Z",
+      "viewCount": 0,
+      "readTime": 1
+    }
+  ]
 }

@@ -8,6 +8,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
 import FeaturedTutors from '@/components/FeaturedTutors';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
 import { 
   ArrowRight, 
   Play, 
@@ -103,61 +106,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="TutorsPool" className="h-12 w-auto" />
-              {/* <span className="text-xl font-bold text-gradient-brand-primary">TutorsPool</span> */}
-            </Link>
-            
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-gradient-brand-primary font-medium transition-colors">Home</Link>
-              <Link to="/search" className="text-gray-700 hover:text-gradient-brand-primary font-medium transition-colors">Find Tutors</Link>
-              <Link to="/subjects" className="text-gray-700 hover:text-gradient-brand-primary font-medium transition-colors">Subjects</Link>
-              <Link to="/about" className="text-gray-700 hover:text-gradient-brand-primary font-medium transition-colors">About</Link>
-              <Link to="/contact" className="text-gray-700 hover:text-gradient-brand-primary font-medium transition-colors">Contact</Link>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              {user ? (
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2 text-sm">
-                    <div className="text-gray-600">
-                      Welcome, <span className="font-semibold text-gray-900">{user.name}</span>
-                    </div>
-                    <Badge className="bg-gradient-to-r from-[#2C2E71] to-[#F47B2F] text-white text-xs px-2 py-1">
-                      {user.role}
-                    </Badge>
-                  </div>
-                  <Link
-                    to={getDashboardUrl()}
-                    className="btn-gradient-primary px-6 py-2 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center"
-                  >
-                    Dashboard
-                  </Link>
-                </div>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="text-gray-700 hover:text-[#2C2E71] font-medium transition-colors"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="btn-gradient-primary px-6 py-2 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl"
-                  >
-                    Get Started
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header variant="transparent" />
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 px-4 sm:px-6 lg:px-8">
@@ -727,84 +676,7 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#1F2937] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <img src="/logo.png" alt="TutorsPool" className="h-12 w-auto" />
-                {/* <span className="text-xl font-bold">TutorsPool</span> */}
-              </div>
-              <p className="text-gray-400 max-w-sm">
-                Empowering students with personalized tutoring and expert guidance for academic success.
-              </p>
-              <div className="flex space-x-4">
-                <Facebook className="h-6 w-6 text-gray-400 hover:text-[#F47B2F] cursor-pointer transition-colors" />
-                <Twitter className="h-6 w-6 text-gray-400 hover:text-[#F47B2F] cursor-pointer transition-colors" />
-                <Linkedin className="h-6 w-6 text-gray-400 hover:text-[#F47B2F] cursor-pointer transition-colors" />
-                <Instagram className="h-6 w-6 text-gray-400 hover:text-[#F47B2F] cursor-pointer transition-colors" />
-              </div>
-            </div>   
-            <div className="space-y-2">
-              <h3 className="font-semibold">Quick Links</h3>
-              <div className="grid grid-cols-2 gap-2 text-sm text-gray-400">
-                <Link to="/about">About Us</Link>
-                <Link to="/subjects">Subjects</Link>
-                <Link to="/search">Find Tutors</Link>
-                <Link to="/contact">Contact</Link>
-                <Link to="/about">Pricing</Link>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="font-semibold">Support</h3>
-              <div className="space-y-2 text-sm text-gray-400">
-                <div>Help Center</div>
-                <div>FAQ</div>
-                <div>Privacy Policy</div>
-                <div>Terms of Service</div>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="font-semibold">Get In Touch</h3>
-              <div className="space-y-3 text-sm text-gray-400">
-                <div className="flex items-center space-x-3">
-                  <Phone className="h-4 w-4 text-[#F47B2F]" />
-                  <span>(555) 123-4567</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-4 w-4 text-[#F47B2F]" />
-                  <span>support@tutorspool.com</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <MapPin className="h-4 w-4 text-[#F47B2F]" />
-                  <span>123 Education St, Learning City</span>
-                </div>
-                
-                <div className="pt-4">
-                  {/* <Button className="bg-green-500 hover:bg-green-600 text-white text-sm">
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    WhatsApp Support
-                  </Button> */}
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 TutorsPool. All rights reserved | Made with ❤️ for students</p>
-          </div>
-        </div>
-      </footer>
-
-      {/* WhatsApp Support Button */}
-      {/* <div className="fixed bottom-6 right-6 z-50">
-        <Button className="bg-green-500 hover:bg-green-600 text-white rounded-full w-14 h-14 shadow-lg hover:shadow-xl">
-          <MessageSquare className="h-6 w-6" />
-        </Button>
-      </div> */}
+      <Footer />
     </div>
   );
 };

@@ -14,9 +14,11 @@ import {
   LogOut,
   Menu,
   X,
-  UserCheck
+  UserCheck,
+  FileText
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import Footer from '@/components/Footer';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -33,6 +35,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'User Approvals', href: '/admin/approvals', icon: UserCheck },
     { name: 'Tutors', href: '/admin/tutors', icon: GraduationCap },
     { name: 'Bookings', href: '/admin/bookings', icon: Calendar },
+    { name: 'Blog Management', href: '/admin/blog', icon: FileText },
     { name: 'Reports', href: '/admin/reports', icon: BarChart3 },
     { name: 'Error Logs', href: '/admin/errors', icon: AlertTriangle },
     { name: 'Profile', href: '/admin/profile', icon: User },
@@ -175,6 +178,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex flex-1"></div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
+              <Link to="/blog" className="text-sm font-medium text-blue-700 hover:text-blue-900">Blog</Link>
               <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" />
               <div className="flex items-center gap-x-2">
                 <span className="text-sm text-gray-700">Welcome, {user?.name}</span>
@@ -192,6 +196,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

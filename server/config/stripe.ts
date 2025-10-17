@@ -33,7 +33,7 @@ export const stripeConfig = {
 
 // Initialize Stripe instance
 export const stripe = new Stripe(stripeConfig.secretKey, {
-  apiVersion: '2025-08-27.basil',
+  apiVersion: '2024-06-20',
   typescript: true,
 });
 

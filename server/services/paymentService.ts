@@ -35,11 +35,11 @@ export class PaymentService {
           bookingId: bookingId,
           studentId: booking.studentId,
           tutorId: booking.tutorId,
-          subject: booking.subject,
-          sessionDate: booking.sessionDate,
+          subject: booking.subjectId,
+          sessionDate: booking.startAtUTC,
           platform: 'tutorspool'
         },
-        description: `Tutoring session: ${booking.subject} with ${tutor.user?.name}`,
+        description: `Tutoring session: ${booking.subjectId} with ${student.name || student.email}`,
         receipt_email: student.email,
       });
 
@@ -126,7 +126,7 @@ export class PaymentService {
         if (booking) {
           booking.status = 'CONFIRMED';
           booking.paymentStatus = 'PAID';
-          this.dataManager.updateBooking(booking);
+          this.dataManager.updateBooking(booking.id, booking);
         }
 
         return {

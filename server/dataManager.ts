@@ -18,6 +18,7 @@ interface DataStore {
   payments: any[];
   payouts: any[];
   disputes: any[];
+  blogPosts: any[];
   lastId: number;
 }
 
@@ -46,6 +47,7 @@ class DataManager {
         if (!data.payments) data.payments = [];
         if (!data.payouts) data.payouts = [];
         if (!data.disputes) data.disputes = [];
+        if (!data.blogPosts) data.blogPosts = [];
         if (!data.lastId) data.lastId = 0;
         
         return data;
@@ -533,6 +535,173 @@ class DataManager {
       console.log('[DATA MANAGER] Sample data loaded successfully');
     } else {
       console.log('[DATA MANAGER] Sample data already exists, skipping load');
+    }
+
+    // Initialize sample blog posts if none exist
+    if (this.data.blogPosts.length === 0) {
+      console.log('[DATA MANAGER] Loading sample blog posts...');
+      const sampleBlogPosts = [
+        {
+          id: 'blog-1',
+          title: '10 Tips for Effective Online Learning',
+          slug: '10-tips-for-effective-online-learning',
+          content: `
+            <h2>Introduction</h2>
+            <p>Online learning has become increasingly popular, especially in recent years. Whether you're a student or a professional looking to upskill, these tips will help you make the most of your online learning experience.</p>
+            
+            <h2>1. Create a Dedicated Learning Space</h2>
+            <p>Set up a quiet, comfortable space specifically for studying. This helps your brain associate the space with learning and improves focus.</p>
+            
+            <h2>2. Set Clear Goals</h2>
+            <p>Define what you want to achieve from your online learning. Break down larger goals into smaller, manageable milestones.</p>
+            
+            <h2>3. Manage Your Time Effectively</h2>
+            <p>Create a schedule and stick to it. Use time management techniques like the Pomodoro Technique to maintain focus.</p>
+            
+            <h2>4. Stay Engaged</h2>
+            <p>Participate in discussions, ask questions, and interact with instructors and fellow students. Active participation enhances learning.</p>
+            
+            <h2>5. Take Regular Breaks</h2>
+            <p>Don't forget to take breaks. Short breaks help maintain concentration and prevent burnout.</p>
+            
+            <h2>Conclusion</h2>
+            <p>Online learning requires discipline and self-motivation. By following these tips, you can create a successful online learning experience that helps you achieve your educational goals.</p>
+          `,
+          excerpt: 'Discover 10 essential tips to maximize your online learning experience and achieve better results in your studies.',
+          authorId: 'user-4',
+          authorName: 'Admin User',
+          authorEmail: 'admin@example.com',
+          status: 'PUBLISHED',
+          featuredImage: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
+          tags: ['online learning', 'education', 'study tips', 'productivity'],
+          category: 'Education',
+          publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
+          createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          updatedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          viewCount: 125,
+          readTime: 5,
+        },
+        {
+          id: 'blog-2',
+          title: 'The Future of Tutoring: Technology and Personalization',
+          slug: 'future-of-tutoring-technology-personalization',
+          content: `
+            <h2>The Evolution of Tutoring</h2>
+            <p>Tutoring has evolved significantly over the years, from traditional one-on-one sessions to innovative online platforms that connect students with expert tutors worldwide.</p>
+            
+            <h2>Technology Integration</h2>
+            <p>Modern tutoring platforms leverage cutting-edge technology to enhance the learning experience:</p>
+            <ul>
+              <li>Interactive whiteboards and screen sharing</li>
+              <li>AI-powered learning analytics</li>
+              <li>Virtual reality for immersive learning</li>
+              <li>Mobile apps for on-the-go learning</li>
+            </ul>
+            
+            <h2>Personalized Learning Paths</h2>
+            <p>One of the most significant advantages of modern tutoring is the ability to create personalized learning experiences tailored to each student's needs, learning style, and pace.</p>
+            
+            <h2>Global Accessibility</h2>
+            <p>Online tutoring breaks down geographical barriers, allowing students to access the best tutors regardless of their location.</p>
+            
+            <h2>Looking Ahead</h2>
+            <p>The future of tutoring lies in the seamless integration of technology and human expertise, creating more effective and engaging learning experiences for students worldwide.</p>
+          `,
+          excerpt: 'Explore how technology is revolutionizing the tutoring industry and creating more personalized, accessible learning experiences.',
+          authorId: 'user-4',
+          authorName: 'Admin User',
+          authorEmail: 'admin@example.com',
+          status: 'PUBLISHED',
+          featuredImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+          tags: ['tutoring', 'technology', 'education', 'future'],
+          category: 'Technology',
+          publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
+          createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          viewCount: 89,
+          readTime: 4,
+        },
+        {
+          id: 'blog-3',
+          title: 'Building Confidence in Mathematics: A Student\'s Guide',
+          slug: 'building-confidence-mathematics-student-guide',
+          content: `
+            <h2>Understanding Math Anxiety</h2>
+            <p>Many students struggle with mathematics due to anxiety and lack of confidence. Understanding that math anxiety is common and manageable is the first step toward overcoming it.</p>
+            
+            <h2>Start with the Basics</h2>
+            <p>Building a strong foundation is crucial. Don't rush through fundamental concepts - take time to understand them thoroughly before moving to more complex topics.</p>
+            
+            <h2>Practice Regularly</h2>
+            <p>Consistent practice is key to building confidence. Set aside time each day for math practice, even if it's just 15-20 minutes.</p>
+            
+            <h2>Seek Help When Needed</h2>
+            <p>Don't hesitate to ask for help from teachers, tutors, or classmates. Everyone learns at their own pace, and seeking assistance is a sign of strength, not weakness.</p>
+            
+            <h2>Celebrate Small Wins</h2>
+            <p>Acknowledge your progress, no matter how small. Each problem solved correctly is a step forward in your mathematical journey.</p>
+            
+            <h2>Conclusion</h2>
+            <p>Building confidence in mathematics takes time and patience. With the right approach and mindset, anyone can develop strong mathematical skills and confidence.</p>
+          `,
+          excerpt: 'Learn practical strategies to overcome math anxiety and build confidence in mathematics through consistent practice and the right mindset.',
+          authorId: 'user-4',
+          authorName: 'Admin User',
+          authorEmail: 'admin@example.com',
+          status: 'PUBLISHED',
+          featuredImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+          tags: ['mathematics', 'confidence', 'study tips', 'student success'],
+          category: 'Mathematics',
+          publishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
+          createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          viewCount: 67,
+          readTime: 3,
+        },
+        {
+          id: 'blog-4',
+          title: 'How to Choose the Right Tutor for Your Learning Needs',
+          slug: 'how-to-choose-right-tutor-learning-needs',
+          content: `
+            <h2>Assess Your Learning Goals</h2>
+            <p>Before choosing a tutor, clearly define what you want to achieve. Are you looking to improve grades, prepare for exams, or develop a deeper understanding of a subject?</p>
+            
+            <h2>Consider Learning Style</h2>
+            <p>Everyone learns differently. Some students prefer visual learning, while others learn better through hands-on activities or discussions. Choose a tutor whose teaching style matches your learning preferences.</p>
+            
+            <h2>Check Qualifications and Experience</h2>
+            <p>Look for tutors with relevant qualifications and experience in the subject area. Don't hesitate to ask about their educational background and teaching experience.</p>
+            
+            <h2>Evaluate Communication Skills</h2>
+            <p>A good tutor should be able to explain complex concepts in simple terms and communicate effectively with students of different ages and skill levels.</p>
+            
+            <h2>Consider Availability and Flexibility</h2>
+            <p>Ensure the tutor's schedule aligns with yours and that they can accommodate your learning pace and needs.</p>
+            
+            <h2>Trust Your Instincts</h2>
+            <p>Personal connection matters. Choose a tutor you feel comfortable with and who motivates you to learn.</p>
+          `,
+          excerpt: 'Learn how to select the perfect tutor by considering your learning goals, style, and the tutor\'s qualifications and teaching approach.',
+          authorId: 'user-4',
+          authorName: 'Admin User',
+          authorEmail: 'admin@example.com',
+          status: 'PUBLISHED',
+          featuredImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+          tags: ['tutoring', 'learning', 'education', 'student success'],
+          category: 'Education',
+          publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+          createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+          updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+          viewCount: 43,
+          readTime: 4,
+        }
+      ];
+
+      this.data.blogPosts = sampleBlogPosts;
+      this.saveData();
+      console.log('[DATA MANAGER] Sample blog posts loaded successfully');
+    } else {
+      console.log('[DATA MANAGER] Blog posts already exist, skipping load');
     }
   }
 
@@ -1150,6 +1319,57 @@ class DataManager {
 
   getDisputesByTutor(tutorId: string): any[] {
     return this.data.disputes.filter(dispute => dispute.tutorId === tutorId);
+  }
+
+  // Blog Post Methods
+  getAllBlogPosts(): any[] {
+    return this.data.blogPosts;
+  }
+
+  getBlogPostById(id: string): any | null {
+    return this.data.blogPosts.find(post => post.id === id) || null;
+  }
+
+  getBlogPostBySlug(slug: string): any | null {
+    return this.data.blogPosts.find(post => post.slug === slug) || null;
+  }
+
+  addBlogPost(blogPost: any): any {
+    this.data.blogPosts.push(blogPost);
+    this.saveData();
+    return blogPost;
+  }
+
+  updateBlogPost(id: string, updates: any): any | null {
+    const index = this.data.blogPosts.findIndex(post => post.id === id);
+    if (index === -1) return null;
+
+    this.data.blogPosts[index] = { ...this.data.blogPosts[index], ...updates };
+    this.saveData();
+    return this.data.blogPosts[index];
+  }
+
+  deleteBlogPost(id: string): boolean {
+    const index = this.data.blogPosts.findIndex(post => post.id === id);
+    if (index === -1) return false;
+
+    this.data.blogPosts.splice(index, 1);
+    this.saveData();
+    return true;
+  }
+
+  incrementBlogPostViewCount(id: string): boolean {
+    const post = this.data.blogPosts.find(post => post.id === id);
+    if (!post) return false;
+
+    post.viewCount = (post.viewCount || 0) + 1;
+    this.saveData();
+    return true;
+  }
+
+  getBlogCategories(): string[] {
+    const categories = new Set(this.data.blogPosts.map(post => post.category));
+    return Array.from(categories).sort();
   }
 }
 

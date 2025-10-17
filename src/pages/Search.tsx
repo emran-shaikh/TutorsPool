@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search as SearchIcon, Filter, Star, DollarSign, X } from 'lucide-react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const Search: React.FC = () => {
   const navigate = useNavigate();
@@ -102,6 +104,7 @@ const Search: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -314,6 +317,7 @@ const Search: React.FC = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

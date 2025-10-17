@@ -33,11 +33,14 @@ const TutorDashboard = React.lazy(() => import('./pages/TutorDashboard'));
 const UsersManagement = React.lazy(() => import('./pages/admin/UsersManagement'));
 const TutorsManagement = React.lazy(() => import('./pages/admin/TutorsManagement'));
 const BookingsManagement = React.lazy(() => import('./pages/admin/BookingsManagement'));
+const BlogManagement = React.lazy(() => import('./pages/admin/BlogManagement'));
 const ErrorMonitoring = React.lazy(() => import('./pages/admin/ErrorMonitoring'));
 const AdminProfile = React.lazy(() => import('./pages/admin/AdminProfile'));
 const AdminReports = React.lazy(() => import('./pages/admin/AdminReports'));
 const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
 const UserApprovals = React.lazy(() => import('./pages/admin/UserApprovals'));
+const Blog = React.lazy(() => import('./pages/Blog'));
+const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const AdminRouteWrapper = React.lazy(() => import('./components/admin/AdminRouteWrapper'));
 const ErrorTest = React.lazy(() => import('./pages/ErrorTest'));
 
@@ -82,12 +85,17 @@ const App = () => (
                 <Route path="/booking" element={<Bookings />} />
                 <Route path="/tutor/:tutorId" element={<TutorProfile />} />
                 
+                {/* Blog Routes */}
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                
                 {/* Admin Routes */}
                 <Route path="/admin" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><AdminDashboard /></AdminRouteWrapper></ProtectedRoute>} />
                 <Route path="/admin/dashboard" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><AdminDashboard /></AdminRouteWrapper></ProtectedRoute>} />
                 <Route path="/admin/users" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><UsersManagement /></AdminRouteWrapper></ProtectedRoute>} />
                 <Route path="/admin/tutors" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><TutorsManagement /></AdminRouteWrapper></ProtectedRoute>} />
                 <Route path="/admin/bookings" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><BookingsManagement /></AdminRouteWrapper></ProtectedRoute>} />
+                <Route path="/admin/blog" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><BlogManagement /></AdminRouteWrapper></ProtectedRoute>} />
                 <Route path="/admin/reports" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><AdminReports /></AdminRouteWrapper></ProtectedRoute>} />
                 <Route path="/admin/errors" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><ErrorMonitoring /></AdminRouteWrapper></ProtectedRoute>} />
                 <Route path="/admin/profile" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><AdminProfile /></AdminRouteWrapper></ProtectedRoute>} />
