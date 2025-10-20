@@ -10,33 +10,15 @@ import { Search, Calendar, User, Clock, Eye, Tag, ArrowRight } from 'lucide-reac
 import { BlogPost } from '@/types/blog';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { blogApi } from '@/lib/api';
 
 const apiClient = {
   async getBlogPosts(filters: any = {}) {
-    const params = new URLSearchParams();
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== '') {
-        params.append(key, String(value));
-      }
-    });
-    
-    const response = await fetch(`/api/blog?${params}`);
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch blog posts');
-    }
-    
-    return response.json();
+    return blogApi.getPublicPosts(filters);
   },
 
   async getBlogCategories() {
-    const response = await fetch('/api/blog/meta/categories');
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch categories');
-    }
-    
-    return response.json();
+    return blogApi.getCategories();
   },
 };
 
@@ -103,7 +85,7 @@ const Blog: React.FC = () => {
             <div className="text-lg">Loading blog posts...</div>
           </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -117,7 +99,7 @@ const Blog: React.FC = () => {
             <div className="text-lg text-red-600">Error loading blog posts</div>
           </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -357,7 +339,7 @@ const Blog: React.FC = () => {
         </div>
       </div>
       
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -428,6 +428,35 @@ class ApiClient {
   }
 }
 
+// Blog API
+export const blogApi = {
+  // Public
+  getPublicPosts: (filters: Record<string, any> = {}) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v !== undefined && v !== '') params.append(k, String(v));
+    });
+    return apiClient.request(`/blog?${params.toString()}`);
+  },
+  getCategories: () => apiClient.request('/blog/meta/categories'),
+  getPostBySlug: (slug: string) => apiClient.request(`/blog/slug/${slug}`),
+
+  // Admin
+  getAdminPosts: (filters: Record<string, any> = {}) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v !== undefined && v !== '') params.append(k, String(v));
+    });
+    return apiClient.request(`/blog/admin?${params.toString()}`);
+  },
+  createPost: (data: any) =>
+    apiClient.request('/blog', { method: 'POST', body: JSON.stringify(data) }),
+  updatePost: (id: string, data: any) =>
+    apiClient.request(`/blog/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deletePost: (id: string) =>
+    apiClient.request(`/blog/${id}`, { method: 'DELETE' }),
+};
+
 // Create and export a singleton instance
 export const apiClient = new ApiClient();
 

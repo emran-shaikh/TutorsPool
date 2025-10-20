@@ -15,77 +15,23 @@ import { Plus, Edit, Trash2, Eye, Search, Filter, Calendar, User, Tag } from 'lu
 import { BlogPost, CreateBlogPostData, UpdateBlogPostData } from '@/types/blog';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { blogApi } from '@/lib/api';
 
 const apiClient = {
-  // Blog API endpoints
   async getBlogPosts(filters: any = {}) {
-    const params = new URLSearchParams();
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== '') {
-        params.append(key, String(value));
-      }
-    });
-    
-    const response = await fetch(`/api/blog/admin?${params}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch blog posts');
-    }
-    
-    return response.json();
+    return blogApi.getAdminPosts(filters);
   },
 
   async createBlogPost(data: CreateBlogPostData) {
-    const response = await fetch('/api/blog', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(data),
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to create blog post');
-    }
-    
-    return response.json();
+    return blogApi.createPost(data);
   },
 
   async updateBlogPost(id: string, data: UpdateBlogPostData) {
-    const response = await fetch(`/api/blog/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(data),
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to update blog post');
-    }
-    
-    return response.json();
+    return blogApi.updatePost(id, data);
   },
 
   async deleteBlogPost(id: string) {
-    const response = await fetch(`/api/blog/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to delete blog post');
-    }
-    
-    return response.json();
+    return blogApi.deletePost(id);
   },
 };
 
@@ -261,7 +207,7 @@ const BlogManagement: React.FC = () => {
             <div className="text-lg">Loading blog posts...</div>
           </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -581,7 +527,7 @@ const BlogManagement: React.FC = () => {
           </Card>
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

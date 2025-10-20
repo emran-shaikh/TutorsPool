@@ -2177,6 +2177,27 @@
   "lastId": 102,
   "blogPosts": [
     {
+      "id": "blog-1760679352334",
+      "title": "New blog post for testing",
+      "slug": "new-blog-post-for-testing",
+      "content": "test",
+      "excerpt": "Test",
+      "authorId": "user-4",
+      "authorName": "Admin User",
+      "authorEmail": "admin@example.com",
+      "status": "PUBLISHED",
+      "featuredImage": "http://localhost:5173/logo.png",
+      "tags": [
+        "education"
+      ],
+      "category": "Educations",
+      "publishedAt": "2025-10-17T05:35:52.334Z",
+      "createdAt": "2025-10-17T05:35:52.334Z",
+      "updatedAt": "2025-10-17T05:35:52.334Z",
+      "viewCount": 0,
+      "readTime": 1
+    },
+    {
       "id": "blog-4",
       "title": "How to Choose the Right Tutor for Your Learning Needs",
       "slug": "how-to-choose-right-tutor-learning-needs",
@@ -2270,23 +2291,23 @@
       "readTime": 5
     },
     {
-      "id": "blog-1760679352334",
-      "title": "New blog post for testing",
-      "slug": "new-blog-post-for-testing",
+      "id": "blog-1760970285295",
+      "title": "Test2",
+      "slug": "test2",
       "content": "test",
-      "excerpt": "Test",
+      "excerpt": "test",
       "authorId": "user-4",
       "authorName": "Admin User",
       "authorEmail": "admin@example.com",
       "status": "PUBLISHED",
-      "featuredImage": "http://localhost:5173/logo.png",
+      "featuredImage": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
       "tags": [
-        "education"
+        "test"
       ],
-      "category": "Educations",
-      "publishedAt": "2025-10-17T05:35:52.334Z",
-      "createdAt": "2025-10-17T05:35:52.334Z",
-      "updatedAt": "2025-10-17T05:35:52.334Z",
+      "category": "edu",
+      "publishedAt": "2025-10-20T14:24:45.295Z",
+      "createdAt": "2025-10-20T14:24:45.295Z",
+      "updatedAt": "2025-10-20T14:24:45.295Z",
       "viewCount": 0,
       "readTime": 1
     }
