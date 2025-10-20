@@ -476,6 +476,20 @@
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
+    },
+    {
+      "name": "Aurora Kirkland",
+      "email": "wycaw@mailinator.com",
+      "phone": "+1 (579) 714-6667",
+      "country": "Canada",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "id": "user-105",
+      "createdAt": "2025-10-20T17:52:59.785Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -842,6 +856,37 @@
       "id": "tutor-100",
       "createdAt": "2025-10-17T05:28:20.535Z",
       "status": "ACTIVE"
+    },
+    {
+      "userId": "user-105",
+      "headline": "Aliquid qui pariatur",
+      "bio": "Qui modi dolores apeQui modi dolores apeQui modi dolores ape",
+      "hourlyRateCents": 7000,
+      "currency": "EUR",
+      "yearsExperience": 1998,
+      "subjects": [
+        "Literature",
+        "Economics"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "aurora-kirkland",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-106",
+      "createdAt": "2025-10-20T17:52:59.798Z"
     }
   ],
   "students": [
@@ -2200,7 +2245,7 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 104,
+  "lastId": 106,
   "blogPosts": [
     {
       "id": "blog-1760970285295",
