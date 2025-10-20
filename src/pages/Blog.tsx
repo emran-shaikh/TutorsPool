@@ -85,7 +85,7 @@ const Blog: React.FC = () => {
             <div className="text-lg">Loading blog posts...</div>
           </div>
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     );
   }
@@ -99,7 +99,7 @@ const Blog: React.FC = () => {
             <div className="text-lg text-red-600">Error loading blog posts</div>
           </div>
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     );
   }
@@ -339,7 +339,7 @@ const Blog: React.FC = () => {
         </div>
       </div>
       
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

@@ -462,6 +462,20 @@
       "approvedAt": "2025-10-17T05:28:40.859Z",
       "approvedBy": "user-4",
       "avatarUrl": null
+    },
+    {
+      "name": "Kane Haley",
+      "email": "wugytela@mailinator.com",
+      "phone": "+1 (133) 318-9797",
+      "country": "Argentina",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-103",
+      "createdAt": "2025-10-20T17:30:38.465Z",
+      "status": "PENDING",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -1034,6 +1048,18 @@
       "uploads": [],
       "id": "student-94",
       "createdAt": "2025-10-17T05:21:47.709Z"
+    },
+    {
+      "userId": "user-103",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Voluptate consequat",
+      "preferredMode": "ONLINE",
+      "budgetMin": 5800,
+      "budgetMax": 5200,
+      "specialRequirements": "Pariatur Illo imped",
+      "uploads": [],
+      "id": "student-104",
+      "createdAt": "2025-10-20T17:30:38.479Z"
     }
   ],
   "bookings": [
@@ -2174,8 +2200,29 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 102,
+  "lastId": 104,
   "blogPosts": [
+    {
+      "id": "blog-1760970285295",
+      "title": "Test2",
+      "slug": "test2",
+      "content": "test",
+      "excerpt": "test",
+      "authorId": "user-4",
+      "authorName": "Admin User",
+      "authorEmail": "admin@example.com",
+      "status": "PUBLISHED",
+      "featuredImage": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "tags": [
+        "test"
+      ],
+      "category": "edu",
+      "publishedAt": "2025-10-20T14:24:45.295Z",
+      "createdAt": "2025-10-20T14:24:45.295Z",
+      "updatedAt": "2025-10-20T14:24:45.295Z",
+      "viewCount": 0,
+      "readTime": 1
+    },
     {
       "id": "blog-1760679352334",
       "title": "New blog post for testing",
@@ -2289,27 +2336,6 @@
       "updatedAt": "2025-10-03T05:57:18.490Z",
       "viewCount": 125,
       "readTime": 5
-    },
-    {
-      "id": "blog-1760970285295",
-      "title": "Test2",
-      "slug": "test2",
-      "content": "test",
-      "excerpt": "test",
-      "authorId": "user-4",
-      "authorName": "Admin User",
-      "authorEmail": "admin@example.com",
-      "status": "PUBLISHED",
-      "featuredImage": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      "tags": [
-        "test"
-      ],
-      "category": "edu",
-      "publishedAt": "2025-10-20T14:24:45.295Z",
-      "createdAt": "2025-10-20T14:24:45.295Z",
-      "updatedAt": "2025-10-20T14:24:45.295Z",
-      "viewCount": 0,
-      "readTime": 1
     }
   ]
 }
