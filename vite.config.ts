@@ -53,18 +53,9 @@ export default defineConfig(({ mode }) => ({
               return 'react-core';
             }
             
-            // Radix UI components (split into smaller chunks)
+            // Radix UI: keep all together to avoid splitting internal helpers across chunks
             if (id.includes('@radix-ui')) {
-              if (id.includes('react-dialog') || id.includes('react-dropdown-menu') || id.includes('react-select')) {
-                return 'radix-forms';
-              }
-              if (id.includes('react-avatar') || id.includes('react-badge') || id.includes('react-button')) {
-                return 'radix-display';
-              }
-              if (id.includes('react-navigation') || id.includes('react-menu') || id.includes('react-tabs')) {
-                return 'radix-navigation';
-              }
-              return 'radix-other';
+              return 'radix-ui';
             }
             
             // UI libraries
