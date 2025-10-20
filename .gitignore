@@ -36,3 +36,19 @@ dist-ssr
 /generated/prisma
 
 .vercel
+
+# Coverage and caches
+coverage
+.eslintcache
+.turbo
+.pnpm-store
+.cache
+
+# Additional environment variants (do not commit)
+.env.production
+.env.preview
+.env.staging
+.env.qa
+
+# Server build output
+dist-server

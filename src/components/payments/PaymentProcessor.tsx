@@ -87,10 +87,12 @@ export const PaymentProcessor: React.FC<PaymentProcessorProps> = ({
 
     try {
       // Create payment intent
+      const amountCents = Math.round((booking.amount || 0) * 100);
+      const currency = (booking.currency || 'USD').toUpperCase();
       const paymentIntentResponse = await paymentApi.createPaymentIntent(
         booking.id,
-        booking.amount,
-        booking.currency || 'usd'
+        amountCents,
+        currency
       );
 
       if (!paymentIntentResponse.success) {
