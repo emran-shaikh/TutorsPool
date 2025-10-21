@@ -36,9 +36,10 @@ class WhatsAppService {
   constructor() {
     // These would be set from environment variables in production
     // Using import.meta.env for Vite instead of process.env
-    this.accessToken = import.meta.env.VITE_WHATSAPP_ACCESS_TOKEN || 'your_whatsapp_access_token';
-    this.phoneNumberId = import.meta.env.VITE_WHATSAPP_PHONE_NUMBER_ID || 'your_phone_number_id';
-    this.businessAccountId = import.meta.env.VITE_WHATSAPP_BUSINESS_ACCOUNT_ID || 'your_business_account_id';
+    const env = (import.meta as any)?.env || {};
+    this.accessToken = env.VITE_WHATSAPP_ACCESS_TOKEN || 'your_whatsapp_access_token';
+    this.phoneNumberId = env.VITE_WHATSAPP_PHONE_NUMBER_ID || 'your_phone_number_id';
+    this.businessAccountId = env.VITE_WHATSAPP_BUSINESS_ACCOUNT_ID || 'your_business_account_id';
   }
 
   /**
@@ -175,7 +176,8 @@ Message: ${contact.message || 'No specific message'}
 Please follow up with this potential customer.`;
 
     // This would be sent to admin's WhatsApp number
-    const adminPhoneNumber = import.meta.env.VITE_ADMIN_WHATSAPP_NUMBER || '+15551234567';
+    const env = (import.meta as any)?.env || {};
+    const adminPhoneNumber = env.VITE_ADMIN_WHATSAPP_NUMBER || '+15551234567';
     
     return this.sendMessage({
       to: adminPhoneNumber,
