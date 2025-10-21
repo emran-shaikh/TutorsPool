@@ -766,6 +766,69 @@ app.get('/api/students/stats', authenticateToken, async (req, res) => {
   }
 });
 
+// List/Search tutors (public)
+app.get('/api/tutors', async (req, res) => {
+  try {
+    const { q, priceMin, priceMax, ratingMin, page = '1', limit = '10' } = req.query as Record<string, string>;
+
+    let tutors = dataManager.getAllTutors();
+
+    // Join with user for name/email if available
+    const enrich = (t: any) => ({
+      id: t.id,
+      userId: t.userId,
+      headline: t.headline,
+      bio: t.bio,
+      hourlyRateCents: t.hourlyRateCents,
+      currency: t.currency,
+      yearsExperience: t.yearsExperience,
+      subjects: t.subjects,
+      levels: t.levels,
+      slug: t.slug,
+      ratingAvg: t.ratingAvg ?? 0,
+      ratingCount: t.ratingCount ?? 0,
+      user: dataManager.getUserById(t.userId) || null,
+    });
+
+    // Filtering
+    if (q && q.trim()) {
+      const query = q.toLowerCase();
+      tutors = tutors.filter((t: any) =>
+        (t.headline?.toLowerCase().includes(query)) ||
+        (t.bio?.toLowerCase().includes(query)) ||
+        (Array.isArray(t.subjects) && t.subjects.join(' ').toLowerCase().includes(query))
+      );
+    }
+
+    if (priceMin) {
+      const min = Number(priceMin);
+      if (!isNaN(min)) tutors = tutors.filter((t: any) => (t.hourlyRateCents ?? 0) >= min);
+    }
+    if (priceMax) {
+      const max = Number(priceMax);
+      if (!isNaN(max)) tutors = tutors.filter((t: any) => (t.hourlyRateCents ?? Infinity) <= max);
+    }
+    if (ratingMin) {
+      const rmin = Number(ratingMin);
+      if (!isNaN(rmin)) tutors = tutors.filter((t: any) => (t.ratingAvg ?? 0) >= rmin);
+    }
+
+    // Pagination
+    const pageNum = Math.max(1, parseInt(page as string, 10) || 1);
+    const limitNum = Math.max(1, Math.min(50, parseInt(limit as string, 10) || 10));
+    const total = tutors.length;
+    const totalPages = Math.max(1, Math.ceil(total / limitNum));
+    const start = (pageNum - 1) * limitNum;
+    const end = start + limitNum;
+    const items = tutors.slice(start, end).map(enrich);
+
+    res.json({ items, total, page: pageNum, totalPages, limit: limitNum });
+  } catch (error) {
+    console.error('Tutors list error:', error);
+    res.status(500).json({ error: 'Failed to fetch tutors' });
+  }
+});
+
 app.post('/api/tutors', authenticateToken, async (req, res) => {
   try {
     const { 
