@@ -1,5 +1,10 @@
 // API client for Tutorspool
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5174/api');
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5174/api' : '/api');
+
+// In production, if still pointing to same-origin '/api', emit a clear warning
+if (import.meta.env.PROD && API_BASE_URL === '/api') {
+  console.warn('[API] VITE_API_URL is not set. Using same-origin /api in production. Ensure your host proxies /api to your backend or set VITE_API_URL to your backend (e.g. https://api.your-domain.com/api).');
+}
 
 class ApiClient {
   private token: string | null = null;

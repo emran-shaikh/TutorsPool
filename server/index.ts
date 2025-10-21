@@ -26,7 +26,16 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 5174;
 
 // CORS configuration
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176", "http://localhost:8080", "http://localhost:3000"],
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "http://localhost:5176",
+    "http://localhost:8080",
+    "http://localhost:3000",
+    "https://www.tutorspool.com",
+    "https://tutors-pool-git-main-emrans-projects-5d3e3a87.vercel.app"
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -990,76 +999,6 @@ app.post('/api/google-meet/create-link', authenticateToken, async (req, res) => 
   } catch (error) {
     console.error('Google Meet link creation error:', error);
     res.status(500).json({ error: 'Failed to create Google Meet link' });
-  }
-});
-
-// Tutor search and discovery
-app.get('/api/tutors', async (req, res) => {
-  try {
-    const { q, priceMin, priceMax, ratingMin, page = 1, limit = 20 } = req.query;
-    
-    let filteredTutors = [...dataManager.getAllTutors()];
-
-    // Filter out tutors whose users are not ACTIVE (hide suspended, pending, rejected users)
-    filteredTutors = filteredTutors.filter(tutor => {
-      const user = dataManager.getUserById(tutor.userId);
-      return user && user.status === 'ACTIVE';
-    });
-
-    // Apply filters
-    if (q) {
-      const query = q.toString().toLowerCase();
-      filteredTutors = filteredTutors.filter(tutor => {
-        const user = dataManager.getUserById(tutor.userId);
-        return (
-          tutor.headline?.toLowerCase().includes(query) ||
-          tutor.bio?.toLowerCase().includes(query) ||
-          user?.name?.toLowerCase().includes(query)
-        );
-      });
-    }
-
-    if (priceMin) {
-      filteredTutors = filteredTutors.filter(tutor => tutor.hourlyRateCents >= parseInt(priceMin.toString()));
-    }
-
-    if (priceMax) {
-      filteredTutors = filteredTutors.filter(tutor => tutor.hourlyRateCents <= parseInt(priceMax.toString()));
-    }
-
-    if (ratingMin) {
-      filteredTutors = filteredTutors.filter(tutor => tutor.ratingAvg >= parseFloat(ratingMin.toString()));
-    }
-
-    // Add user data to tutors
-    const tutorsWithUsers = filteredTutors.map(tutor => {
-      const user = dataManager.getUserById(tutor.userId);
-      return {
-        ...tutor,
-        user: user ? {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          avatarUrl: user.avatarUrl,
-          country: user.country
-        } : null
-      };
-    });
-
-    // Pagination
-    const startIndex = (parseInt(page.toString()) - 1) * parseInt(limit.toString());
-    const endIndex = startIndex + parseInt(limit.toString());
-    const paginatedTutors = tutorsWithUsers.slice(startIndex, endIndex);
-
-    res.json({ 
-      items: paginatedTutors, 
-      total: tutorsWithUsers.length, 
-      page: parseInt(page.toString()), 
-      limit: parseInt(limit.toString()) 
-    });
-  } catch (error) {
-    console.error('Tutor search error:', error);
-    res.status(400).json({ error: 'Search failed' });
   }
 });
 
