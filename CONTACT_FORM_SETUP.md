@@ -5,17 +5,17 @@
 ### 1. **Email API Endpoint** (`api/contact/send.ts`)
 - ✅ Serverless function that handles contact form submissions
 - ✅ Validates form data (name, email, message)
-- ✅ Sends email to admin (`talkoftrend@gmail.com`)
+- ✅ Sends email to admin (`info@tutorspool.com`)
 - ✅ Sends confirmation email to user
 - ✅ Beautiful HTML email templates with TutorsPool branding
 - ✅ Error handling and validation
 
-### 2. **SMTP Configuration**
-- **Provider:** ZeptoMail
-- **Host:** smtp.zeptomail.com
-- **Port:** 587
+### 2. **Email Configuration**
+- **Provider:** ZeptoMail REST API
+- **Endpoint:** https://api.zeptomail.com/v1.1/email
 - **From Address:** noreply@tutorspool.com
-- **Admin Email:** talkoftrend@gmail.com
+- **Admin Email:** info@tutorspool.com
+- **Method:** Direct REST API calls (serverless-friendly)
 
 ### 3. **Updated Contact Form** (`src/pages/Contact.tsx`)
 - ✅ Async form submission to `/api/contact/send`
@@ -51,7 +51,7 @@
 4. Submit and check:
    - Browser console for any errors
    - Toast notification for success/error
-   - Check `talkoftrend@gmail.com` for admin email
+   - Check `info@tutorspool.com` for admin email
    - Check the email you entered for confirmation
 
 ### Production Testing (After Deploy)
@@ -62,36 +62,20 @@
 
 ## Files Modified
 
-1. ✅ `api/contact/send.ts` - New email API endpoint
+1. ✅ `api/contact/send.ts` - New email API endpoint (uses ZeptoMail REST API)
 2. ✅ `src/pages/Contact.tsx` - Updated form with API integration
-3. ✅ `package.json` - Added nodemailer dependencies
-4. ✅ `index.html` - Added Google Analytics
+3. ✅ `index.html` - Added Google Analytics
 
-## Dependencies Added
+## Dependencies
 
-```json
-{
-  "devDependencies": {
-    "nodemailer": "^6.9.16",
-    "@types/nodemailer": "^6.4.17"
-  }
-}
-```
+**No additional dependencies required!** 
+
+The implementation uses ZeptoMail's REST API with native `fetch()`, which is available in Vercel's serverless environment without any extra packages.
 
 ## Next Steps
 
 ### Before Deploying:
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Test locally:**
-   - Start dev server
-   - Submit test contact form
-   - Verify emails are sent
-
-3. **Deploy to Vercel:**
+1. **Deploy to Vercel:**
    ```bash
    npm run deploy:vercel
    ```
@@ -99,7 +83,7 @@
 
 ### After Deploying:
 1. Test the contact form on production
-2. Verify emails arrive at `talkoftrend@gmail.com`
+2. Verify emails arrive at `info@tutorspool.com`
 3. Check spam folder if emails don't appear
 4. Monitor Vercel function logs for any errors
 
@@ -147,46 +131,49 @@ and our team will get back to you within 24 hours.
    - Click "Functions" tab
    - Check logs for `/api/contact/send`
 
-2. **Verify SMTP Credentials:**
+2. **Verify ZeptoMail API:**
    - Ensure ZeptoMail account is active
-   - Check if API key is valid
-   - Verify sender domain is authorized
+   - Check if API key is valid (starts with authorization token)
+   - Verify sender domain `tutorspool.com` is authorized in ZeptoMail
+   - Check ZeptoMail dashboard for any sending limits or restrictions
 
 3. **Check Email Validation:**
    - Ensure email format is correct
    - Check spam/junk folders
    - Verify recipient email exists
 
-4. **Test SMTP Connection:**
-   - Use a tool like Postman to test the API directly
-   - Send POST request to `/api/contact/send` with test data
+4. **Test API Directly:**
+   - Use a tool like Postman to test the API endpoint
+   - Send POST request to `https://www.tutorspool.com/api/contact/send` with:
+     ```json
+     {
+       "name": "Test User",
+       "email": "test@example.com",
+       "subject": "Test Subject",
+       "messageType": "general",
+       "message": "This is a test message"
+     }
+     ```
 
 ## Security Notes
 
 ⚠️ **Important:**
-- SMTP credentials are hardcoded in `api/contact/send.ts`
-- For production, consider using environment variables
+- ZeptoMail API key is currently hardcoded in `api/contact/send.ts`
+- For better security, consider using environment variables
 - Store sensitive data in Vercel Environment Variables
 
 ### To Use Environment Variables (Recommended):
 
 1. Add to Vercel Dashboard → Settings → Environment Variables:
    ```
-   SMTP_HOST=smtp.zeptomail.com
-   SMTP_PORT=587
-   SMTP_USER=emailapikey
-   SMTP_PASS=wSsVR60jrBf4Cf17yTf4L+c+mw5VUVuiFUUv3Qb0uCX5GP6Qpcc+xBLODQajFaJNEGRgFmNH8bMvnhoH0DEIh4h+zVgAWiiF9mqRe1U4J3x17qnvhDzDW25ZlhuNKY8IwQxvk2lpFswm+g==
-   ADMIN_EMAIL=talkoftrend@gmail.com
+   ZEPTO_API_KEY=wSsVR60jrBf4Cf17yTf4L+c+mw5VUVuiFUUv3Qb0uCX5GP6Qpcc+xBLODQajFaJNEGRgFmNH8bMvnhoH0DEIh4h+zVgAWiiF9mqRe1U4J3x17qnvhDzDW25ZlhuNKY8IwQxvk2lpFswm+g==
+   ADMIN_EMAIL=info@tutorspool.com
    ```
 
 2. Update `api/contact/send.ts` to use:
    ```typescript
-   host: process.env.SMTP_HOST,
-   port: parseInt(process.env.SMTP_PORT || '587'),
-   auth: {
-     user: process.env.SMTP_USER,
-     pass: process.env.SMTP_PASS,
-   }
+   const ZEPTO_API_KEY = process.env.ZEPTO_API_KEY || '';
+   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'info@tutorspool.com';
    ```
 
 ## Support
