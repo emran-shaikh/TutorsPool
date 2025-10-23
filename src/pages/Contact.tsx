@@ -67,19 +67,19 @@ const Contact: React.FC = () => {
     {
       icon: Phone,
       title: 'Phone Support',
-      details: ['(555) 123-4567', '(555) 123-4568'],
+      details: ['+92 345 3284 284', '+92 300 9271 976'],
       description: 'Mon-Fri 9AM-6PM EST'
     },
     {
       icon: Mail,
       title: 'Email Support',
-      details: ['support@tutorspool.com', 'help@tutorspool.com'],
+      details: ['info@tutorspool.com', 'help@tutorspool.com'],
       description: '24/7 email support'
     },
     {
       icon: MapPin,
       title: 'Office Address',
-      details: ['123 Education Street', 'Learning City, LC 12345'],
+      details: ['Karachi', 'Pakistan'],
       description: 'Visit us Monday-Friday'
     }
   ];

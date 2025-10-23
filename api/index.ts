@@ -19,9 +19,10 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const { pathname } = new URL(req.url || '', `http://${req.headers.host}`);
+  const p = pathname.replace(/\/+$/, '') || '/';
 
   // Health check
-  if (pathname === '/api/health') {
+  if (p === '/api/health') {
     res.status(200).json({ 
       status: 'ok', 
       timestamp: new Date().toISOString(),
@@ -31,7 +32,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Mock API responses for now
-  if (pathname === '/api/auth/login') {
+  if (p === '/api/auth/login') {
     if (req.method === 'POST') {
       const { email, password } = req.body;
       
@@ -80,7 +81,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  if (pathname === '/api/auth/me') {
+  if (p === '/api/auth/me') {
     // Extract token from Authorization header
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
@@ -131,7 +132,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/auth/register') {
+  if (p === '/api/auth/register') {
     if (req.method === 'POST') {
       res.status(201).json({
         success: true,
@@ -146,7 +147,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  if (pathname === '/api/tutors') {
+  if (p === '/api/tutors') {
     const url = new URL(req.url || '', `http://${req.headers.host}`);
     const searchParams = url.searchParams;
     
@@ -292,7 +293,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/students') {
+  if (p === '/api/students') {
     if (req.method === 'POST') {
       res.status(201).json({
         success: true,
@@ -331,7 +332,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  if (pathname === '/api/bookings') {
+  if (p === '/api/bookings') {
     if (req.method === 'GET') {
       res.status(200).json({
         success: true,
@@ -370,7 +371,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  if (pathname === '/api/students/profile') {
+  if (p === '/api/students/profile') {
     res.status(200).json({
       success: true,
       profile: {
@@ -392,7 +393,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/students/stats') {
+  if (p === '/api/students/stats') {
     res.status(200).json({
       success: true,
       stats: {
@@ -411,7 +412,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/students/bookings') {
+  if (p === '/api/students/bookings') {
     res.status(200).json({
       success: true,
       bookings: [
@@ -444,7 +445,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/notifications') {
+  if (p === '/api/notifications') {
     res.status(200).json({
       success: true,
       notifications: [
@@ -477,7 +478,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/tutors/profile') {
+  if (p === '/api/tutors/profile') {
     res.status(200).json({
       success: true,
       profile: {
@@ -521,7 +522,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/tutors/stats') {
+  if (p === '/api/tutors/stats') {
     res.status(200).json({
       success: true,
       stats: {
@@ -562,7 +563,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/tutors/bookings') {
+  if (p === '/api/tutors/bookings') {
     res.status(200).json({
       success: true,
       bookings: [
@@ -617,7 +618,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Subjects endpoint
-  if (pathname === '/api/subjects') {
+  if (p === '/api/subjects') {
     res.status(200).json({
       success: true,
       items: [
@@ -683,7 +684,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Admin endpoints
-  if (pathname === '/api/admin/dashboard') {
+  if (p === '/api/admin/dashboard') {
     res.status(200).json({
       success: true,
       stats: {
@@ -709,7 +710,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   // Default response for unknown endpoints
   res.status(404).json({
     error: 'Endpoint not found',
-    path: pathname,
+    path: p,
     method: req.method
   });
 }
