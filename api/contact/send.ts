@@ -102,13 +102,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Use ZeptoMail REST API (works better in serverless)
     const ZEPTO_API_KEY = 'wSsVR60jrBf4Cf17yTf4L+c+mw5VUVuiFUUv3Qb0uCX5GP6Qpcc+xBLODQajFaJNEGRgFmNH8bMvnhoH0DEIh4h+zVgAWiiF9mqRe1U4J3x17qnvhDzDW25ZlhuNKY8IwQxvk2lpFswm+g==';
     
+    console.log('Sending email to admin...');
+    
     // Send email to admin
     const adminEmailResponse = await fetch('https://api.zeptomail.com/v1.1/email', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': ZEPTO_API_KEY,
+        'Authorization': `Zoho-enczapikey ${ZEPTO_API_KEY}`,
       },
       body: JSON.stringify({
         from: {
@@ -136,8 +138,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!adminEmailResponse.ok) {
       const errorData = await adminEmailResponse.text();
+      console.error('ZeptoMail API Error:', errorData);
       throw new Error(`Failed to send admin email: ${errorData}`);
     }
+    
+    console.log('Admin email sent successfully');
 
     // Send confirmation email to user
     const confirmationHtml = `
@@ -186,12 +191,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `;
 
     // Send confirmation email to user
+    console.log('Sending confirmation email to user...');
     const userEmailResponse = await fetch('https://api.zeptomail.com/v1.1/email', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': ZEPTO_API_KEY,
+        'Authorization': `Zoho-enczapikey ${ZEPTO_API_KEY}`,
       },
       body: JSON.stringify({
         from: {
@@ -215,6 +221,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const errorData = await userEmailResponse.text();
       console.error('Failed to send user confirmation:', errorData);
       // Don't throw here - admin email was sent successfully
+    } else {
+      console.log('User confirmation email sent successfully');
     }
 
     res.status(200).json({
