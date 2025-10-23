@@ -100,20 +100,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `;
 
     // Use ZeptoMail API with native fetch (serverless-friendly)
-    const ZEPTO_TOKEN = 'wSsVR60jrBf4Cf17yTf4L+c+mw5VUVuiFUUv3Qb0uCX5GP6Qpcc+xBLODQajFaJNEGRgFmNH8bMvnhoH0DEIh4h+zVgAWiiF9mqRe1U4J3x17qnvhDzDW25ZlhuNKY8IwQxvk2lpFswm+g==';
+    const ZEPTO_TOKEN = 'Zoho-enczapikey wSsVR60k80XzCaspyWWsIOs+z19SBwj/F0p10AOo4n+tHKjLpsdqxRXGBgWvFKUeFGU6QWQSpbp/mUsD2jFf2d0oyg0BDiiF9mqRe1U4J3x17qnvhDzPWGVckxaALIwKwAxpkmJhFc5u';
     
     console.log('Sending email to admin...');
     
     // Send email to admin using ZeptoMail API
     const adminPayload = {
       from: {
-        address: 'noreply@tutorspool.com',
+        address: 'info@tutorspool.com',
         name: 'TutorsPool Contact Form'
       },
       to: [
         {
           email_address: {
-            address: 'info@tutorspool.com',
+            address: 'talkoftrend@gmail.com',
             name: 'TutorsPool Admin'
           }
         }
@@ -198,7 +198,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       const userPayload = {
         from: {
-          address: 'noreply@tutorspool.com',
+          address: 'info@tutorspool.com',
           name: 'TutorsPool Team'
         },
         to: [
