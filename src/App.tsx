@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import GuestRoute from "@/components/GuestRoute";
 import LandingPage from "./pages/LandingPage";
 import Subjects from "./pages/Subjects";
 import About from "./pages/About";
@@ -70,9 +71,9 @@ const App = () => (
                 {/* Public Pages */}
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/app" element={<Index />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/debug-signup" element={<DebugSignUp />} />
+                <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+                <Route path="/signup" element={<GuestRoute><SignUp /></GuestRoute>} />
+                <Route path="/debug-signup" element={<GuestRoute><DebugSignUp /></GuestRoute>} />
                 <Route path="/subjects" element={<Subjects />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
