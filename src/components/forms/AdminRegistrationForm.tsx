@@ -113,7 +113,7 @@ const AdminRegistrationForm: React.FC = () => {
             type="tel"
             value={formData.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            placeholder="+1 (555) 123-4567"
+            placeholder="+92 (345) 3284 284"
           />
         </div>
 

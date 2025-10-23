@@ -52,7 +52,7 @@ HOW IT WORKS:
 
 CONTACT:
 - Email: support@tutorspool.com
-- Phone: +1 (555) 123-4567
+- Phone: +92 (345) 3284 284
 - Live chat support (24/7)
 - WhatsApp support available
 
