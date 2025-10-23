@@ -36,7 +36,9 @@ const Contact: React.FC = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.message) {
@@ -47,20 +49,45 @@ const Contact: React.FC = () => {
       return;
     }
 
-    // Simulate form submission
-    toast({
-      title: 'Message sent successfully!',
-      description: 'We\'ll get back to you within 24 hours.',
-    });
+    setIsSubmitting(true);
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      messageType: '',
-      message: ''
-    });
+    try {
+      const response = await fetch('/api/contact/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        toast({
+          title: 'Message sent successfully!',
+          description: 'We\'ll get back to you within 24 hours. Check your email for confirmation.',
+        });
+
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          messageType: '',
+          message: ''
+        });
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Failed to send message',
+        description: error.message || 'Please try again later or contact us directly.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -180,9 +207,9 @@ const Contact: React.FC = () => {
                       />
                     </div>
                     
-                    <Button type="submit" className="btn-gradient-primary w-full">
+                    <Button type="submit" className="btn-gradient-primary w-full" disabled={isSubmitting}>
                       <Send className="h-4 w-4 mr-2" />
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
                   </form>
                 </CardContent>
@@ -317,7 +344,7 @@ const Contact: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button className="bg-white text-[#F47B2F] hover:bg-gray-50 px-8 py-3">
               <Phone className="h-5 w-5 mr-2" />
-              Call Now: (555) 123-4567
+              Call Now: +92 345 3284 284
             </Button>
             
             <Button variant="outline" className="border-white  hover:bg-white hover:text-[#F47B2F] px-8 py-3">
