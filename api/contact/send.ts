@@ -115,7 +115,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Send email to admin
     await transporter.sendMail({
       from: '"TutorsPool Contact Form" <noreply@tutorspool.com>',
-      to: 'talkoftrend@gmail.com',
+      to: 'noreply@tutorspool.com',
       subject: subjectLine,
       html: htmlContent,
       replyTo: email,
