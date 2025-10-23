@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { SendMailClient } from 'zeptomail';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -99,48 +100,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       </html>
     `;
 
-    // Use ZeptoMail REST API (works better in serverless)
-    const ZEPTO_API_KEY = 'wSsVR60jrBf4Cf17yTf4L+c+mw5VUVuiFUUv3Qb0uCX5GP6Qpcc+xBLODQajFaJNEGRgFmNH8bMvnhoH0DEIh4h+zVgAWiiF9mqRe1U4J3x17qnvhDzDW25ZlhuNKY8IwQxvk2lpFswm+g==';
+    // Initialize ZeptoMail client
+    const url = 'api.zeptomail.com/';
+    const token = 'wSsVR60jrBf4Cf17yTf4L+c+mw5VUVuiFUUv3Qb0uCX5GP6Qpcc+xBLODQajFaJNEGRgFmNH8bMvnhoH0DEIh4h+zVgAWiiF9mqRe1U4J3x17qnvhDzDW25ZlhuNKY8IwQxvk2lpFswm+g==';
+    
+    const client = new SendMailClient({ url, token });
     
     console.log('Sending email to admin...');
     
     // Send email to admin
-    const adminEmailResponse = await fetch('https://api.zeptomail.com/v1.1/email', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Zoho-enczapikey ${ZEPTO_API_KEY}`,
+    await client.sendMail({
+      from: {
+        address: 'noreply@tutorspool.com',
+        name: 'TutorsPool Contact Form'
       },
-      body: JSON.stringify({
-        from: {
-          address: 'noreply@tutorspool.com',
-          name: 'TutorsPool Contact Form'
-        },
-        to: [
-          {
-            email_address: {
-              address: 'info@tutorspool.com',
-              name: 'TutorsPool Admin'
-            }
+      to: [
+        {
+          email_address: {
+            address: 'info@tutorspool.com',
+            name: 'TutorsPool Admin'
           }
-        ],
-        reply_to: [
-          {
-            address: email,
-            name: name
-          }
-        ],
-        subject: subjectLine,
-        htmlbody: htmlContent,
-      }),
+        }
+      ],
+      reply_to: [
+        {
+          address: email,
+          name: name
+        }
+      ],
+      subject: subjectLine,
+      htmlbody: htmlContent,
     });
-
-    if (!adminEmailResponse.ok) {
-      const errorData = await adminEmailResponse.text();
-      console.error('ZeptoMail API Error:', errorData);
-      throw new Error(`Failed to send admin email: ${errorData}`);
-    }
     
     console.log('Admin email sent successfully');
 
@@ -192,14 +182,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Send confirmation email to user
     console.log('Sending confirmation email to user...');
-    const userEmailResponse = await fetch('https://api.zeptomail.com/v1.1/email', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Zoho-enczapikey ${ZEPTO_API_KEY}`,
-      },
-      body: JSON.stringify({
+    
+    try {
+      await client.sendMail({
         from: {
           address: 'noreply@tutorspool.com',
           name: 'TutorsPool Team'
@@ -214,15 +199,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ],
         subject: 'We received your message - TutorsPool',
         htmlbody: confirmationHtml,
-      }),
-    });
-
-    if (!userEmailResponse.ok) {
-      const errorData = await userEmailResponse.text();
-      console.error('Failed to send user confirmation:', errorData);
-      // Don't throw here - admin email was sent successfully
-    } else {
+      });
       console.log('User confirmation email sent successfully');
+    } catch (userEmailError) {
+      console.error('Failed to send user confirmation:', userEmailError);
+      // Don't throw here - admin email was sent successfully
     }
 
     res.status(200).json({

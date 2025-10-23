@@ -2,24 +2,32 @@
 
 ## ✅ What Was Fixed
 
-The 500 error was caused by **incorrect authorization header format** for ZeptoMail API.
+The 500 error was caused by using direct fetch calls. Now using the **official ZeptoMail npm package** which handles all authentication and formatting automatically.
 
 ### Fixed Issues:
-1. ✅ Changed authorization from `Authorization: API_KEY` to `Authorization: Zoho-enczapikey API_KEY`
-2. ✅ Added detailed error logging for debugging
-3. ✅ Updated admin email to `info@tutorspool.com`
-4. ✅ Added console logs to track email sending progress
+1. ✅ Replaced manual fetch calls with official `zeptomail` npm package
+2. ✅ Automatic authentication handling (no manual headers needed)
+3. ✅ Better error handling and logging
+4. ✅ Updated admin email to `info@tutorspool.com`
+5. ✅ Added detailed console logs for debugging
 
 ## 🎯 Deploy Instructions
 
-### Option 1: Push to GitHub (Recommended)
+### Step 1: Install Dependencies (IMPORTANT!)
+```bash
+npm install
+```
+
+This installs the new `zeptomail` package.
+
+### Step 2: Push to GitHub (Recommended)
 ```bash
 git add .
-git commit -m "Fix contact form with proper ZeptoMail authorization"
+git commit -m "Fix contact form with ZeptoMail npm package"
 git push origin main
 ```
 
-Vercel will automatically deploy in ~2 minutes.
+Vercel will automatically install dependencies and deploy in ~2 minutes.
 
 ### Option 2: Manual Vercel Deploy
 ```bash
@@ -58,11 +66,24 @@ vercel --prod
 
 ### File: `api/contact/send.ts`
 ```typescript
-// BEFORE (Wrong ❌)
-'Authorization': ZEPTO_API_KEY
+// BEFORE (Manual fetch ❌)
+const response = await fetch('https://api.zeptomail.com/v1.1/email', {
+  headers: { 'Authorization': ZEPTO_API_KEY }
+});
 
-// AFTER (Correct ✅)
-'Authorization': `Zoho-enczapikey ${ZEPTO_API_KEY}`
+// AFTER (Official package ✅)
+import { SendMailClient } from 'zeptomail';
+const client = new SendMailClient({ url, token });
+await client.sendMail({ from, to, subject, htmlbody });
+```
+
+### File: `package.json`
+```json
+{
+  "dependencies": {
+    "zeptomail": "^1.1.0"
+  }
+}
 ```
 
 ### Email Flow:
