@@ -198,11 +198,19 @@ const Blog: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {blogData?.posts?.flatMap((post: BlogPost) => post.tags).slice(0, 10).map((tag: string, index: number) => (
-                    <Badge key={index} variant="secondary" className="cursor-pointer hover:bg-blue-100">
-                      {tag}
-                    </Badge>
-                  ))}
+                  {blogData?.posts && blogData.posts.length > 0 ? (
+                    blogData.posts
+                      .flatMap((post: BlogPost) => post.tags || [])
+                      .filter((tag, index, self) => tag && self.indexOf(tag) === index)
+                      .slice(0, 10)
+                      .map((tag: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="cursor-pointer hover:bg-blue-100">
+                          {tag}
+                        </Badge>
+                      ))
+                  ) : (
+                    <p className="text-sm text-gray-500">No tags available</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -210,7 +218,7 @@ const Blog: React.FC = () => {
 
           {/* Main Content */}
           <div className="lg:w-3/4">
-            {blogData?.posts?.length > 0 ? (
+            {blogData?.posts && blogData.posts.length > 0 ? (
               <>
                 {/* Results Header */}
                 <div className="flex justify-between items-center mb-6">
@@ -266,26 +274,32 @@ const Blog: React.FC = () => {
                         <CardContent>
                           <div className="flex items-center justify-between text-sm text-gray-600">
                             <div className="flex items-center gap-4">
-                              <div className="flex items-center gap-1">
-                                <User className="h-4 w-4" />
-                                {post.authorName}
-                              </div>
+                              {post.authorName && (
+                                <div className="flex items-center gap-1">
+                                  <User className="h-4 w-4" />
+                                  {post.authorName}
+                                </div>
+                              )}
                               
-                              <div className="flex items-center gap-1">
-                                <Clock className="h-4 w-4" />
-                                {post.readTime} min read
-                              </div>
+                              {post.readTime && (
+                                <div className="flex items-center gap-1">
+                                  <Clock className="h-4 w-4" />
+                                  {post.readTime} min read
+                                </div>
+                              )}
                               
-                              <div className="flex items-center gap-1">
-                                <Eye className="h-4 w-4" />
-                                {post.viewCount}
-                              </div>
+                              {post.viewCount !== undefined && (
+                                <div className="flex items-center gap-1">
+                                  <Eye className="h-4 w-4" />
+                                  {post.viewCount}
+                                </div>
+                              )}
                             </div>
                             
                             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                           </div>
                           
-                          {post.tags.length > 0 && (
+                          {post.tags && post.tags.length > 0 && (
                             <div className="flex flex-wrap gap-1 mt-3">
                               {post.tags.slice(0, 3).map((tag, index) => (
                                 <Badge key={index} variant="secondary" className="text-xs">

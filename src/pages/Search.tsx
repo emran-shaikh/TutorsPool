@@ -244,7 +244,7 @@ const Search: React.FC = () => {
                   {data.total} Tutor{data.total !== 1 ? 's' : ''} Found
                 </h2>
                 <p className="text-gray-600">
-                  Showing {data.items.length} of {data.total} results
+                  Showing {data.items?.length || data.tutors?.length || 0} of {data.total} results
                 </p>
               </div>
               
@@ -290,9 +290,9 @@ const Search: React.FC = () => {
           )}
 
           {/* Results Grid */}
-          {data && !isLoading && (
+          {data && !isLoading && !error && (
             <TutorGrid
-              tutors={data.items}
+              tutors={data.items || data.tutors || []}
               loading={isLoading}
               onBook={handleBookTutor}
               onViewProfile={handleViewProfile}
@@ -300,7 +300,7 @@ const Search: React.FC = () => {
           )}
 
           {/* Pagination */}
-          {data && data.total > data.limit && (
+          {data && data.total > (data.limit || 20) && (
             <div className="flex justify-center space-x-2">
               <Button
                 variant="outline"
@@ -311,12 +311,12 @@ const Search: React.FC = () => {
               </Button>
               
               <span className="flex items-center px-4 py-2 text-sm text-gray-600">
-                Page {submittedParams.page} of {Math.ceil(data.total / data.limit)}
+                Page {submittedParams.page} of {Math.ceil(data.total / (data.limit || 20))}
               </span>
               
               <Button
                 variant="outline"
-                disabled={submittedParams.page >= Math.ceil(data.total / data.limit)}
+                disabled={submittedParams.page >= Math.ceil(data.total / (data.limit || 20))}
                 onClick={() => setSubmittedParams(prev => ({ ...prev, page: prev.page + 1 }))}
               >
                 Next
