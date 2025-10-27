@@ -42,6 +42,7 @@ const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
 const UserApprovals = React.lazy(() => import('./pages/admin/UserApprovals'));
 const Blog = React.lazy(() => import('./pages/Blog'));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
+const ApprovalPending = React.lazy(() => import('./pages/ApprovalPending'));
 const AdminRouteWrapper = React.lazy(() => import('./components/admin/AdminRouteWrapper'));
 const ErrorTest = React.lazy(() => import('./pages/ErrorTest'));
 
@@ -89,6 +90,9 @@ const App = () => (
                 {/* Blog Routes */}
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
+                
+                {/* Approval Pending Route */}
+                <Route path="/approval-pending" element={<ProtectedRoute><ApprovalPending /></ProtectedRoute>} />
                 
                 {/* Admin Routes */}
                 <Route path="/admin" element={<ProtectedRoute roles={['ADMIN']}><AdminRouteWrapper><AdminDashboard /></AdminRouteWrapper></ProtectedRoute>} />

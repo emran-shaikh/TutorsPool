@@ -30,6 +30,7 @@ interface RegisterData {
   role: 'STUDENT' | 'TUTOR' | 'ADMIN'
 }
 
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const useAuth = () => {
@@ -230,15 +231,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   const getDashboardUrl = (): string => {
-    if (!user) return '/'
+    if (!user) return '/login'
     
+    // If user is not active and not an admin, redirect to approval pending
+    if (user.status !== 'ACTIVE' && user.role !== 'ADMIN') {
+      return '/approval-pending'
+    }
+
     switch (user.role) {
       case 'STUDENT':
         return '/student/dashboard'
       case 'TUTOR':
         return '/tutor/dashboard'
       case 'ADMIN':
-        return '/admin'
+        return '/admin/dashboard'
       default:
         return '/account'
     }
