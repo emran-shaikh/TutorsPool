@@ -80,7 +80,7 @@ const tutorStepSchemas = {
   3: z.object({
     subjects: z.array(z.string()).min(1, 'Select at least one subject'),
     levels: z.array(z.string()).min(1, 'Select at least one level'),
-    hourlyRateCents: z.number().int().min(1, 'Rate must be at least $1'),
+    hourlyRateCents: z.number().min(1, 'Rate must be at least $1'),
     currency: z.string().default('USD'),
   }),
   4: z.object({
@@ -194,11 +194,11 @@ export const TutorRegistrationForm: React.FC = () => {
           currentStepData.bio = watchedValues.bio;
           currentStepData.yearsExperience = watchedValues.yearsExperience;
         } else if (currentStep === 3) {
-          currentStepData.subjects = watchedValues.subjects;
-          currentStepData.levels = watchedValues.levels;
-          // Convert dollars to cents for validation
-          currentStepData.hourlyRateCents = watchedValues.hourlyRateCents ? watchedValues.hourlyRateCents * 100 : 0;
-          currentStepData.currency = watchedValues.currency;
+          currentStepData.subjects = selectedSubjects;
+          currentStepData.levels = selectedLevels;
+          // Keep as dollars for validation (will convert to cents on submit)
+          currentStepData.hourlyRateCents = watchedValues.hourlyRateCents || 0;
+          currentStepData.currency = watchedValues.currency || 'USD';
         } else if (currentStep === 4) {
           currentStepData.availabilityBlocks = availabilityBlocks;
         }
@@ -252,27 +252,19 @@ export const TutorRegistrationForm: React.FC = () => {
   };
 
   const toggleSubject = (subject: string) => {
-    setSelectedSubjects(prev => 
-      prev.includes(subject) 
-        ? prev.filter(s => s !== subject)
-        : [...prev, subject]
-    );
-    setValue('subjects', selectedSubjects.includes(subject) 
+    const newSubjects = selectedSubjects.includes(subject) 
       ? selectedSubjects.filter(s => s !== subject)
-      : [...selectedSubjects, subject]
-    );
+      : [...selectedSubjects, subject];
+    setSelectedSubjects(newSubjects);
+    setValue('subjects', newSubjects);
   };
 
   const toggleLevel = (level: string) => {
-    setSelectedLevels(prev => 
-      prev.includes(level) 
-        ? prev.filter(l => l !== level)
-        : [...prev, level]
-    );
-    setValue('levels', selectedLevels.includes(level) 
+    const newLevels = selectedLevels.includes(level) 
       ? selectedLevels.filter(l => l !== level)
-      : [...selectedLevels, level]
-    );
+      : [...selectedLevels, level];
+    setSelectedLevels(newLevels);
+    setValue('levels', newLevels);
   };
 
   const addAvailabilityBlock = () => {

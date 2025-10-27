@@ -95,7 +95,7 @@ const SignUp: React.FC = () => {
         <div className="text-center mt-8">
           <p className="text-gray-600">
             Already have an account?{' '}
-            <Button variant="link" className="p-0 h-auto">
+            <Button variant="link" className="p-0 h-auto" onClick={() => window.location.href = '/login'}>
               Sign in here
             </Button>
           </p>

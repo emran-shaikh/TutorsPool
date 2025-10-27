@@ -48,10 +48,10 @@ const stepSchemas = {
   }),
   2: z.object({
     gradeLevel: z.string().min(1, 'Grade level is required'),
+    preferredMode: z.enum(['ONLINE', 'OFFLINE']),
   }),
   3: z.object({
     learningGoals: z.string().min(10, 'Learning goals must be at least 10 characters'),
-    preferredMode: z.enum(['ONLINE', 'OFFLINE']),
   }),
   4: z.object({
     budgetMin: z.number().int().min(0, 'Minimum budget must be positive'),
@@ -151,9 +151,9 @@ export const StudentRegistrationForm: React.FC = () => {
           currentStepData.timezone = watchedValues.timezone || '';
         } else if (currentStep === 2) {
           currentStepData.gradeLevel = watchedValues.gradeLevel || '';
+          currentStepData.preferredMode = watchedValues.preferredMode || '';
         } else if (currentStep === 3) {
           currentStepData.learningGoals = watchedValues.learningGoals || '';
-          currentStepData.preferredMode = watchedValues.preferredMode || '';
         } else if (currentStep === 4) {
           currentStepData.budgetMin = watchedValues.budgetMin || 0;
           currentStepData.budgetMax = watchedValues.budgetMax || 0;

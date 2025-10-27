@@ -486,9 +486,23 @@
       "role": "TUTOR",
       "id": "user-105",
       "createdAt": "2025-10-20T17:52:59.785Z",
-      "status": "PENDING",
-      "approvedAt": null,
-      "approvedBy": null,
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-27T06:10:08.410Z",
+      "approvedBy": "user-4",
+      "avatarUrl": null
+    },
+    {
+      "name": "Baxter Mccoy",
+      "email": "wajaz@mailinator.com",
+      "phone": "+1 (423) 736-5348",
+      "country": "India",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "id": "user-107",
+      "createdAt": "2025-10-27T06:09:08.448Z",
+      "status": "ACTIVE",
+      "approvedAt": "2025-10-27T06:09:39.548Z",
+      "approvedBy": "user-4",
       "avatarUrl": null
     }
   ],
@@ -886,7 +900,8 @@
       "ratingAvg": 0,
       "ratingCount": 0,
       "id": "tutor-106",
-      "createdAt": "2025-10-20T17:52:59.798Z"
+      "createdAt": "2025-10-20T17:52:59.798Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -1105,6 +1120,18 @@
       "uploads": [],
       "id": "student-104",
       "createdAt": "2025-10-20T17:30:38.479Z"
+    },
+    {
+      "userId": "user-107",
+      "gradeLevel": "Elementary (K-5)",
+      "learningGoals": "Minima aperiam sit s",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 600,
+      "budgetMax": 3200,
+      "specialRequirements": "Irure aut consequatu",
+      "uploads": [],
+      "id": "student-108",
+      "createdAt": "2025-10-27T06:09:08.494Z"
     }
   ],
   "bookings": [
@@ -1395,6 +1422,34 @@
       "paymentRequired": true,
       "id": "booking-101",
       "createdAt": "2025-10-17T05:33:06.614Z"
+    },
+    {
+      "studentId": "user-107",
+      "tutorId": "tutor-106",
+      "subjectId": "biology",
+      "startAtUTC": "2025-10-27T07:00:00.000Z",
+      "endAtUTC": "2025-10-27T08:00:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 7000,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-109",
+      "createdAt": "2025-10-27T06:10:53.751Z"
+    },
+    {
+      "studentId": "user-107",
+      "tutorId": "tutor-100",
+      "subjectId": "english",
+      "startAtUTC": "2025-10-27T13:00:00.000Z",
+      "endAtUTC": "2025-10-27T14:30:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 14250,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-111",
+      "createdAt": "2025-10-27T06:11:25.304Z"
     }
   ],
   "learningProgress": {
@@ -1864,6 +1919,40 @@
       },
       "read": false,
       "createdAt": "2025-10-17T05:33:06.616Z"
+    },
+    {
+      "id": "notification-110",
+      "userId": "user-105",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Baxter Mccoy has requested a biology session with you.",
+      "data": {
+        "bookingId": "booking-109",
+        "studentId": "user-107",
+        "studentName": "Baxter Mccoy",
+        "subject": "biology",
+        "startAt": "2025-10-27T07:00:00.000Z",
+        "endAt": "2025-10-27T08:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-27T06:10:53.753Z"
+    },
+    {
+      "id": "notification-112",
+      "userId": "user-99",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Baxter Mccoy has requested a english session with you.",
+      "data": {
+        "bookingId": "booking-111",
+        "studentId": "user-107",
+        "studentName": "Baxter Mccoy",
+        "subject": "english",
+        "startAt": "2025-10-27T13:00:00.000Z",
+        "endAt": "2025-10-27T14:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-10-27T06:11:25.305Z"
     }
   ],
   "messages": [],
@@ -2245,7 +2334,7 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 106,
+  "lastId": 112,
   "blogPosts": [
     {
       "id": "blog-1760970285295",
