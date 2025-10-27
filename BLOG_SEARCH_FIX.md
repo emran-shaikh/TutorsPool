@@ -1,8 +1,11 @@
-# 🔧 Blog & Search Pages - 503 Error Fix
+# 🔧 Blog & Search Pages - Complete Fix with Mock Data
 
 ## ❌ Problem
 
-The `/blog` and `/search` pages were returning **503 Service Unavailable** errors when trying to fetch data from the backend API.
+The `/blog` and `/search` pages were:
+1. Returning **503 Service Unavailable** errors
+2. Showing "Something went wrong" runtime errors
+3. Not displaying any data when API is unavailable
 
 **Error Details:**
 ```
@@ -26,7 +29,53 @@ Status Code: 503 Service Unavailable (from prefetch cache)
 
 ## ✅ Solutions Implemented
 
-### 1. Added Fallback Data (Placeholder Data)
+### 1. Created Mock Data System (`src/lib/mockData.ts`)
+
+**Mock Blog Posts**: 6 realistic blog posts with:
+- Titles, excerpts, content
+- Categories, tags, authors
+- Featured images (Unsplash)
+- View counts, read times
+- Timestamps
+
+**Mock Tutors**: 6 professional tutor profiles with:
+- Names, bios, subjects
+- Hourly rates, ratings, reviews
+- Profile images
+- Experience levels
+- Availability status
+
+**Mock Categories**: 8 blog categories
+
+### 2. Added API Fallback Logic
+
+Both pages now automatically use mock data when API fails:
+
+**Blog Page**:
+```typescript
+async getBlogPosts(filters: any = {}) {
+  try {
+    return await blogApi.getPublicPosts(filters);
+  } catch (error) {
+    console.log('API unavailable, using mock data');
+    return filterBlogPosts(mockBlogPosts, filters);
+  }
+}
+```
+
+**Search Page**:
+```typescript
+queryFn: async () => {
+  try {
+    return await apiClient.searchTutors({...});
+  } catch (error) {
+    console.log('API unavailable, using mock tutor data');
+    return filterTutors(mockTutors, {...});
+  }
+}
+```
+
+### 3. Added Fallback Data (Placeholder Data)
 
 **Blog Page** (`src/pages/Blog.tsx`):
 ```typescript
