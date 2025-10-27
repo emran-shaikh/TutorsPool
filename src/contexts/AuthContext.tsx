@@ -93,9 +93,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password?: string) => {
     try {
       const result = await apiClient.login(email, password)
-      setUser(result.user)
+      setUser(result)
       // Set user ID in error logger for session tracking
-      errorLogger.setUserId(result.user.id)
+      errorLogger.setUserId(result.id)
       return { error: undefined }
     } catch (error) {
       console.error('Login error:', error)
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (userData: RegisterData) => {
     try {
       const result = await apiClient.register(userData)
-      setUser(result.user)
+      setUser(result)
       
       // Send registration notification emails
       try {
@@ -158,7 +158,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const verifyOTP = async (email: string, otp: string) => {
     try {
       const result = await apiClient.verifyOTP(email, otp)
-      setUser(result.user)
+      setUser(result)
       return { error: undefined }
     } catch (error) {
       console.error('OTP verification error:', error)
