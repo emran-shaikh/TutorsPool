@@ -48,6 +48,9 @@ coverage
 .env.production
 .env.preview
 .env.staging
+
+# Stripe keys (do not commit)
+STRIPE_KEYS.txt
 .env.qa
 
 # Server build output
