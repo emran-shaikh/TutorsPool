@@ -77,7 +77,8 @@ npm run deploy:vercel
 ### Testing
 | Document | Purpose |
 |----------|---------|
-| [TEST_SUITE_IMPLEMENTATION.md](./TEST_SUITE_IMPLEMENTATION.md) | 🧪 Test suite documentation |
+| [TEST_SUITE_IMPLEMENTATION.md](./TEST_SUITE_IMPLEMENTATION.md) | 🧪 Test suite documentation (GEN-001 to GEN-005) |
+| [AUTH_SECURITY_TEST_SUITE.md](./AUTH_SECURITY_TEST_SUITE.md) | 🔐 Authentication & security tests (AUTH-001, 003, 005, 006) |
 | [TEST_EXECUTION_RESULTS.md](./TEST_EXECUTION_RESULTS.md) | 📊 Test execution results |
 | [ROUTING_FIX_AND_TEST.md](./ROUTING_FIX_AND_TEST.md) | 🔀 Routing test guide |
 
