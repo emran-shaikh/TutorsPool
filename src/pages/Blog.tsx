@@ -11,14 +11,31 @@ import { BlogPost } from '@/types/blog';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { blogApi } from '@/lib/api';
+import { mockBlogPosts, mockCategories, filterBlogPosts } from '@/lib/mockData';
 
 const apiClient = {
   async getBlogPosts(filters: any = {}) {
-    return blogApi.getPublicPosts(filters);
+    try {
+      return await blogApi.getPublicPosts(filters);
+    } catch (error) {
+      console.log('API unavailable, using mock data');
+      // Return mock data if API fails
+      return filterBlogPosts(mockBlogPosts, {
+        search: filters.search,
+        category: filters.category,
+        page: filters.page,
+        limit: filters.limit,
+      });
+    }
   },
 
   async getBlogCategories() {
-    return blogApi.getCategories();
+    try {
+      return await blogApi.getCategories();
+    } catch (error) {
+      console.log('API unavailable, using mock categories');
+      return { categories: mockCategories };
+    }
   },
 };
 

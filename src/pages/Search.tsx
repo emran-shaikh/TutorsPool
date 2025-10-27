@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search as SearchIcon, Filter, Star, DollarSign, X } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { mockTutors, filterTutors } from '@/lib/mockData';
 
 const Search: React.FC = () => {
   const navigate = useNavigate();
@@ -46,24 +47,43 @@ const Search: React.FC = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['search-tutors', submittedParams],
-    queryFn: () => apiClient.searchTutors({
-      q: submittedParams.q || undefined,
-      priceMin: submittedParams.priceMin ? parseFloat(submittedParams.priceMin) : undefined,
-      priceMax: submittedParams.priceMax ? parseFloat(submittedParams.priceMax) : undefined,
-      ratingMin: submittedParams.ratingMin && submittedParams.ratingMin !== 'any' 
-        ? parseFloat(submittedParams.ratingMin) 
-        : undefined,
-      page: submittedParams.page,
-      limit: submittedParams.limit,
-    }),
+    queryFn: async () => {
+      try {
+        return await apiClient.searchTutors({
+          q: submittedParams.q || undefined,
+          priceMin: submittedParams.priceMin ? parseFloat(submittedParams.priceMin) : undefined,
+          priceMax: submittedParams.priceMax ? parseFloat(submittedParams.priceMax) : undefined,
+          ratingMin: submittedParams.ratingMin && submittedParams.ratingMin !== 'any' 
+            ? parseFloat(submittedParams.ratingMin) 
+            : undefined,
+          page: submittedParams.page,
+          limit: submittedParams.limit,
+        });
+      } catch (error) {
+        console.log('API unavailable, using mock tutor data');
+        // Return mock data if API fails
+        return filterTutors(mockTutors, {
+          q: submittedParams.q || undefined,
+          priceMin: submittedParams.priceMin ? parseFloat(submittedParams.priceMin) : undefined,
+          priceMax: submittedParams.priceMax ? parseFloat(submittedParams.priceMax) : undefined,
+          ratingMin: submittedParams.ratingMin && submittedParams.ratingMin !== 'any' 
+            ? parseFloat(submittedParams.ratingMin) 
+            : undefined,
+          page: submittedParams.page,
+          limit: submittedParams.limit,
+        });
+      }
+    },
     enabled: true,
     retry: 1,
     staleTime: 5 * 60 * 1000, // 5 minutes
     placeholderData: {
       tutors: [],
+      items: [],
       total: 0,
       page: 1,
       totalPages: 1,
+      limit: 20,
     },
   });
 
