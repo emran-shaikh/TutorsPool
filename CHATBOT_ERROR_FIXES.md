@@ -66,7 +66,7 @@ This is a browser extension error, typically from Chrome DevTools or other brows
 VITE_WHATSAPP_ACCESS_TOKEN=your_token_here
 VITE_WHATSAPP_PHONE_NUMBER_ID=your_id_here
 VITE_WHATSAPP_BUSINESS_ACCOUNT_ID=your_account_id_here
-VITE_ADMIN_WHATSAPP_NUMBER=+15551234567
+VITE_ADMIN_WHATSAPP_NUMBER=+923009271976
 
 # WhatsApp Configuration (Server-side - no VITE_ prefix)
 WHATSAPP_WEBHOOK_SECRET=your_webhook_secret_here

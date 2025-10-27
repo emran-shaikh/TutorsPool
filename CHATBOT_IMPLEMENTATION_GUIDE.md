@@ -77,7 +77,7 @@ WHATSAPP_PHONE_NUMBER_ID=your_whatsapp_phone_number_id_here
 WHATSAPP_BUSINESS_ACCOUNT_ID=your_whatsapp_business_account_id_here
 WHATSAPP_WEBHOOK_SECRET=your_whatsapp_webhook_secret_here
 WHATSAPP_VERIFY_TOKEN=your_webhook_verify_token_here
-ADMIN_WHATSAPP_NUMBER=+15551234567
+ADMIN_WHATSAPP_NUMBER=+923009271976
 ```
 
 ### WhatsApp Business API Setup

@@ -177,7 +177,7 @@ Please follow up with this potential customer.`;
 
     // This would be sent to admin's WhatsApp number
     const env = (import.meta as any)?.env || {};
-    const adminPhoneNumber = env.VITE_ADMIN_WHATSAPP_NUMBER || '+15551234567';
+    const adminPhoneNumber = env.VITE_ADMIN_WHATSAPP_NUMBER || '+923009271976';
     
     return this.sendMessage({
       to: adminPhoneNumber,
