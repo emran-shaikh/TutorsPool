@@ -12,7 +12,7 @@ export default function ApprovalPending() {
 
   // Redirect to dashboard if user is already approved
   useEffect(() => {
-    if (user?.status === 'APPROVED') {
+    if (user?.status === 'ACTIVE') {
       navigate(user.role === 'ADMIN' ? '/admin/dashboard' : 
               user.role === 'TUTOR' ? '/tutor/dashboard' : 
               '/student/dashboard')
