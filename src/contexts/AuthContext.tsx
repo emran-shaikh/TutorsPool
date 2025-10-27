@@ -93,9 +93,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password?: string) => {
     try {
       const result = await apiClient.login(email, password)
-      setUser(result)
+      
+      // Ensure admin users are always considered active
+      const userData = result.role === 'ADMIN' 
+        ? { ...result, status: 'ACTIVE' }
+        : result
+        
+      setUser(userData)
       // Set user ID in error logger for session tracking
-      errorLogger.setUserId(result.id)
+      errorLogger.setUserId(userData.id)
       return { error: undefined }
     } catch (error) {
       console.error('Login error:', error)
@@ -117,7 +123,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (userData: RegisterData) => {
     try {
       const result = await apiClient.register(userData)
-      setUser(result)
+      
+      // Ensure admin users are always considered active
+      const userDataWithStatus = result.role === 'ADMIN' 
+        ? { ...result, status: 'ACTIVE' }
+        : result
+        
+      setUser(userDataWithStatus)
       
       // Send registration notification emails
       try {
@@ -158,7 +170,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const verifyOTP = async (email: string, otp: string) => {
     try {
       const result = await apiClient.verifyOTP(email, otp)
-      setUser(result)
+      
+      // Ensure admin users are always considered active
+      const userData = result.role === 'ADMIN' 
+        ? { ...result, status: 'ACTIVE' }
+        : result
+        
+      setUser(userData)
       return { error: undefined }
     } catch (error) {
       console.error('OTP verification error:', error)

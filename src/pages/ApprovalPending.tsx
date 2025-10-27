@@ -10,6 +10,14 @@ export default function ApprovalPending() {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
 
+  // Redirect admins immediately since they don't need approval
+  useEffect(() => {
+    if (user?.role === 'ADMIN') {
+      navigate('/admin/dashboard')
+      return
+    }
+  }, [user, navigate])
+
   // Redirect to dashboard if user is already approved
   useEffect(() => {
     if (user?.status === 'ACTIVE') {
