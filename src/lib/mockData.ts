@@ -125,10 +125,15 @@ export const mockTutors = [
     reviewCount: 127,
     totalSessions: 450,
     profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
-    name: 'John Smith',
-    email: 'john.smith@tutorspool.com',
     verified: true,
     availability: 'Available',
+    user: {
+      id: 'user1',
+      name: 'John Smith',
+      email: 'john.smith@tutorspool.com',
+      role: 'TUTOR',
+      profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+    },
   },
   {
     id: '2',
@@ -143,10 +148,15 @@ export const mockTutors = [
     reviewCount: 98,
     totalSessions: 320,
     profileImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-    name: 'Emma Wilson',
-    email: 'emma.wilson@tutorspool.com',
     verified: true,
     availability: 'Available',
+    user: {
+      id: 'user2',
+      name: 'Emma Wilson',
+      email: 'emma.wilson@tutorspool.com',
+      role: 'TUTOR',
+      profileImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    },
   },
   {
     id: '3',
@@ -161,10 +171,15 @@ export const mockTutors = [
     reviewCount: 156,
     totalSessions: 580,
     profileImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
-    name: 'Dr. James Chen',
-    email: 'james.chen@tutorspool.com',
     verified: true,
     availability: 'Available',
+    user: {
+      id: 'user3',
+      name: 'Dr. James Chen',
+      email: 'james.chen@tutorspool.com',
+      role: 'TUTOR',
+      profileImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+    },
   },
   {
     id: '4',
@@ -179,10 +194,15 @@ export const mockTutors = [
     reviewCount: 89,
     totalSessions: 275,
     profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-    name: 'Alex Martinez',
-    email: 'alex.martinez@tutorspool.com',
     verified: true,
     availability: 'Available',
+    user: {
+      id: 'user4',
+      name: 'Alex Martinez',
+      email: 'alex.martinez@tutorspool.com',
+      role: 'TUTOR',
+      profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    },
   },
   {
     id: '5',
@@ -197,10 +217,15 @@ export const mockTutors = [
     reviewCount: 112,
     totalSessions: 410,
     profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-    name: 'Maria Garcia',
-    email: 'maria.garcia@tutorspool.com',
     verified: true,
     availability: 'Available',
+    user: {
+      id: 'user5',
+      name: 'Maria Garcia',
+      email: 'maria.garcia@tutorspool.com',
+      role: 'TUTOR',
+      profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    },
   },
   {
     id: '6',
@@ -215,10 +240,15 @@ export const mockTutors = [
     reviewCount: 143,
     totalSessions: 520,
     profileImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400',
-    name: 'Dr. Sarah Johnson',
-    email: 'sarah.johnson@tutorspool.com',
     verified: true,
     availability: 'Available',
+    user: {
+      id: 'user6',
+      name: 'Dr. Sarah Johnson',
+      email: 'sarah.johnson@tutorspool.com',
+      role: 'TUTOR',
+      profileImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400',
+    },
   },
 ];
 
@@ -287,7 +317,7 @@ export function filterTutors(tutors: typeof mockTutors, filters: {
   if (filters.q) {
     const qLower = filters.q.toLowerCase();
     filtered = filtered.filter(tutor =>
-      tutor.name.toLowerCase().includes(qLower) ||
+      tutor.user.name.toLowerCase().includes(qLower) ||
       tutor.headline.toLowerCase().includes(qLower) ||
       tutor.subjects.some(subject => subject.toLowerCase().includes(qLower))
     );

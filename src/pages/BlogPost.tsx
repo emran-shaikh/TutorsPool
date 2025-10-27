@@ -5,36 +5,37 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Calendar, User, Clock, Eye, Tag, Share2, BookOpen } from 'lucide-react';
-import { BlogPost } from '@/types/blog';
+import type { BlogPost as BlogPostType } from '@/types/blog';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { blogApi } from '@/lib/api';
+import { mockBlogPosts, filterBlogPosts } from '@/lib/mockData';
 
 const apiClient = {
   async getBlogPostBySlug(slug: string) {
-    const response = await fetch(`/api/blog/slug/${slug}`);
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch blog post');
+    try {
+      return await blogApi.getPostBySlug(slug);
+    } catch (error) {
+      console.log('API unavailable, using mock data for blog post');
+      // Find post by slug in mock data
+      const post = mockBlogPosts.find(p => p.slug === slug);
+      if (!post) {
+        throw new Error('Blog post not found');
+      }
+      return post;
     }
-    
-    return response.json();
   },
 
   async getBlogPosts(filters: any = {}) {
-    const params = new URLSearchParams();
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== '') {
-        params.append(key, String(value));
-      }
-    });
-    
-    const response = await fetch(`/api/blog?${params}`);
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch blog posts');
+    try {
+      return await blogApi.getPublicPosts(filters);
+    } catch (error) {
+      console.log('API unavailable, using mock data for related posts');
+      return filterBlogPosts(mockBlogPosts, {
+        category: filters.category,
+        limit: filters.limit,
+      });
     }
-    
-    return response.json();
   },
 };
 
@@ -248,9 +249,9 @@ const BlogPost: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedPostsData.posts
-                .filter((relatedPost: BlogPost) => relatedPost.id !== post.id)
+                .filter((relatedPost: BlogPostType) => relatedPost.id !== post.id)
                 .slice(0, 3)
-                .map((relatedPost: BlogPost) => (
+                .map((relatedPost: BlogPostType) => (
                   <Card 
                     key={relatedPost.id} 
                     className="hover:shadow-lg transition-shadow cursor-pointer group"
