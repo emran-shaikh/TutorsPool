@@ -37,12 +37,25 @@ const Blog: React.FC = () => {
       page: currentPage,
       limit: 12,
     }),
+    retry: 1,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    placeholderData: {
+      posts: [],
+      total: 0,
+      page: 1,
+      totalPages: 1,
+    },
   });
 
   // Fetch categories
   const { data: categoriesData } = useQuery({
     queryKey: ['blog-categories'],
     queryFn: apiClient.getBlogCategories,
+    retry: 1,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    placeholderData: {
+      categories: ['Education', 'Study Tips', 'Career Advice', 'Technology', 'Exam Prep'],
+    },
   });
 
   const handleSearch = () => {
@@ -95,9 +108,17 @@ const Blog: React.FC = () => {
       <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-lg text-red-600">Error loading blog posts</div>
-          </div>
+          <Card className="max-w-2xl mx-auto">
+            <CardContent className="text-center py-12">
+              <div className="text-lg text-red-600 mb-4">Unable to load blog posts</div>
+              <p className="text-gray-600 mb-6">
+                We're experiencing technical difficulties. Please try again later.
+              </p>
+              <Button onClick={() => window.location.reload()}>
+                Retry
+              </Button>
+            </CardContent>
+          </Card>
         </div>
         <Footer />
       </div>

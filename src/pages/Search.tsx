@@ -57,6 +57,14 @@ const Search: React.FC = () => {
       limit: submittedParams.limit,
     }),
     enabled: true,
+    retry: 1,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    placeholderData: {
+      tutors: [],
+      total: 0,
+      page: 1,
+      totalPages: 1,
+    },
   });
 
   const handleSearch = () => {
