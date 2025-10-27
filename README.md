@@ -16,7 +16,24 @@ A comprehensive online tutoring platform connecting students with qualified tuto
 
 ## 🚀 Quick Start
 
-### Development
+### Windows Users (PowerShell Helper Scripts)
+
+**No more execution policy errors!** Use our helper scripts:
+
+```powershell
+# Run tests
+.\run-tests.ps1 all
+
+# Start development server
+.\run-dev.ps1 frontend
+
+# Git operations
+.\run-git.ps1 quick "Your commit message"
+```
+
+See **[QUICK_COMMANDS.md](./QUICK_COMMANDS.md)** for all commands.
+
+### Development (Traditional)
 
 ```bash
 # Install dependencies
@@ -51,6 +68,20 @@ npm run deploy:vercel
 
 ## 📚 Documentation
 
+### Quick Reference
+| Document | Purpose |
+|----------|---------|
+| [QUICK_COMMANDS.md](./QUICK_COMMANDS.md) | ⚡ Quick command reference |
+| [TERMINAL_FIX_GUIDE.md](./TERMINAL_FIX_GUIDE.md) | 🔧 Fix PowerShell issues |
+
+### Testing
+| Document | Purpose |
+|----------|---------|
+| [TEST_SUITE_IMPLEMENTATION.md](./TEST_SUITE_IMPLEMENTATION.md) | 🧪 Test suite documentation |
+| [TEST_EXECUTION_RESULTS.md](./TEST_EXECUTION_RESULTS.md) | 📊 Test execution results |
+| [ROUTING_FIX_AND_TEST.md](./ROUTING_FIX_AND_TEST.md) | 🔀 Routing test guide |
+
+### Deployment
 | Document | Purpose |
 |----------|---------|
 | [PRODUCTION_READY_SUMMARY.md](./PRODUCTION_READY_SUMMARY.md) | Quick overview & getting started |
