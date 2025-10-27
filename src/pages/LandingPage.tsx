@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
+import { mockTutors, filterTutors } from '@/lib/mockData';
 import FeaturedTutors from '@/components/FeaturedTutors';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -52,7 +53,17 @@ const LandingPage: React.FC = () => {
   // Fetch featured tutors
   const { data: featuredTutors, isLoading: tutorsLoading } = useQuery({
     queryKey: ['featured-tutors'],
-    queryFn: () => apiClient.searchTutors({ limit: 6 }),
+    queryFn: async () => {
+      try {
+        return await apiClient.searchTutors({ limit: 6 });
+      } catch (error) {
+        console.log('API unavailable, using mock tutors for home page');
+        // Return mock tutors if API fails
+        return filterTutors(mockTutors, { limit: 6 });
+      }
+    },
+    retry: 1,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   // Dynamic stats - these could come from API
@@ -355,7 +366,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           <FeaturedTutors 
-            tutors={featuredTutors?.items || []} 
+            tutors={featuredTutors?.items || featuredTutors?.tutors || []} 
             isLoading={tutorsLoading}
             limit={6}
           />
