@@ -133,20 +133,30 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
   if (pathname === '/api/auth/register') {
     if (req.method === 'POST') {
+      const body: any = (req as any).body || {};
+      const role = (body.role || 'STUDENT').toString().toUpperCase();
+      const token = role === 'ADMIN' ? 'mock-admin-jwt-token' : role === 'TUTOR' ? 'mock-tutor-jwt-token' : 'mock-student-jwt-token';
       res.status(201).json({
         success: true,
         message: 'User registered successfully',
         user: {
           id: 'user-new',
-          email: (req as any).body?.email || 'new@example.com',
-          role: 'student'
-        }
+          email: body.email || 'new@example.com',
+          role,
+          status: role === 'ADMIN' ? 'ACTIVE' : 'PENDING',
+        },
+        token
       });
       return;
     }
   }
 
   if (pathname === '/api/tutors') {
+    if (req.method === 'POST') {
+      res.status(201).json({ success: true, profile: { id: 'tutor-new', ...((req as any).body || {}) } });
+      return;
+    }
+
     const url = new URL(req.url || '', `http://${req.headers.host}`);
     const searchParams = url.searchParams;
     
