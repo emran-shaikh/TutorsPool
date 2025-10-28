@@ -147,6 +147,17 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
+  if (p === '/api/logs/client-errors') {
+    if (req.method === 'POST') {
+      const body: any = req.body || {};
+      const errors = Array.isArray(body.errors) ? body.errors : [];
+      // eslint-disable-next-line no-console
+      console.error('[CLIENT ERRORS]', { count: errors.length, sample: errors[0] });
+      res.status(200).json({ success: true, logged: errors.length });
+      return;
+    }
+  }
+
   if (p === '/api/tutors') {
     const url = new URL(req.url || '', `http://${req.headers.host}`);
     const searchParams = url.searchParams;
@@ -474,6 +485,36 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
           createdAt: '2024-01-13T15:30:00Z'
         }
       ]
+    });
+    return;
+  }
+
+  // Admin reports (mock) for production UI
+  if (p === '/api/admin/reports/users') {
+    res.status(200).json({
+      totalUsers: 156,
+      totalTutors: 23,
+      activeUsers: 140,
+      pendingUsers: 8,
+      suspendedUsers: 5,
+      rejectedUsers: 3,
+      usersByRole: { STUDENT: 133, TUTOR: 23, ADMIN: 1 },
+      recentRegistrations: [
+        { name: 'Alice', email: 'alice@example.com', status: 'ACTIVE' },
+        { name: 'Bob', email: 'bob@example.com', status: 'PENDING' },
+      ],
+    });
+    return;
+  }
+
+  if (p === '/api/admin/reports/revenue') {
+    res.status(200).json({
+      totalRevenue: 45600,
+      averageBookingValue: 3800,
+      totalBookings: 487,
+      completedBookings: 430,
+      cancelledBookings: 57,
+      revenueGrowth: 12,
     });
     return;
   }

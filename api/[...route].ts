@@ -596,6 +596,17 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  if (pathname === '/api/logs/client-errors') {
+    if (req.method === 'POST') {
+      const body: any = (req as any).body || {};
+      const errors = Array.isArray(body.errors) ? body.errors : [];
+      // eslint-disable-next-line no-console
+      console.error('[CLIENT ERRORS]', { count: errors.length, sample: errors[0] });
+      res.status(200).json({ success: true, logged: errors.length });
+      return;
+    }
+  }
+
   // Default response for unknown endpoints
   res.status(404).json({
     error: 'Endpoint not found',

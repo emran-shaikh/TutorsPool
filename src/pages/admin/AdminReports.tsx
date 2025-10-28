@@ -19,6 +19,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useErrorLogger } from '@/hooks/useErrorLogger';
+import { apiClient } from '@/lib/api';
 
 const AdminReports: React.FC = () => {
   const { logError } = useErrorLogger({ component: 'AdminReports' });
@@ -27,13 +28,7 @@ const AdminReports: React.FC = () => {
   const { data: usersReport, isLoading: usersLoading, error: usersError, refetch: refetchUsers } = useQuery({
     queryKey: ['admin-reports-users'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:5174/api/admin/reports/users', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch users report');
-      return response.json();
+      return apiClient.request('/admin/reports/users');
     },
   });
 
@@ -41,13 +36,7 @@ const AdminReports: React.FC = () => {
   const { data: revenueReport, isLoading: revenueLoading, error: revenueError, refetch: refetchRevenue } = useQuery({
     queryKey: ['admin-reports-revenue'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:5174/api/admin/reports/revenue', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch revenue report');
-      return response.json();
+      return apiClient.request('/admin/reports/revenue');
     },
   });
 
