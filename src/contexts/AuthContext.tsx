@@ -49,6 +49,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
+  const extractUser = (apiResult: any): User => {
+    if (apiResult && typeof apiResult === 'object' && 'user' in apiResult) {
+      return apiResult.user as User
+    }
+    return apiResult as User
+  }
+
+  const normalizeUser = (userData: User): User => {
+    const rawStatus = (userData as { status?: string }).status
+    const normalizedStatus = userData.role === 'ADMIN'
+      ? 'ACTIVE'
+      : rawStatus === 'APPROVED'
+        ? 'ACTIVE'
+        : rawStatus ?? 'PENDING'
+
+    return {
+      ...userData,
+      status: normalizedStatus as User['status'],
+    }
+  }
+
+  const applyUserState = (userData: User) => {
+    const normalizedUser = normalizeUser(userData)
+    setUser(normalizedUser)
+    errorLogger.setUserId(normalizedUser.id)
+    return normalizedUser
+  }
+
   useEffect(() => {
     // Check for existing session
     checkAuth()
@@ -65,10 +93,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       const userData = await apiClient.getCurrentUser()
-      setUser(userData)
-      // Set user ID in error logger for session tracking
-      errorLogger.setUserId(userData.id)
-      console.log('Auth check successful for user:', userData.role)
+      const normalizedUser = applyUserState(extractUser(userData))
+      console.log('Auth check successful for user:', normalizedUser.role)
     } catch (error) {
       console.error('Auth check failed:', error)
       // Only clear token if it's a 401/403 error (invalid token)
@@ -93,15 +119,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password?: string) => {
     try {
       const result = await apiClient.login(email, password)
-      
-      // Ensure admin users are always considered active
-      const userData = result.role === 'ADMIN' 
-        ? { ...result, status: 'ACTIVE' }
-        : result
-        
-      setUser(userData)
-      // Set user ID in error logger for session tracking
-      errorLogger.setUserId(userData.id)
+      applyUserState(extractUser(result))
       return { error: undefined }
     } catch (error) {
       console.error('Login error:', error)
@@ -123,13 +141,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (userData: RegisterData) => {
     try {
       const result = await apiClient.register(userData)
-      
-      // Ensure admin users are always considered active
-      const userDataWithStatus = result.role === 'ADMIN' 
-        ? { ...result, status: 'ACTIVE' }
-        : result
-        
-      setUser(userDataWithStatus)
+      const normalizedUser = applyUserState(extractUser(result))
       
       // Send registration notification emails
       try {
@@ -139,7 +151,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           body: JSON.stringify({
             name: userData.name,
             email: userData.email,
-            role: userData.role,
+            role: normalizedUser.role,
             phone: userData.phone,
             country: userData.country,
           }),
@@ -170,13 +182,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const verifyOTP = async (email: string, otp: string) => {
     try {
       const result = await apiClient.verifyOTP(email, otp)
-      
-      // Ensure admin users are always considered active
-      const userData = result.role === 'ADMIN' 
-        ? { ...result, status: 'ACTIVE' }
-        : result
-        
-      setUser(userData)
+      applyUserState(extractUser(result))
       return { error: undefined }
     } catch (error) {
       console.error('OTP verification error:', error)
@@ -251,8 +257,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const getDashboardUrl = (): string => {
     if (!user) return '/login'
     
-    // If user is not active and not an admin, redirect to approval pending
-    if (user.status !== 'ACTIVE' && user.role !== 'ADMIN') {
+    const isAdmin = user.role === 'ADMIN'
+    const isApproved = user.status === 'ACTIVE'
+
+    // If user is not approved (and not an admin), redirect to approval pending
+    if (!isAdmin && !isApproved) {
       return '/approval-pending'
     }
 
