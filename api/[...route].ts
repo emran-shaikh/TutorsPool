@@ -341,6 +341,49 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
+  // Admin users list and actions
+  if (pathname === '/api/admin/users') {
+    if (req.method === 'GET') {
+      res.status(200).json([
+        { id: 'user-1', name: 'John Smith', email: 'john@example.com', role: 'TUTOR', status: 'ACTIVE', createdAt: new Date().toISOString() },
+        { id: 'user-2', name: 'Sarah Johnson', email: 'sarah@example.com', role: 'TUTOR', status: 'ACTIVE', createdAt: new Date().toISOString() },
+        { id: 'user-3', name: 'Mike Wilson', email: 'mike@example.com', role: 'STUDENT', status: 'ACTIVE', createdAt: new Date().toISOString() },
+        { id: 'user-5', name: 'Pending Tutor', email: 'pending.tutor@example.com', role: 'TUTOR', status: 'PENDING', createdAt: new Date().toISOString() },
+        { id: 'user-6', name: 'Pending Student', email: 'pending.student@example.com', role: 'STUDENT', status: 'PENDING', createdAt: new Date().toISOString() },
+      ]);
+      return;
+    }
+    if (req.method === 'DELETE') {
+      res.status(200).json({ success: true });
+      return;
+    }
+  }
+
+  // Admin approve user
+  const approveMatch = pathname.match(/^\/api\/admin\/users\/(.+)\/approve$/);
+  if (approveMatch) {
+    if (req.method === 'POST') {
+      const userId = approveMatch[1];
+      res.status(200).json({ success: true, userId, status: 'ACTIVE' });
+      return;
+    }
+  }
+
+  // Admin bookings list and update
+  if (pathname === '/api/admin/bookings') {
+    if (req.method === 'GET') {
+      res.status(200).json([
+        { id: 'booking-1', studentId: 'user-3', tutorId: 'tutor-1', subjectId: 'math', startAtUTC: new Date().toISOString(), endAtUTC: new Date(Date.now()+3600000).toISOString(), status: 'CONFIRMED', priceCents: 5000, currency: 'USD', createdAt: new Date().toISOString() },
+        { id: 'booking-2', studentId: 'user-2', tutorId: 'tutor-2', subjectId: 'physics', startAtUTC: new Date().toISOString(), endAtUTC: new Date(Date.now()+3600000).toISOString(), status: 'PENDING', priceCents: 7500, currency: 'USD', createdAt: new Date().toISOString() }
+      ]);
+      return;
+    }
+    if (req.method === 'PUT') {
+      res.status(200).json({ success: true });
+      return;
+    }
+  }
+
   if (pathname === '/api/bookings') {
     if (req.method === 'GET') {
       res.status(200).json({
