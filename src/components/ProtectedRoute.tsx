@@ -28,6 +28,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
+  // Block non-admin users whose accounts are not ACTIVE (approval required)
+  if (user && user.role !== 'ADMIN' && user.status !== 'ACTIVE') {
+    return <Navigate to="/approval-pending" replace />;
+  }
+
   // Check role-based access
   if (roles && roles.length > 0) {
     if (!roles.includes(user.role)) {

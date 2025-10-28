@@ -85,7 +85,12 @@ class DataManager {
   addUser(user: any): void {
     user.id = `user-${++this.data.lastId}`;
     user.createdAt = new Date().toISOString();
-    user.status = user.status || 'PENDING'; // Default to PENDING for new users
+    // Admins should be ACTIVE immediately; others default to PENDING unless explicitly set
+    if (user.role === 'ADMIN') {
+      user.status = 'ACTIVE';
+    } else {
+      user.status = user.status || 'PENDING'; // Default to PENDING for new users
+    }
     user.approvedAt = null;
     user.approvedBy = null;
     user.avatarUrl = user.avatarUrl || null; // Add avatar support

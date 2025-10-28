@@ -61,23 +61,32 @@ export const requireActiveUser = (req: Request, res: Response, next: NextFunctio
   if (!req.user) {
     return res.status(401).json({ error: 'Authentication required' });
   }
-  
+
   const user = dataManager.getUserById(req.user.userId);
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
   }
-  
+
+  // Admins always bypass approval/status checks
+  if (user.role === 'ADMIN') {
+    return next();
+  }
+
   if (user.status !== 'ACTIVE') {
-    return res.status(403).json({ 
-      error: 'Account not approved', 
+    return res.status(403).json({
+      error: 'Account not approved',
       status: user.status,
-      message: user.status === 'PENDING' ? 'Your account is pending approval' :
-               user.status === 'REJECTED' ? 'Your account has been rejected' :
-               user.status === 'SUSPENDED' ? 'Your account has been suspended' :
-               'Your account is not active'
+      message:
+        user.status === 'PENDING'
+          ? 'Your account is pending approval'
+          : user.status === 'REJECTED'
+          ? 'Your account has been rejected'
+          : user.status === 'SUSPENDED'
+          ? 'Your account has been suspended'
+          : 'Your account is not active',
     });
   }
-  
+
   next();
 };
 
