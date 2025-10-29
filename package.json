@@ -21,6 +21,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:sprite": "testsprite",
+    "test:all": "npm run test:sprite && npm run test:run",
     "start": "npm run build && npm run server:start",
     "production": "NODE_ENV=production npm run start",
     "security:check": "echo 'Checking for hardcoded secrets...' && node -e \"const fs=require('fs'); const files = fs.readdirSync('src').filter(f => f.endsWith('.ts') || f.endsWith('.tsx')); const hasSecrets = files.some(f => fs.readFileSync('src/'+f, 'utf8').match(/AIzaSy|sk_live|sk_test/)); if(hasSecrets) { console.error('❌ Found hardcoded secrets!'); process.exit(1); } else console.log('✅ No hardcoded secrets found');\"",

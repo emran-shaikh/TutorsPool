@@ -13,6 +13,14 @@ class ApiClient {
     // Get token from localStorage on initialization
     this.token = localStorage.getItem('token');
   }
+  
+  // Admin API methods
+  updateUserStatus = async (userId: string, status: string) => {
+    return this.request(`/admin/users/${userId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
+  }
 
   setToken(token: string) {
     this.token = token;
@@ -349,6 +357,13 @@ class ApiClient {
   async getAdminDashboard() {
     return this.request('/admin/dashboard');
   }
+  
+  async updateUserStatus(userId: string, status: string) {
+    return this.request(`/admin/users/${userId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
+  }
 
   // User profile methods
   async updateUserProfile(updates: {
@@ -674,6 +689,11 @@ export const adminApi = {
     apiClient.request(`/admin/users/${userId}/activate`, { method: 'POST' }),
   deleteUser: (userId: string) =>
     apiClient.request(`/admin/users/${userId}`, { method: 'DELETE' }),
+  updateUserStatus: (userId: string, status: string) =>
+    apiClient.request(`/admin/users/${userId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    }),
   
   // Booking management
   getBookings: () => apiClient.request('/admin/bookings'),
