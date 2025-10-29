@@ -1,8 +1,9 @@
 // API client for Tutorspool
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5174/api' : '/api');
+const FALLBACK_API_BASE_URL = import.meta.env.DEV ? 'http://localhost:5174/api' : '/api';
+const PRIMARY_API_BASE_URL = import.meta.env.VITE_API_URL || FALLBACK_API_BASE_URL;
 
 // In production, if still pointing to same-origin '/api', emit a clear warning
-if (import.meta.env.PROD && API_BASE_URL === '/api') {
+if (import.meta.env.PROD && PRIMARY_API_BASE_URL === FALLBACK_API_BASE_URL) {
   console.warn('[API] VITE_API_URL is not set. Using same-origin /api in production. Ensure your host proxies /api to your backend or set VITE_API_URL to your backend (e.g. https://api.your-domain.com/api).');
 }
 
@@ -14,14 +15,6 @@ class ApiClient {
     this.token = localStorage.getItem('token');
   }
   
-  // Admin API methods
-  updateUserStatus = async (userId: string, status: string) => {
-    return this.request(`/admin/users/${userId}/status`, {
-      method: 'PATCH',
-      body: JSON.stringify({ status }),
-    });
-  }
-
   setToken(token: string) {
     this.token = token;
     localStorage.setItem('token', token);
@@ -33,42 +26,66 @@ class ApiClient {
   }
 
   async request(endpoint: string, options: RequestInit = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      ...(options.headers as Record<string, string>),
-    };
-
-    if (this.token) {
-      headers.Authorization = `Bearer ${this.token}`;
+    const baseUrls = [PRIMARY_API_BASE_URL];
+    if (!baseUrls.includes(FALLBACK_API_BASE_URL)) {
+      baseUrls.push(FALLBACK_API_BASE_URL);
     }
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers,
-      });
+    let lastError: unknown = null;
 
-      if (!response.ok) {
-        const error = await response.json().catch(() => ({ error: 'Network error' }));
-        
-        // Only clear token for authentication errors
+    for (let index = 0; index < baseUrls.length; index += 1) {
+      const baseUrl = baseUrls[index];
+      const url = `${baseUrl}${endpoint}`;
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...(options.headers as Record<string, string>),
+      };
+
+      if (this.token) {
+        headers.Authorization = `Bearer ${this.token}`;
+      }
+
+      try {
+        const response = await fetch(url, {
+          ...options,
+          headers,
+        });
+
+        if (response.ok) {
+          return response.json();
+        }
+
+        const errorPayload = await response.json().catch(() => ({ error: 'Network error' }));
+        const requestError = new Error(errorPayload.error || `HTTP ${response.status}`);
+
         if (response.status === 401 || response.status === 403) {
-          console.log('Authentication error, clearing token')
+          console.log('Authentication error, clearing token');
           this.clearToken();
         }
-        
-        throw new Error(error.error || `HTTP ${response.status}`);
-      }
 
-      return response.json();
-    } catch (error) {
-      // Don't clear token for network errors
-      if (error instanceof Error && !error.message.includes('HTTP')) {
-        console.log('Network error, keeping token:', error.message);
+        if (response.status === 405 && index < baseUrls.length - 1) {
+          console.warn(`[API] ${url} returned 405. Retrying with fallback base URL.`);
+          lastError = requestError;
+          continue;
+        }
+
+        throw requestError;
+      } catch (error) {
+        if (error instanceof Error && !error.message.includes('HTTP')) {
+          console.log('Network error, keeping token:', error.message);
+        }
+
+        lastError = error;
+
+        if (index === baseUrls.length - 1) {
+          throw error;
+        }
+
+        console.warn(`[API] Request to ${baseUrl} failed. Trying fallback base URL.`);
       }
-      throw error;
     }
+
+    throw lastError instanceof Error ? lastError : new Error('Unknown API error');
   }
 
   // Authentication methods
