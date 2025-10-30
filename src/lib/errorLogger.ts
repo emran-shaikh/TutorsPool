@@ -199,8 +199,14 @@ class ErrorLogger {
         }),
       });
 
+      // Handle 405 errors gracefully - don't re-queue, just log locally
+      if (response.status === 405) {
+        console.warn('[ErrorLogger] Server endpoint not available (405), keeping errors local');
+        return; // Don't re-queue errors for 405
+      }
+
       if (!response.ok) {
-        // Re-add errors to queue if sending failed
+        // Re-add errors to queue if sending failed (but not for 405)
         this.errorQueue.unshift(...errorsToSend);
         console.warn('Failed to send error logs to server');
       }
