@@ -147,7 +147,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  if (p === '/api/logs/client-errors') {
+  if (p === '/api/logs') {
     if (req.method === 'POST') {
       const body: any = req.body || {};
       const errors = Array.isArray(body.errors) ? body.errors : [];

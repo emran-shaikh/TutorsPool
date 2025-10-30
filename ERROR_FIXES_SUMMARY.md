@@ -93,7 +93,7 @@ dataManager.updateTutor(tutor.id, updates);
 - ✅ `GET /api/tutors/tutor-1` - **WORKING**
 - ✅ `GET /api/tutors/tutor-1/reviews` - **WORKING**
 - ✅ `GET /api/health` - **WORKING**
-- ✅ `POST /api/logs/client-errors` - **WORKING**
+- ✅ `POST /api/logs` - **WORKING**
 
 ### **Error Logging Tests:**
 - ✅ Client-side error capture - **WORKING**

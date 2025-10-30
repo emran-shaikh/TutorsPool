@@ -639,7 +639,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (pathname === '/api/logs/client-errors') {
+  if (pathname === '/api/logs') {
     if (req.method === 'POST') {
       const body: any = (req as any).body || {};
       const errors = Array.isArray(body.errors) ? body.errors : [];

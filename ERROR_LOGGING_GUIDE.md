@@ -13,7 +13,7 @@ The Tutorspool application now includes a comprehensive error logging system tha
 - **Automatic Error Capture**: Unhandled errors and promise rejections are automatically captured
 
 ### Server-Side Error Logging
-- **API Endpoints**: `/api/logs/client-errors` and `/api/logs/server-error`
+- **API Endpoints**: `/api/logs` and `/api/logs/server-error`
 - **Structured Logging**: Errors are logged with context, user information, and metadata
 - **Admin Dashboard**: Real-time error monitoring and management
 
@@ -142,7 +142,7 @@ The admin dashboard provides:
 - **Offline Support**: Errors are queued when offline and sent when online
 
 ### Server Endpoints
-- `POST /api/logs/client-errors` - Receive client errors
+- `POST /api/logs` - Receive client errors
 - `POST /api/logs/server-error` - Log server errors
 - `GET /api/logs/errors` - Get error logs (admin only)
 

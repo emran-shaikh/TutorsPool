@@ -187,7 +187,7 @@ class ErrorLogger {
     this.errorQueue = [];
 
     try {
-      const response = await fetch('/api/logs/client-errors', {
+      const response = await fetch('/api/logs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

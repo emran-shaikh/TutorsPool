@@ -2424,7 +2424,7 @@ app.get('/api/debug/tutor-lookup/:userId', (req, res) => {
 });
 
 // Error logging endpoints
-app.post('/api/logs/client-errors', (req, res) => {
+app.post('/api/logs', (req, res) => {
   try {
     const { errors, sessionId, userId } = req.body;
     
