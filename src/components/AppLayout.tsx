@@ -9,6 +9,9 @@ import ReviewsSection from './ReviewsSection';
 import FeaturesSection from './FeaturesSection';
 import CTASection from './CTASection';
 import Footer from './Footer';
+import { lazy, Suspense } from 'react';
+
+const ExitIntentPopup = lazy(() => import('./ExitIntentPopup'));
 
 const AppLayout: React.FC = () => {
   const { sidebarOpen, toggleSidebar } = useAppContext();
@@ -24,6 +27,9 @@ const AppLayout: React.FC = () => {
       <FeaturesSection />
       <CTASection />
       <Footer />
+      <Suspense fallback={null}>
+        <ExitIntentPopup />
+      </Suspense>
     </div>
   );
 };
