@@ -4,29 +4,52 @@ import { X } from 'lucide-react';
 export const ExitIntentPopup: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasShown, setHasShown] = useState(false);
+  const [debugInfo, setDebugInfo] = useState('');
 
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined') return;
 
     const handleMouseOut = (e: MouseEvent) => {
-      // If the mouse is leaving the viewport from the top
-      if (e.clientY < 0 && !hasShown) {
+      // Debug info
+      const info = `Mouse Y: ${e.clientY}, Visible: ${isVisible}, HasShown: ${hasShown}`;
+      setDebugInfo(info);
+      console.log('MouseOut Event:', info);
+
+      // If the mouse is leaving the viewport from the top or sides
+      if ((e.clientY < 10 || e.clientX < 10 || e.clientX > window.innerWidth - 10) && !hasShown) {
+        console.log('Triggering popup!');
         setIsVisible(true);
         setHasShown(true);
+        // Store in localStorage to prevent showing again
+        localStorage.setItem('exitIntentShown', 'true');
       }
     };
 
-    // Add event listener for mouse leaving the viewport
+    // Add multiple event listeners for better detection
     document.addEventListener('mouseout', handleMouseOut);
+    document.addEventListener('mouseleave', handleMouseOut);
+
+    // Check if we've shown the popup before (using localStorage)
+    const hasShownBefore = localStorage.getItem('exitIntentShown') === 'true';
+    if (hasShownBefore) {
+      console.log('Popup was shown before, not showing again');
+      setHasShown(true);
+    }
 
     // Cleanup
     return () => {
       document.removeEventListener('mouseout', handleMouseOut);
+      document.removeEventListener('mouseleave', handleMouseOut);
     };
   }, [hasShown]);
 
+  // For testing: Force show the popup by uncommenting the line below
+  // if (false) return null;
   if (!isVisible) return null;
+
+  // Debug info
+  console.log('Rendering popup with debug info:', debugInfo);
 
   const handleWhatsAppClick = () => {
     window.open('https://wa.me/92345384284?text=Hi!%20I%27m%20interested%20in%20the%2020%%20discount%20offer');
