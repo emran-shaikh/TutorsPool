@@ -617,25 +617,58 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
   // Admin endpoints
   if (pathname === '/api/admin/dashboard') {
+    if (req.method !== 'GET') {
+      res.status(405).json({ error: 'Method not allowed', allowedMethods: ['GET'] });
+      return;
+    }
+    
+    // Return dashboard data matching server response format
     res.status(200).json({
-      success: true,
-      stats: {
-        totalUsers: 156,
-        totalTutors: 23,
-        totalStudents: 133,
-        totalBookings: 487,
-        totalRevenue: 45600, // in cents
-        currency: 'USD',
-        thisMonth: {
-          newUsers: 12,
-          newTutors: 3,
-          bookings: 45,
-          revenue: 3400
-        },
-        pendingApprovals: 5,
-        activeSessions: 8
-      }
+      totalUsers: 156,
+      totalTutors: 23,
+      totalStudents: 133,
+      totalBookings: 487,
+      totalRevenue: 45600, // in cents
+      pendingApprovals: 5,
+      activeSessions: 8,
+      averageRating: 4.5
     });
+    return;
+  }
+
+  if (pathname === '/api/admin/users') {
+    if (req.method !== 'GET') {
+      res.status(405).json({ error: 'Method not allowed', allowedMethods: ['GET'] });
+      return;
+    }
+    res.status(200).json([]);
+    return;
+  }
+
+  if (pathname === '/api/admin/users/pending') {
+    if (req.method !== 'GET') {
+      res.status(405).json({ error: 'Method not allowed', allowedMethods: ['GET'] });
+      return;
+    }
+    res.status(200).json([]);
+    return;
+  }
+
+  if (pathname === '/api/admin/bookings') {
+    if (req.method !== 'GET') {
+      res.status(405).json({ error: 'Method not allowed', allowedMethods: ['GET'] });
+      return;
+    }
+    res.status(200).json([]);
+    return;
+  }
+
+  if (pathname === '/api/admin/tutors') {
+    if (req.method !== 'GET') {
+      res.status(405).json({ error: 'Method not allowed', allowedMethods: ['GET'] });
+      return;
+    }
+    res.status(200).json([]);
     return;
   }
 
@@ -648,6 +681,9 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
       res.status(200).json({ success: true, logged: errors.length });
       return;
     }
+    // Return 405 for non-POST methods
+    res.status(405).json({ error: 'Method not allowed', allowedMethods: ['POST'] });
+    return;
   }
 
   // Default response for unknown endpoints
