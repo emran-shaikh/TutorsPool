@@ -4028,5 +4028,35 @@
       "serverTime": "2025-11-17T13:50:55.840Z",
       "processId": 27868
     }
+  },
+  {
+    "id": "info_1763389200513_686cd41vw",
+    "timestamp": "2025-11-17T14:20:00.513Z",
+    "type": "info",
+    "message": "User user-135 approved by admin user-136",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-136",
+      "targetUserId": "user-135",
+      "serverTime": "2025-11-17T14:20:00.513Z",
+      "processId": 4896
+    }
+  },
+  {
+    "id": "info_1763406907800_5zagg54of",
+    "timestamp": "2025-11-17T19:15:07.800Z",
+    "type": "info",
+    "message": "Booking booking-133 cancelled by student user-126",
+    "context": {
+      "endpoint": "/api/students/bookings/:bookingId/status",
+      "method": "PUT",
+      "studentId": "user-126",
+      "bookingId": "booking-133",
+      "newStatus": "CANCELLED",
+      "reason": "Cancelled by student",
+      "serverTime": "2025-11-17T19:15:07.800Z",
+      "processId": 31716
+    }
   }
 ]

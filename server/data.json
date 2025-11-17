@@ -602,6 +602,34 @@
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
+    },
+    {
+      "name": "Local Test",
+      "email": "localtest+123@example.com",
+      "phone": "123",
+      "country": "USA",
+      "timezone": "UTC",
+      "role": "STUDENT",
+      "status": "ACTIVE",
+      "id": "user-135",
+      "createdAt": "2025-11-17T14:18:57.242Z",
+      "approvedAt": "2025-11-17T14:20:00.512Z",
+      "approvedBy": "user-136",
+      "avatarUrl": null
+    },
+    {
+      "name": "Local Admin",
+      "email": "localadmin+123@example.com",
+      "phone": "",
+      "country": "United States",
+      "timezone": "UTC",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-136",
+      "createdAt": "2025-11-17T14:19:42.818Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -1696,10 +1724,10 @@
       "subjectId": "physics",
       "startAtUTC": "2025-11-18T10:00:00.000Z",
       "endAtUTC": "2025-11-18T11:00:00.000Z",
-      "status": "PENDING_PAYMENT",
+      "status": "CONFIRMED",
       "priceCents": 1200,
       "currency": "USD",
-      "paymentStatus": "UNPAID",
+      "paymentStatus": "PAID",
       "paymentRequired": true,
       "id": "booking-131",
       "createdAt": "2025-11-17T13:51:29.015Z"
@@ -1710,13 +1738,29 @@
       "subjectId": "physics",
       "startAtUTC": "2025-11-18T10:00:00.000Z",
       "endAtUTC": "2025-11-18T11:00:00.000Z",
-      "status": "PENDING_PAYMENT",
+      "status": "CANCELLED",
       "priceCents": 1200,
+      "currency": "USD",
+      "paymentStatus": "PAID",
+      "paymentRequired": true,
+      "id": "booking-133",
+      "createdAt": "2025-11-17T13:52:16.048Z",
+      "updatedAt": "2025-11-17T19:15:07.795Z",
+      "statusReason": "Cancelled by student"
+    },
+    {
+      "studentId": "user-135",
+      "tutorId": "tutor-1",
+      "subjectId": "math",
+      "startAtUTC": "2025-11-18T14:20:50.0982545Z",
+      "endAtUTC": "2025-11-18T15:20:50.1055563Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 5000,
       "currency": "USD",
       "paymentStatus": "UNPAID",
       "paymentRequired": true,
-      "id": "booking-133",
-      "createdAt": "2025-11-17T13:52:16.048Z"
+      "id": "booking-137",
+      "createdAt": "2025-11-17T14:20:50.174Z"
     }
   ],
   "learningProgress": {
@@ -2305,6 +2349,39 @@
       },
       "read": false,
       "createdAt": "2025-11-17T13:52:16.051Z"
+    },
+    {
+      "id": "notification-138",
+      "userId": "user-1",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Local Test has requested a math session with you.",
+      "data": {
+        "bookingId": "booking-137",
+        "studentId": "user-135",
+        "studentName": "Local Test",
+        "subject": "math",
+        "startAt": "2025-11-18T14:20:50.0982545Z",
+        "endAt": "2025-11-18T15:20:50.1055563Z"
+      },
+      "read": false,
+      "createdAt": "2025-11-17T14:20:50.175Z"
+    },
+    {
+      "id": "notification-139",
+      "userId": "tutor-129",
+      "type": "BOOKING_CANCELLED",
+      "title": "Session Cancelled",
+      "message": "Serina Mcguire has cancelled the physics session.",
+      "data": {
+        "bookingId": "booking-133",
+        "studentId": "user-126",
+        "studentName": "Serina Mcguire",
+        "subject": "physics",
+        "reason": "Cancelled by student"
+      },
+      "read": false,
+      "createdAt": "2025-11-17T19:15:07.798Z"
     }
   ],
   "messages": [],
@@ -2481,6 +2558,184 @@
         "tutorAmount": 54
       },
       "stripeChargeId": "ch_1759943819851_tfbldslx5"
+    },
+    {
+      "id": "payment_1763389270846_mtltc92zw",
+      "bookingId": "booking-137",
+      "studentId": "user-135",
+      "tutorId": "tutor-1",
+      "amount": 50,
+      "currency": "usd",
+      "stripePaymentIntentId": "pi_3SUTIoLZr8CjOqMu01JSCde6",
+      "status": "PENDING",
+      "createdAt": "2025-11-17T14:21:10.846Z",
+      "updatedAt": "2025-11-17T14:21:10.846Z",
+      "metadata": {
+        "platformFee": 5,
+        "tutorAmount": 45
+      }
+    },
+    {
+      "id": "payment_1763389412586_7r5v06am8",
+      "bookingId": "booking-137",
+      "studentId": "user-135",
+      "tutorId": "tutor-1",
+      "amount": 50,
+      "currency": "usd",
+      "stripePaymentIntentId": "pi_3SUTL6LZr8CjOqMu38Tt8KjD",
+      "status": "PENDING",
+      "createdAt": "2025-11-17T14:23:32.586Z",
+      "updatedAt": "2025-11-17T14:23:32.586Z",
+      "metadata": {
+        "platformFee": 5,
+        "tutorAmount": 45
+      }
+    },
+    {
+      "id": "payment_1763389422458_p2c5sxd7f",
+      "bookingId": "booking-137",
+      "studentId": "user-135",
+      "tutorId": "tutor-1",
+      "amount": 50,
+      "currency": "usd",
+      "stripePaymentIntentId": "pi_3SUTLGLZr8CjOqMu3dC4Ebuu",
+      "status": "PENDING",
+      "createdAt": "2025-11-17T14:23:42.458Z",
+      "updatedAt": "2025-11-17T14:23:42.458Z",
+      "metadata": {
+        "platformFee": 5,
+        "tutorAmount": 45
+      }
+    },
+    {
+      "id": "payment_1763389493908_2rvhb1wr7",
+      "bookingId": "booking-131",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUTMPLZr8CjOqMu2aNqsz76",
+      "status": "FAILED",
+      "createdAt": "2025-11-17T14:24:53.908Z",
+      "updatedAt": "2025-11-17T14:24:56.287Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      }
+    },
+    {
+      "id": "payment_1763389574349_jtiy7tndt",
+      "bookingId": "booking-133",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUTNiLZr8CjOqMu1EW6I9z5",
+      "status": "FAILED",
+      "createdAt": "2025-11-17T14:26:14.349Z",
+      "updatedAt": "2025-11-17T14:26:16.876Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      }
+    },
+    {
+      "id": "payment_1763389734835_41fj2rjfv",
+      "bookingId": "booking-131",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUTQILZr8CjOqMu0bhLU3iK",
+      "status": "PENDING",
+      "createdAt": "2025-11-17T14:28:54.835Z",
+      "updatedAt": "2025-11-17T14:28:54.835Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      }
+    },
+    {
+      "id": "payment_1763401821934_do40xavvc",
+      "bookingId": "booking-131",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUWZFLZr8CjOqMu3DJR3qZz",
+      "status": "PENDING",
+      "createdAt": "2025-11-17T17:50:21.934Z",
+      "updatedAt": "2025-11-17T17:50:21.934Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      }
+    },
+    {
+      "id": "payment_1763402013980_t8wvqdyjh",
+      "bookingId": "booking-131",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUWcLLZr8CjOqMu0twps0U5",
+      "status": "PENDING",
+      "createdAt": "2025-11-17T17:53:33.980Z",
+      "updatedAt": "2025-11-17T17:53:33.980Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      }
+    },
+    {
+      "id": "payment_1763402250707_xrrujvval",
+      "bookingId": "booking-131",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUWgALZr8CjOqMu2FBmmASn",
+      "status": "PENDING",
+      "createdAt": "2025-11-17T17:57:30.707Z",
+      "updatedAt": "2025-11-17T17:57:30.707Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      }
+    },
+    {
+      "id": "payment_1763406556726_efnmmwcqg",
+      "bookingId": "booking-133",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUXncLZr8CjOqMu07y3YqbH",
+      "status": "COMPLETED",
+      "createdAt": "2025-11-17T19:09:16.726Z",
+      "updatedAt": "2025-11-17T19:09:19.087Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      },
+      "stripeChargeId": "ch_test_1763406559087"
+    },
+    {
+      "id": "payment_1763406878402_iyouai8y5",
+      "bookingId": "booking-131",
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "amount": 1200,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_3SUXsnLZr8CjOqMu25RmkIF4",
+      "status": "COMPLETED",
+      "createdAt": "2025-11-17T19:14:38.402Z",
+      "updatedAt": "2025-11-17T19:14:40.773Z",
+      "metadata": {
+        "platformFee": 120,
+        "tutorAmount": 1080
+      },
+      "stripeChargeId": "ch_test_1763406880773"
     }
   ],
   "payouts": [
@@ -2643,6 +2898,34 @@
       },
       "stripeTransferId": "tr_1759944987039_75icouk66",
       "paidAt": "2025-10-08T17:36:27.039Z"
+    },
+    {
+      "id": "payout_1763406559088_1quj9li0g",
+      "paymentId": "payment_1763406556726_efnmmwcqg",
+      "tutorId": "tutor-129",
+      "amount": 1080,
+      "currency": "USD",
+      "status": "PENDING",
+      "holdUntil": "2025-11-24T19:09:19.088Z",
+      "createdAt": "2025-11-17T19:09:19.088Z",
+      "updatedAt": "2025-11-17T19:09:19.088Z",
+      "metadata": {
+        "platformFee": 120
+      }
+    },
+    {
+      "id": "payout_1763406880773_fjkvby47z",
+      "paymentId": "payment_1763406878402_iyouai8y5",
+      "tutorId": "tutor-129",
+      "amount": 1080,
+      "currency": "USD",
+      "status": "PENDING",
+      "holdUntil": "2025-11-24T19:14:40.773Z",
+      "createdAt": "2025-11-17T19:14:40.773Z",
+      "updatedAt": "2025-11-17T19:14:40.773Z",
+      "metadata": {
+        "platformFee": 120
+      }
     }
   ],
   "disputes": [
@@ -2686,7 +2969,7 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 134,
+  "lastId": 139,
   "blogPosts": [
     {
       "id": "blog-1763362024511",

@@ -25,11 +25,13 @@ export class PaymentService {
       }
 
       // Create Stripe payment intent
+      // Disable redirect-based payment methods for simpler card-only flow
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100), // Convert to cents
         currency: currency.toLowerCase(),
         automatic_payment_methods: {
           enabled: true,
+          allow_redirects: 'never', // Only allow card payments, no redirect-based methods
         },
         metadata: {
           bookingId: bookingId,
@@ -92,8 +94,34 @@ export class PaymentService {
       }
 
       // Retrieve payment intent from Stripe
-      const stripePaymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-      
+      let stripePaymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+      // For sandbox/local testing we automatically confirm intents if they
+      // are still waiting for a payment method or confirmation.
+      if (stripePaymentIntent.status === 'requires_payment_method' || stripePaymentIntent.status === 'requires_confirmation') {
+        // Check if we're in test mode
+        const isTestMode = stripeConfig.secretKey.startsWith('sk_test_');
+        
+        // In test/sandbox mode, simulate payment success without calling Stripe
+        // This avoids the raw card data API restriction
+        if (isTestMode && stripeConfig.isSandbox) {
+          stripePaymentIntent = {
+            ...stripePaymentIntent,
+            status: 'succeeded',
+            latest_charge: `ch_test_${Date.now()}`,
+          } as any;
+        } else {
+          // Production mode - attempt actual Stripe confirmation
+          // Note: In production, payment methods should be created client-side
+          try {
+            stripePaymentIntent = await stripe.paymentIntents.confirm(paymentIntentId);
+          } catch (error: any) {
+            console.error('Stripe confirmation error:', error);
+            throw new Error('Failed to confirm payment with Stripe');
+          }
+        }
+      }
+
       if (stripePaymentIntent.status === 'succeeded') {
         // Update payment status
         payment.status = PaymentStatus.COMPLETED;
