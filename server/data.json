@@ -560,6 +560,48 @@
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
+    },
+    {
+      "name": "Serina Mcguire",
+      "email": "biheqydec@mailinator.com",
+      "phone": "+1 (505) 892-8969",
+      "country": "Australia",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "status": "ACTIVE",
+      "id": "user-126",
+      "createdAt": "2025-11-17T13:49:34.607Z",
+      "approvedAt": "2025-11-17T13:50:55.837Z",
+      "approvedBy": "user-130",
+      "avatarUrl": null
+    },
+    {
+      "name": "Randall Howe",
+      "email": "vebamizyxi@mailinator.com",
+      "phone": "+1 (289) 954-6349",
+      "country": "Other",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "status": "ACTIVE",
+      "id": "user-128",
+      "createdAt": "2025-11-17T13:50:21.542Z",
+      "approvedAt": "2025-11-17T13:50:53.712Z",
+      "approvedBy": "user-130",
+      "avatarUrl": null
+    },
+    {
+      "name": "Yetta Tyler",
+      "email": "fytinuwyta@mailinator.com",
+      "phone": "+1 (641) 794-3171",
+      "country": "Germany",
+      "timezone": "America/New_York",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-130",
+      "createdAt": "2025-11-17T13:50:44.173Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -989,6 +1031,38 @@
       "ratingCount": 0,
       "id": "tutor-119",
       "createdAt": "2025-11-17T06:51:14.080Z"
+    },
+    {
+      "userId": "user-128",
+      "headline": "Consequat Id volupt",
+      "bio": "Temporibus aspernatuTemporibus aspernatuTemporibus aspernatuTemporibus aspernatuTemporibus aspernatuTemporibus aspernatu",
+      "hourlyRateCents": 1200,
+      "currency": "CAD",
+      "yearsExperience": 2017,
+      "subjects": [
+        "Arabic",
+        "Spanish"
+      ],
+      "levels": [
+        "High School (9-12)",
+        "Professional Development"
+      ],
+      "slug": "randall-howe",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-129",
+      "createdAt": "2025-11-17T13:50:21.592Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -1243,6 +1317,18 @@
       "uploads": [],
       "id": "student-121",
       "createdAt": "2025-11-17T06:51:49.203Z"
+    },
+    {
+      "userId": "user-126",
+      "gradeLevel": "Graduate School",
+      "learningGoals": "Rerum voluptas perfe",
+      "preferredMode": "ONLINE",
+      "budgetMin": 600,
+      "budgetMax": 2700,
+      "specialRequirements": "Tempora mollit autem",
+      "uploads": [],
+      "id": "student-127",
+      "createdAt": "2025-11-17T13:49:34.632Z"
     }
   ],
   "bookings": [
@@ -1603,6 +1689,34 @@
       "paymentRequired": true,
       "id": "booking-124",
       "createdAt": "2025-11-17T06:53:50.525Z"
+    },
+    {
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "subjectId": "physics",
+      "startAtUTC": "2025-11-18T10:00:00.000Z",
+      "endAtUTC": "2025-11-18T11:00:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 1200,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-131",
+      "createdAt": "2025-11-17T13:51:29.015Z"
+    },
+    {
+      "studentId": "user-126",
+      "tutorId": "tutor-129",
+      "subjectId": "physics",
+      "startAtUTC": "2025-11-18T10:00:00.000Z",
+      "endAtUTC": "2025-11-18T11:00:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 1200,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-133",
+      "createdAt": "2025-11-17T13:52:16.048Z"
     }
   ],
   "learningProgress": {
@@ -2157,6 +2271,40 @@
       },
       "read": false,
       "createdAt": "2025-11-17T06:53:50.528Z"
+    },
+    {
+      "id": "notification-132",
+      "userId": "user-128",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Serina Mcguire has requested a physics session with you.",
+      "data": {
+        "bookingId": "booking-131",
+        "studentId": "user-126",
+        "studentName": "Serina Mcguire",
+        "subject": "physics",
+        "startAt": "2025-11-18T10:00:00.000Z",
+        "endAt": "2025-11-18T11:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-11-17T13:51:29.016Z"
+    },
+    {
+      "id": "notification-134",
+      "userId": "user-128",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Serina Mcguire has requested a physics session with you.",
+      "data": {
+        "bookingId": "booking-131",
+        "studentId": "user-126",
+        "studentName": "Serina Mcguire",
+        "subject": "physics",
+        "startAt": "2025-11-18T10:00:00.000Z",
+        "endAt": "2025-11-18T11:00:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-11-17T13:52:16.051Z"
     }
   ],
   "messages": [],
@@ -2538,7 +2686,7 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 125,
+  "lastId": 134,
   "blogPosts": [
     {
       "id": "blog-1763362024511",

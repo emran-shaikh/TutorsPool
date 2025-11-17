@@ -28,8 +28,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
-  // Block non-admin users whose accounts are not ACTIVE (approval required)
-  if (user && user.role !== 'ADMIN' && user.status !== 'ACTIVE') {
+  const isOnApprovalPage = location.pathname === '/approval-pending';
+
+  // Block non-admin users whose accounts are not ACTIVE (approval required),
+  // but allow them to view the approval pending screen itself.
+  if (user && user.role !== 'ADMIN' && user.status !== 'ACTIVE' && !isOnApprovalPage) {
     return <Navigate to="/approval-pending" replace />;
   }
 

@@ -4000,5 +4000,33 @@
       "serverTime": "2025-11-17T06:47:52.207Z",
       "processId": 8568
     }
+  },
+  {
+    "id": "info_1763387453716_f74l7eiuk",
+    "timestamp": "2025-11-17T13:50:53.716Z",
+    "type": "info",
+    "message": "User user-128 approved by admin user-130",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-130",
+      "targetUserId": "user-128",
+      "serverTime": "2025-11-17T13:50:53.716Z",
+      "processId": 27868
+    }
+  },
+  {
+    "id": "info_1763387455840_y3vl50rok",
+    "timestamp": "2025-11-17T13:50:55.840Z",
+    "type": "info",
+    "message": "User user-126 approved by admin user-130",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-130",
+      "targetUserId": "user-126",
+      "serverTime": "2025-11-17T13:50:55.840Z",
+      "processId": 27868
+    }
   }
 ]

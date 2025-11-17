@@ -341,7 +341,7 @@ app.post('/api/auth/register', async (req, res) => {
       country: country || 'United States',
       timezone: timezone || 'UTC',
       role,
-      status: 'ACTIVE'
+      status: role === 'ADMIN' ? 'ACTIVE' : 'PENDING'
     };
 
     try {
