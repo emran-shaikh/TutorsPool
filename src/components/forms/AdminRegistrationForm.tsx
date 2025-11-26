@@ -27,17 +27,6 @@ const AdminRegistrationForm: React.FC = () => {
     setSubmitting(true);
 
     try {
-      // Verify admin code (for security)
-      if (formData.adminCode !== 'ADMIN2024') {
-        toast({
-          title: 'Invalid Admin Code',
-          description: 'Please enter the correct admin verification code.',
-          variant: 'destructive',
-        });
-        setSubmitting(false);
-        return;
-      }
-
       const { error } = await register({
         name: formData.name,
         email: formData.email,
@@ -54,13 +43,16 @@ const AdminRegistrationForm: React.FC = () => {
           description: error,
           variant: 'destructive',
         });
+        setSubmitting(false);
       } else {
         toast({
           title: 'Admin Account Created!',
-          description: 'Welcome to the admin panel. You can now manage the platform.',
+          description: 'Welcome to the admin panel. Redirecting...',
         });
-        // Redirect to admin dashboard
-        navigate('/admin');
+        // Wait a moment to allow state to update, then redirect
+        setTimeout(() => {
+          navigate('/admin/dashboard');
+        }, 500);
       }
     } catch (error) {
       console.error('Admin registration error:', error);
@@ -69,7 +61,6 @@ const AdminRegistrationForm: React.FC = () => {
         description: 'An unexpected error occurred. Please try again.',
         variant: 'destructive',
       });
-    } finally {
       setSubmitting(false);
     }
   };
