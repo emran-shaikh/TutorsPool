@@ -739,6 +739,62 @@
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
+    },
+    {
+      "name": "Melyssa Rosa",
+      "email": "riri@mailinator.com",
+      "phone": "+1 (477) 153-2615",
+      "country": "USA",
+      "timezone": "Asia/Tokyo",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-149",
+      "createdAt": "2025-11-26T19:38:45.121Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Alfonso Eaton",
+      "email": "xizajox@mailinator.com",
+      "phone": "+1 (925) 149-2726",
+      "country": "Canada",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "status": "PENDING",
+      "id": "user-150",
+      "createdAt": "2025-11-26T19:40:34.911Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Quentin Walsh",
+      "email": "harijyhi@mailinator.com",
+      "phone": "+1 (307) 395-3456",
+      "country": "Australia",
+      "timezone": "Asia/Kolkata",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-152",
+      "createdAt": "2025-11-26T19:40:57.644Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Adrienne Barrera",
+      "email": "macu@mailinator.com",
+      "phone": "+1 (887) 609-4244",
+      "country": "Australia",
+      "timezone": "Europe/Paris",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-153",
+      "createdAt": "2025-11-26T19:41:19.331Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -1200,6 +1256,37 @@
       "id": "tutor-129",
       "createdAt": "2025-11-17T13:50:21.592Z",
       "status": "ACTIVE"
+    },
+    {
+      "userId": "user-150",
+      "headline": "Hic nemo dolorem dis",
+      "bio": "Odit sed quia adipisOdit sed quia adipisOdit sed quia adipisOdit sed quia adipisOdit sed quia adipis",
+      "hourlyRateCents": 5600,
+      "currency": "EUR",
+      "yearsExperience": 1999,
+      "subjects": [
+        "Physics",
+        "English"
+      ],
+      "levels": [
+        "Graduate School",
+        "Middle School (6-8)"
+      ],
+      "slug": "alfonso-eaton",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-151",
+      "createdAt": "2025-11-26T19:40:35.166Z"
     }
   ],
   "students": [
@@ -3090,7 +3177,7 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 148,
+  "lastId": 153,
   "blogPosts": [
     {
       "id": "blog-1763362024511",

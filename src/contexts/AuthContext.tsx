@@ -157,26 +157,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const result = await apiClient.register(userData)
       const normalizedUser = applyUserState(extractUser(result))
-      
-      // Send registration notification emails
-      try {
-        await fetch('/api/auth/register-notify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: userData.name,
-            email: userData.email,
-            role: normalizedUser.role,
-            phone: userData.phone,
-            country: userData.country,
-          }),
-        });
-        console.log('Registration emails sent');
-      } catch (emailError) {
-        console.error('Failed to send registration emails:', emailError);
-        // Don't fail registration if emails fail
-      }
-      
+      console.log('User registered successfully:', normalizedUser.role)
       return { error: undefined }
     } catch (error) {
       console.error('Registration error:', error)

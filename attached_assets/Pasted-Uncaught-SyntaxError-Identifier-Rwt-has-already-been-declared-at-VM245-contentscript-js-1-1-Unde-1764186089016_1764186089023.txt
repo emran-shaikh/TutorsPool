@@ -1,0 +1,40 @@
+Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at VM245 contentscript.js:1:1)Understand this error
+AuthContext.tsx:163  POST https://cf9287d2-a288-49a8-876c-c3a604fe4409-00-2rlvvngbdx56g.pike.replit.dev/api/auth/register-notify 404 (Not Found)
+register @ AuthContext.tsx:163
+await in register
+handleSubmit @ AdminRegistrationForm.tsx:41
+callCallback2 @ chunk-WPQCFWW4.js?v=fe5e2ebc:3680
+invokeGuardedCallbackDev @ chunk-WPQCFWW4.js?v=fe5e2ebc:3705
+invokeGuardedCallback @ chunk-WPQCFWW4.js?v=fe5e2ebc:3739
+invokeGuardedCallbackAndCatchFirstError @ chunk-WPQCFWW4.js?v=fe5e2ebc:3742
+executeDispatch @ chunk-WPQCFWW4.js?v=fe5e2ebc:7046
+processDispatchQueueItemsInOrder @ chunk-WPQCFWW4.js?v=fe5e2ebc:7066
+processDispatchQueue @ chunk-WPQCFWW4.js?v=fe5e2ebc:7075
+dispatchEventsForPlugins @ chunk-WPQCFWW4.js?v=fe5e2ebc:7083
+(anonymous) @ chunk-WPQCFWW4.js?v=fe5e2ebc:7206
+batchedUpdates$1 @ chunk-WPQCFWW4.js?v=fe5e2ebc:18966
+batchedUpdates @ chunk-WPQCFWW4.js?v=fe5e2ebc:3585
+dispatchEventForPluginEventSystem @ chunk-WPQCFWW4.js?v=fe5e2ebc:7205
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WPQCFWW4.js?v=fe5e2ebc:5484
+dispatchEvent @ chunk-WPQCFWW4.js?v=fe5e2ebc:5478
+dispatchDiscreteEvent @ chunk-WPQCFWW4.js?v=fe5e2ebc:5455Understand this error
+AuthContext.tsx:174 Registration emails sent
+AdminDashboard.tsx:88  GET https://cf9287d2-a288-49a8-876c-c3a604fe4409-00-2rlvvngbdx56g.pike.replit.dev/api/bookings net::ERR_ABORTED 401 (Unauthorized)
+(anonymous) @ AdminDashboard.tsx:88
+(anonymous) @ AdminDashboard.tsx:169
+commitHookEffectListMount @ chunk-WPQCFWW4.js?v=fe5e2ebc:16963
+commitPassiveMountOnFiber @ chunk-WPQCFWW4.js?v=fe5e2ebc:18206
+commitPassiveMountEffects_complete @ chunk-WPQCFWW4.js?v=fe5e2ebc:18179
+commitPassiveMountEffects_begin @ chunk-WPQCFWW4.js?v=fe5e2ebc:18169
+commitPassiveMountEffects @ chunk-WPQCFWW4.js?v=fe5e2ebc:18159
+flushPassiveEffectsImpl @ chunk-WPQCFWW4.js?v=fe5e2ebc:19543
+flushPassiveEffects @ chunk-WPQCFWW4.js?v=fe5e2ebc:19500
+(anonymous) @ chunk-WPQCFWW4.js?v=fe5e2ebc:19381
+workLoop @ chunk-WPQCFWW4.js?v=fe5e2ebc:197
+flushWork @ chunk-WPQCFWW4.js?v=fe5e2ebc:176
+performWorkUntilDeadline @ chunk-WPQCFWW4.js?v=fe5e2ebc:384Understand this error
+analytics.ts:38 🔍 Analytics Event: {action: 'CLS', category: 'performance', value: 0.010595168200618727}
+analytics.ts:38 🔍 Analytics Event: {action: 'CLS', category: 'performance', value: 0.010595168200618727}
+VM251 contentscript.js:1 Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at VM251 contentscript.js:1:1)Understand this error
+VM253 contentscript.js:1 Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at VM253 contentscript.js:1:1)Understand this error
+contentscript.js:1 Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at contentscript.js:1:1)
