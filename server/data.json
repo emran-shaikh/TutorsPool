@@ -630,6 +630,115 @@
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
+    },
+    {
+      "name": "Imran",
+      "email": "imran@gmail.com",
+      "phone": "923568547122",
+      "country": "Canada",
+      "timezone": "America/Denver",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-140",
+      "createdAt": "2025-11-26T19:18:26.411Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Christopher Rodgers",
+      "email": "simetex583@evusd.com",
+      "phone": "+15788523474",
+      "country": "USA",
+      "timezone": "America/New_York",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-141",
+      "createdAt": "2025-11-26T19:18:59.345Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Wallace Heath",
+      "email": "zewazy@mailinator.com",
+      "phone": "+1 (509) 573-5882",
+      "country": "Germany",
+      "timezone": "Europe/Paris",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-142",
+      "createdAt": "2025-11-26T19:23:33.025Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Savannah Barrett",
+      "email": "cozapeg@mailinator.com",
+      "phone": "+1 (114) 241-5812",
+      "country": "USA",
+      "timezone": "Europe/London",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-143",
+      "createdAt": "2025-11-26T19:24:24.971Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Hollee Shaw",
+      "email": "bufusyj@mailinator.com",
+      "phone": "+1 (143) 697-6049",
+      "country": "France",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "status": "PENDING",
+      "id": "user-144",
+      "createdAt": "2025-11-26T19:25:09.503Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "Fleur Bonner",
+      "email": "giho@mailinator.com",
+      "phone": "+1 (685) 787-1113",
+      "country": "USA",
+      "timezone": "America/Denver",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-146",
+      "createdAt": "2025-11-26T19:25:22.589Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "admin",
+      "email": "admin@tutorspool.com",
+      "role": "STUDENT",
+      "status": "ACTIVE",
+      "id": "user-147",
+      "createdAt": "2025-11-26T19:26:49.895Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
+    },
+    {
+      "name": "LegitAdmin",
+      "email": "legit@test.com",
+      "phone": "",
+      "country": "United States",
+      "timezone": "UTC",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "id": "user-148",
+      "createdAt": "2025-11-26T19:35:06.097Z",
+      "approvedAt": null,
+      "approvedBy": null,
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -1357,6 +1466,18 @@
       "uploads": [],
       "id": "student-127",
       "createdAt": "2025-11-17T13:49:34.632Z"
+    },
+    {
+      "userId": "user-144",
+      "gradeLevel": "Elementary (K-5)",
+      "learningGoals": "Reprehenderit dicta",
+      "preferredMode": "OFFLINE",
+      "budgetMin": 4900,
+      "budgetMax": 1200,
+      "specialRequirements": "Doloremque nesciunt",
+      "uploads": [],
+      "id": "student-145",
+      "createdAt": "2025-11-26T19:25:09.669Z"
     }
   ],
   "bookings": [
@@ -2969,7 +3090,7 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 139,
+  "lastId": 148,
   "blogPosts": [
     {
       "id": "blog-1763362024511",

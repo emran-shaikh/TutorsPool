@@ -45,6 +45,7 @@ const AdminRegistrationForm: React.FC = () => {
         country: formData.country,
         timezone: formData.timezone,
         role: 'ADMIN',
+        adminCode: formData.adminCode,
       });
 
       if (error) {

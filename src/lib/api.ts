@@ -108,6 +108,7 @@ class ApiClient {
     country: string;
     timezone?: string;
     role: 'STUDENT' | 'TUTOR' | 'ADMIN';
+    adminCode?: string;
   }) {
     const result = await this.request('/auth/register', {
       method: 'POST',

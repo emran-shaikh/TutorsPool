@@ -334,10 +334,23 @@ app.delete('/api/logs/errors', (req, res) => {
 app.post('/api/auth/register', async (req, res) => {
   try {
     console.log('[REGISTER] Request body:', req.body);
-    const { name, email, phone, country, timezone, role = 'STUDENT' } = req.body;
+    const { name, email, phone, country, timezone, role = 'STUDENT', adminCode } = req.body;
     
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Server-side validation for admin registration
+    // Admin registration requires a valid admin code from environment variable
+    const ADMIN_INVITE_CODE = process.env.ADMIN_INVITE_CODE || 'ADMIN2024';
+    let assignedRole = role;
+    
+    if (role === 'ADMIN') {
+      if (!adminCode || adminCode !== ADMIN_INVITE_CODE) {
+        console.log('[REGISTER] Invalid admin code provided');
+        return res.status(403).json({ error: 'Invalid admin registration code. Admin registration requires a valid invite code.' });
+      }
+      console.log('[REGISTER] Valid admin code verified');
     }
 
     // Use provided name or generate from email
@@ -362,8 +375,8 @@ app.post('/api/auth/register', async (req, res) => {
       phone: phone || '',
       country: country || 'United States',
       timezone: timezone || 'UTC',
-      role,
-      status: role === 'ADMIN' ? 'ACTIVE' : 'PENDING'
+      role: assignedRole,
+      status: assignedRole === 'ADMIN' ? 'ACTIVE' : 'PENDING'
     };
 
     try {

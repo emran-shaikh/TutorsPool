@@ -36,6 +36,28 @@ The application supports multiple database backends:
 - Set up unified workflow running both frontend and backend
 - Configured deployment for autoscale target
 - Verified application runs successfully with sample data
+- **Security Fix**: Added server-side validation for admin registration (requires ADMIN_INVITE_CODE)
+- Fixed authentication flows for all user roles (STUDENT, TUTOR, ADMIN)
+- Verified admin dashboard endpoint works correctly
+- Verified blog management CRUD operations work correctly
+
+## Test Accounts
+
+For testing purposes, the following accounts are available:
+
+| Email | Role | Status |
+|-------|------|--------|
+| admin@example.com | ADMIN | ACTIVE |
+| sarah@example.com | TUTOR | ACTIVE |
+| john@example.com | TUTOR | ACTIVE |
+| mike@example.com | STUDENT | ACTIVE |
+| pending.tutor@example.com | TUTOR | PENDING |
+| pending.student@example.com | STUDENT | PENDING |
+
+**Note**: For demo purposes, you can log in with any email. If the user doesn't exist, a new STUDENT account will be created.
+
+### Admin Registration
+Admin registration requires a verification code. The default code is `ADMIN2024` (can be changed via `ADMIN_INVITE_CODE` environment variable).
 
 ## Development
 

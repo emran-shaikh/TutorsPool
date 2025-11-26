@@ -28,6 +28,7 @@ interface RegisterData {
   country: string
   timezone?: string
   role: 'STUDENT' | 'TUTOR' | 'ADMIN'
+  adminCode?: string
 }
 
 
