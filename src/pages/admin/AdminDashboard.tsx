@@ -85,13 +85,13 @@ const AdminDashboard: React.FC = () => {
       abortRef.current = ac;
 
       try {
+        const token = localStorage.getItem('token');
         const res = await fetch(BOOKINGS_API, {
           method: "GET",
-          credentials: "include", // if you use cookies for auth; change if using token header
           signal: ac.signal,
           headers: {
             Accept: "application/json, text/*;q=0.8",
-            // Authorization: `Bearer ${token}` // if needed
+            ...(token && { Authorization: `Bearer ${token}` }),
           },
         });
 
