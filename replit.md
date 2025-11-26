@@ -64,19 +64,43 @@ Development configuration is in `.env.local`. For production, use Replit Secrets
 
 ## Deployment
 
-The project is configured for Replit Deployments:
-- **Type**: Autoscale (stateless web application)
-- **Build**: Compiles TypeScript and builds production assets
-- **Run**: Starts both backend and frontend servers
+The project is configured for Replit Deployments (Autoscale):
 
-To deploy:
+### Production Architecture
+In production, a **single Express server** runs on port 5000 (or $PORT):
+- Serves the built Vite frontend (static files from `/dist`)
+- Handles API routes at `/api/*`
+- Implements SPA fallback (all non-API routes serve index.html)
+
+This differs from development, where:
+- Frontend: Vite dev server on port 5000
+- Backend: Express API on port 5174 (proxied via Vite)
+
+### Build Process
+1. `npm run build:production` compiles:
+   - TypeScript code
+   - Vite production build → `/dist`
+   - Server TypeScript → `/dist-server`
+
+2. `npm run start` launches the unified production server
+
+### Deployment Steps
 1. Click the "Deploy" button in Replit
-2. Set required environment variables in Secrets
+2. Set required environment variables in Replit Secrets:
+   - `JWT_SECRET` - Authentication secret (required)
+   - `NODE_ENV=production` (optional, set automatically)
+   - Optional: Firebase, Stripe, AI service credentials
 3. Deploy to production
 
 ### Required Environment Variables for Production
-- `JWT_SECRET` - Authentication secret
-- Optional: Firebase, Stripe, AI service credentials (app works without them)
+- `JWT_SECRET` - Authentication secret (REQUIRED)
+- `PORT` - Server port (automatically set by Replit)
+- Optional external services:
+  - Firebase (authentication & database)
+  - Stripe (payments)
+  - Google AI/OpenAI (AI chatbot)
+  
+**Note**: The application works with JSON file storage by default, so external services are optional.
 
 ## Tech Stack
 

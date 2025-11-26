@@ -3,9 +3,14 @@ import cors from 'cors';
 import { z } from 'zod';
 import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { dataManager } from './dataManager';
 import errorLogger from './errorLogger.js';
 import { authenticateToken, requireRole, requireActiveUser, generateToken, verifyToken } from './middleware/authMiddleware';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Extend Express Request type to include user
 declare global {
@@ -23,19 +28,36 @@ declare global {
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 5174;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // CORS configuration
+const allowedOrigins = [
+  "http://localhost:5000",
+  "http://127.0.0.1:5000",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
+  "http://localhost:5176",
+  "http://localhost:8080",
+  "http://localhost:3000",
+  "https://www.tutorspool.com",
+  "https://tutors-pool-git-main-emrans-projects-5d3e3a87.vercel.app"
+];
+
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+if (process.env.REPLIT_DEV_DOMAIN) {
+  allowedOrigins.push(`https://${process.env.REPLIT_DEV_DOMAIN}`);
+}
+
+if (process.env.REPLIT_DEPLOYMENT && process.env.REPL_SLUG) {
+  allowedOrigins.push(`https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`);
+}
+
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175",
-    "http://localhost:5176",
-    "http://localhost:8080",
-    "http://localhost:3000",
-    "https://www.tutorspool.com",
-    "https://tutors-pool-git-main-emrans-projects-5d3e3a87.vercel.app"
-  ],
+  origin: allowedOrigins,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -4016,8 +4038,30 @@ app.get('/api/payments/admin/analytics', authenticateToken, requireRole('ADMIN')
   }
 });
 
+// Serve static files in production
+if (isProduction) {
+  const distPath = path.join(__dirname, '..', 'dist');
+  
+  app.use(express.static(distPath));
+  
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.join(distPath, 'index.html'));
+    } else {
+      res.status(404).json({ error: 'API endpoint not found' });
+    }
+  });
+  
+  console.log(`Static files served from: ${distPath}`);
+}
+
 // Start server
 server.listen(PORT, () => {
   console.log(`Tutorspool API listening on http://localhost:${PORT}`);
   console.log(`Sample data loaded: ${dataManager.getAllUsers().length} users, ${dataManager.getAllTutors().length} tutors`);
+  if (isProduction) {
+    console.log('Running in PRODUCTION mode - serving static files');
+  } else {
+    console.log('Running in DEVELOPMENT mode');
+  }
 });
