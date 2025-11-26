@@ -7,6 +7,8 @@ if (import.meta.env.PROD && PRIMARY_API_BASE_URL === FALLBACK_API_BASE_URL) {
   console.warn('[API] VITE_API_URL is not set. Using same-origin /api in production. Ensure your host proxies /api to your backend or set VITE_API_URL to your backend (e.g. https://api.your-domain.com/api).');
 }
 
+console.log('[API] Using base URL:', PRIMARY_API_BASE_URL);
+
 class ApiClient {
   private token: string | null = null;
 

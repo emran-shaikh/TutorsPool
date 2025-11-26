@@ -16,24 +16,34 @@ import { mockBlogPosts, mockCategories, filterBlogPosts } from '@/lib/mockData';
 const apiClient = {
   async getBlogPosts(filters: any = {}) {
     try {
-      return await blogApi.getPublicPosts(filters);
+      console.log('[Blog] Fetching blog posts with filters:', filters);
+      const response = await blogApi.getPublicPosts(filters);
+      console.log('[Blog] Received blog posts:', response);
+      return response;
     } catch (error) {
-      console.log('API unavailable, using mock data');
+      console.error('[Blog] Error fetching blog posts:', error);
+      console.warn('[Blog] API unavailable, using mock data');
       // Return mock data if API fails
-      return filterBlogPosts(mockBlogPosts, {
+      const mockData = filterBlogPosts(mockBlogPosts, {
         search: filters.search,
         category: filters.category,
         page: filters.page,
         limit: filters.limit,
       });
+      console.log('[Blog] Using mock data:', mockData);
+      return mockData;
     }
   },
 
   async getBlogCategories() {
     try {
-      return await blogApi.getCategories();
+      console.log('[Blog] Fetching categories');
+      const response = await blogApi.getCategories();
+      console.log('[Blog] Received categories:', response);
+      return response;
     } catch (error) {
-      console.log('API unavailable, using mock categories');
+      console.error('[Blog] Error fetching categories:', error);
+      console.warn('[Blog] API unavailable, using mock categories');
       return { categories: mockCategories };
     }
   },
