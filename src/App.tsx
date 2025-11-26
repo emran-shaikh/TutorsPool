@@ -25,7 +25,6 @@ const Search = React.lazy(() => import('./pages/Search'));
 const Bookings = React.lazy(() => import('./pages/Booking'));
 const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
-const DebugSignUp = React.lazy(() => import('./pages/DebugSignUp'));
 const Account = React.lazy(() => import('./pages/Account'));
 const StudentDashboard = React.lazy(() => import('./pages/StudentDashboard'));
 const SessionPage = React.lazy(() => import('./pages/SessionPage'));
@@ -44,7 +43,6 @@ const Blog = React.lazy(() => import('./pages/Blog'));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const ApprovalPending = React.lazy(() => import('./pages/ApprovalPending'));
 const AdminRouteWrapper = React.lazy(() => import('./components/admin/AdminRouteWrapper'));
-const ErrorTest = React.lazy(() => import('./pages/ErrorTest'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,7 +72,6 @@ const App = () => (
                 <Route path="/app" element={<Index />} />
                 <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
                 <Route path="/signup" element={<GuestRoute><SignUp /></GuestRoute>} />
-                <Route path="/debug-signup" element={<GuestRoute><DebugSignUp /></GuestRoute>} />
                 <Route path="/subjects" element={<Subjects />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
@@ -112,9 +109,6 @@ const App = () => (
                 <Route path="/student/dashboard" element={<ProtectedRoute roles={['STUDENT']}><StudentDashboard /></ProtectedRoute>} />
                 <Route path="/session/:bookingId" element={<ProtectedRoute><SessionPage /></ProtectedRoute>} />
                 <Route path="/tutor/dashboard" element={<ProtectedRoute roles={['TUTOR']}><TutorDashboard /></ProtectedRoute>} />
-                
-                {/* Debug/Test Routes */}
-                <Route path="/error-test" element={<ErrorTest />} />
                 
                 {/* 404 Route */}
                 <Route path="*" element={<NotFound />} />
