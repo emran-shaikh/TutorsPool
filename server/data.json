@@ -3254,6 +3254,24 @@
         "tutorAmount": 1080
       },
       "stripeChargeId": "ch_test_1763406880773"
+    },
+    {
+      "id": "payment_1764188822616_ku4wttiob",
+      "bookingId": "booking-172",
+      "studentId": "user-168",
+      "tutorId": "tutor-171",
+      "amount": 4900,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_demo_1764188822616_3wu405z05",
+      "status": "PENDING",
+      "createdAt": "2025-11-26T20:27:02.616Z",
+      "updatedAt": "2025-11-26T20:27:02.616Z",
+      "metadata": {
+        "subject": "english",
+        "sessionDate": "2025-11-26T06:00:00.000Z",
+        "platformFee": 490,
+        "tutorAmount": 4410
+      }
     }
   ],
   "payouts": [
