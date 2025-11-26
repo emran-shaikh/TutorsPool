@@ -991,6 +991,34 @@
       "approvedAt": null,
       "approvedBy": null,
       "avatarUrl": null
+    },
+    {
+      "name": "Kennan Spence",
+      "email": "mihihim@mailinator.com",
+      "phone": "+1 (108) 936-8511",
+      "country": "South Africa",
+      "timezone": "Asia/Karachi",
+      "role": "STUDENT",
+      "status": "ACTIVE",
+      "id": "user-168",
+      "createdAt": "2025-11-26T20:10:56.426Z",
+      "approvedAt": "2025-11-26T20:11:39.340Z",
+      "approvedBy": "user-167",
+      "avatarUrl": null
+    },
+    {
+      "name": "Ira Wilkins",
+      "email": "vybyjujo@mailinator.com",
+      "phone": "+1 (719) 407-1611",
+      "country": "United Kingdom",
+      "timezone": "Asia/Karachi",
+      "role": "TUTOR",
+      "status": "ACTIVE",
+      "id": "user-170",
+      "createdAt": "2025-11-26T20:12:48.975Z",
+      "approvedAt": "2025-11-26T20:13:23.925Z",
+      "approvedBy": "user-167",
+      "avatarUrl": null
     }
   ],
   "tutors": [
@@ -1483,6 +1511,38 @@
       "ratingCount": 0,
       "id": "tutor-151",
       "createdAt": "2025-11-26T19:40:35.166Z"
+    },
+    {
+      "userId": "user-170",
+      "headline": "Voluptatem sit vol",
+      "bio": "Vero ab elit est uVero ab elit est uVero ab elit est uVero ab elit est uVero ab elit est u",
+      "hourlyRateCents": 9800,
+      "currency": "EUR",
+      "yearsExperience": 1970,
+      "subjects": [
+        "Philosophy",
+        "Finance"
+      ],
+      "levels": [
+        "Middle School (6-8)",
+        "Graduate School"
+      ],
+      "slug": "ira-wilkins",
+      "certifications": [],
+      "availabilityBlocks": [
+        {
+          "dayOfWeek": 0,
+          "startTimeUTC": "09:00",
+          "endTimeUTC": "17:00",
+          "isRecurring": true
+        }
+      ],
+      "inPersonLocation": null,
+      "ratingAvg": 0,
+      "ratingCount": 0,
+      "id": "tutor-171",
+      "createdAt": "2025-11-26T20:12:49.057Z",
+      "status": "ACTIVE"
     }
   ],
   "students": [
@@ -1761,6 +1821,18 @@
       "uploads": [],
       "id": "student-145",
       "createdAt": "2025-11-26T19:25:09.669Z"
+    },
+    {
+      "userId": "user-168",
+      "gradeLevel": "Middle School (6-8)",
+      "learningGoals": "Eiusmod eos distinct",
+      "preferredMode": "ONLINE",
+      "budgetMin": 6400,
+      "budgetMax": 6000,
+      "specialRequirements": "Suscipit assumenda q",
+      "uploads": [],
+      "id": "student-169",
+      "createdAt": "2025-11-26T20:10:56.522Z"
     }
   ],
   "bookings": [
@@ -2165,6 +2237,20 @@
       "paymentRequired": true,
       "id": "booking-137",
       "createdAt": "2025-11-17T14:20:50.174Z"
+    },
+    {
+      "studentId": "user-168",
+      "tutorId": "tutor-171",
+      "subjectId": "english",
+      "startAtUTC": "2025-11-26T06:00:00.000Z",
+      "endAtUTC": "2025-11-26T06:30:00.000Z",
+      "status": "PENDING_PAYMENT",
+      "priceCents": 4900,
+      "currency": "USD",
+      "paymentStatus": "UNPAID",
+      "paymentRequired": true,
+      "id": "booking-172",
+      "createdAt": "2025-11-26T20:14:23.862Z"
     }
   ],
   "learningProgress": {
@@ -2228,6 +2314,16 @@
           "createdAt": "2025-10-08T17:19:42.023Z"
         }
       ],
+      "upcomingSessions": []
+    },
+    "user-168": {
+      "totalGoals": 0,
+      "completedGoals": 0,
+      "totalSessions": 0,
+      "completedSessions": 0,
+      "currentStreak": 0,
+      "totalHours": 0,
+      "recentGoals": [],
       "upcomingSessions": []
     }
   },
@@ -2786,6 +2882,23 @@
       },
       "read": false,
       "createdAt": "2025-11-17T19:15:07.798Z"
+    },
+    {
+      "id": "notification-173",
+      "userId": "user-170",
+      "type": "BOOKING_REQUEST",
+      "title": "New Session Request",
+      "message": "Kennan Spence has requested a english session with you.",
+      "data": {
+        "bookingId": "booking-172",
+        "studentId": "user-168",
+        "studentName": "Kennan Spence",
+        "subject": "english",
+        "startAt": "2025-11-26T06:00:00.000Z",
+        "endAt": "2025-11-26T06:30:00.000Z"
+      },
+      "read": false,
+      "createdAt": "2025-11-26T20:14:23.864Z"
     }
   ],
   "messages": [],
@@ -3373,7 +3486,7 @@
       "resolution": "STUDENT_WINS"
     }
   ],
-  "lastId": 167,
+  "lastId": 173,
   "blogPosts": [
     {
       "id": "blog-1763362024511",

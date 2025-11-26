@@ -2,10 +2,11 @@ import Stripe from 'stripe';
 
 // Stripe configuration for sandbox mode
 export const stripeConfig = {
-  // Use test keys for sandbox mode
-  publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || 'pk_test_51234567890abcdef',
-  secretKey: process.env.STRIPE_SECRET_KEY || 'sk_test_51234567890abcdef',
-  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || 'whsec_test_1234567890abcdef',
+  // Use test keys for sandbox mode - DEMO MODE ENABLED
+  publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || 'pk_test_demo_mode',
+  secretKey: process.env.STRIPE_SECRET_KEY || 'sk_test_demo_mode',
+  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || 'whsec_test_demo_mode',
+  isDemoMode: !process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY === 'sk_test_demo_mode',
   
   // Platform settings
   platformFeePercentage: 0.10, // 10% platform fee
