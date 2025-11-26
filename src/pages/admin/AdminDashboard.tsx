@@ -126,6 +126,8 @@ const AdminDashboard: React.FC = () => {
           setBookings([]);
         } else if (Array.isArray(data)) {
           setBookings(data);
+        } else if (data.items && Array.isArray(data.items)) {
+          setBookings(data.items);
         } else if (data.bookings && Array.isArray(data.bookings)) {
           setBookings(data.bookings);
         } else if (data.data && Array.isArray(data.data)) {
