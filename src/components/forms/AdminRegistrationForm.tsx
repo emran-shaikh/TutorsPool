@@ -51,6 +51,8 @@ const AdminRegistrationForm: React.FC = () => {
         });
         // Wait longer to ensure token is persisted and auth context updates
         setTimeout(() => {
+          const token = localStorage.getItem('token');
+          console.log('Token before redirect:', token ? 'SET' : 'MISSING');
           console.log('Redirecting to admin dashboard');
           navigate('/admin/dashboard', { replace: true });
         }, 1000);

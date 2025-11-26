@@ -1,0 +1,25 @@
+Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at VM674 contentscript.js:1:1)Understand this error
+analytics.ts:38 🔍 Analytics Event: {action: 'CLS', category: 'performance', value: 0.0007270840947549865}
+AdminDashboard.tsx:88  GET https://cf9287d2-a288-49a8-876c-c3a604fe4409-00-2rlvvngbdx56g.pike.replit.dev/api/bookings 401 (Unauthorized)
+(anonymous) @ AdminDashboard.tsx:88
+(anonymous) @ AdminDashboard.tsx:169
+commitHookEffectListMount @ chunk-WPQCFWW4.js?v=fe5e2ebc:16963
+commitPassiveMountOnFiber @ chunk-WPQCFWW4.js?v=fe5e2ebc:18206
+commitPassiveMountEffects_complete @ chunk-WPQCFWW4.js?v=fe5e2ebc:18179
+commitPassiveMountEffects_begin @ chunk-WPQCFWW4.js?v=fe5e2ebc:18169
+commitPassiveMountEffects @ chunk-WPQCFWW4.js?v=fe5e2ebc:18159
+flushPassiveEffectsImpl @ chunk-WPQCFWW4.js?v=fe5e2ebc:19543
+flushPassiveEffects @ chunk-WPQCFWW4.js?v=fe5e2ebc:19500
+(anonymous) @ chunk-WPQCFWW4.js?v=fe5e2ebc:19381
+workLoop @ chunk-WPQCFWW4.js?v=fe5e2ebc:197
+flushWork @ chunk-WPQCFWW4.js?v=fe5e2ebc:176
+performWorkUntilDeadline @ chunk-WPQCFWW4.js?v=fe5e2ebc:384Understand this error
+analytics.ts:38 🔍 Analytics Event: {action: 'CLS', category: 'performance', value: 0.0012723712853112213}
+VM687 contentscript.js:1 Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at VM687 contentscript.js:1:1)Understand this error
+VM689 contentscript.js:1 Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at VM689 contentscript.js:1:1)Understand this error
+analytics.ts:38 🔍 Analytics Event: {action: 'CLS', category: 'performance', value: 0.0018071792008928227}
+AdminRegistrationForm.tsx:54 Redirecting to admin dashboard
+analytics.ts:38 🔍 Analytics Event: {action: 'CLS', category: 'performance', value: 0.0023524663914490573}
+analytics.ts:38 🔍 Analytics Event: {action: 'CLS', category: 'performance', value: 0.0028872743070306587}
+VM701 contentscript.js:1 Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at VM701 contentscript.js:1:1)Understand this error
+contentscript.js:1 Uncaught SyntaxError: Identifier 'Rwt' has already been declared (at contentscript.js:1:1)

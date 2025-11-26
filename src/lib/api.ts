@@ -43,8 +43,11 @@ class ApiClient {
         ...(options.headers as Record<string, string>),
       };
 
-      if (this.token) {
-        headers.Authorization = `Bearer ${this.token}`;
+      // Always check localStorage for the latest token
+      const currentToken = this.token || localStorage.getItem('token');
+      if (currentToken) {
+        headers.Authorization = `Bearer ${currentToken}`;
+        this.token = currentToken; // Keep instance token in sync
       }
 
       try {
