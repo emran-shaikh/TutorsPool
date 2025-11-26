@@ -49,13 +49,13 @@ const AdminRegistrationForm: React.FC = () => {
           title: 'Admin Account Created!',
           description: 'Welcome to the admin panel. Redirecting...',
         });
-        // Wait longer to ensure token is persisted and auth context updates
+        // Use a small delay to ensure token is persisted
         setTimeout(() => {
           const token = localStorage.getItem('token');
-          console.log('Token before redirect:', token ? 'SET' : 'MISSING');
+          console.log('AdminRegistrationForm: Token available:', token ? 'YES (first 20 chars: ' + token.substring(0, 20) + '...)' : 'NO');
           console.log('Redirecting to admin dashboard');
-          navigate('/admin/dashboard', { replace: true });
-        }, 1000);
+          window.location.href = '/admin/dashboard';
+        }, 500);
       }
     } catch (error) {
       console.error('Admin registration error:', error);

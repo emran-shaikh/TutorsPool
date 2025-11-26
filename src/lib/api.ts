@@ -118,8 +118,13 @@ class ApiClient {
       body: JSON.stringify(userData),
     });
     
+    console.log('[API] Register result:', result);
+    console.log('[API] Token in response:', result.token ? 'YES' : 'NO');
+    
     if (result.token) {
+      console.log('[API] Setting token:', result.token.substring(0, 20) + '...');
       this.setToken(result.token);
+      console.log('[API] Token saved to localStorage:', localStorage.getItem('token') ? 'YES' : 'NO');
     }
     
     return result;
