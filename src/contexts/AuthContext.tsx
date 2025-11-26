@@ -156,8 +156,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (userData: RegisterData) => {
     try {
       const result = await apiClient.register(userData)
+      console.log('Register response received:', result)
       const normalizedUser = applyUserState(extractUser(result))
       console.log('User registered successfully:', normalizedUser.role)
+      // Force a state update to ensure the component re-renders with new user data
+      setUser(prev => ({ ...normalizedUser }))
       return { error: undefined }
     } catch (error) {
       console.error('Registration error:', error)

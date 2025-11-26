@@ -49,10 +49,11 @@ const AdminRegistrationForm: React.FC = () => {
           title: 'Admin Account Created!',
           description: 'Welcome to the admin panel. Redirecting...',
         });
-        // Wait a moment to allow state to update, then redirect
+        // Wait longer to ensure token is persisted and auth context updates
         setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 500);
+          console.log('Redirecting to admin dashboard');
+          navigate('/admin/dashboard', { replace: true });
+        }, 1000);
       }
     } catch (error) {
       console.error('Admin registration error:', error);
