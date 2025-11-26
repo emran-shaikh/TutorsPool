@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "@/layouts/AdminLayout"; // adjust import path to your project
+import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button"; // optional, adjust or replace with your button
 import { useAuth } from "@/contexts/AuthContext"; // optional: to logout on 401 if you want
 
