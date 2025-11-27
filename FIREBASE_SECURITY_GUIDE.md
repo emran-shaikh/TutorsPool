@@ -46,7 +46,7 @@ VITE_FIREBASE_MEASUREMENT_ID=G-ZKMSQ1TGHT
 ```
 DATABASE_CONFIG=USE_FIREBASE=true
 NODE_ENV=production
-JWT_SECRET=your-super-secure-jwt-secret-key-change-this-in-production
+JWT_SECRET=4792d1dd4dc9998372456c8e8369767b
 STRIPE_SECRET_KEY=sk_live_your_stripe_live_key
 STRIPE_PUBLISHABLE_KEY=pk_live_your_stripe_live_key
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret

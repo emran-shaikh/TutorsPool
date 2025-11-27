@@ -39,7 +39,7 @@ PORT=5174
 NODE_ENV=development
 
 # JWT Secret (change in production)
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
+JWT_SECRET=4792d1dd4dc9998372456c8e8369767b
 "@
 
 Set-Content -Path ".env.local" -Value $envContent

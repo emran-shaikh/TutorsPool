@@ -37,7 +37,7 @@ WHATSAPP_VERIFY_TOKEN=tutorspool_verify_token_2025
 # Server Configuration
 PORT=5174
 NODE_ENV=development
-JWT_SECRET=tutorspool_jwt_secret_development_only
+JWT_SECRET=4792d1dd4dc9998372456c8e8369767b
 FRONTEND_URL=http://localhost:5173
 BACKEND_URL=http://localhost:5174
 VITE_API_URL=http://localhost:5174/api

@@ -113,7 +113,7 @@ git push
 ```env
 # Required
 NODE_ENV=production
-JWT_SECRET=your_generated_secret_here
+JWT_SECRET=4792d1dd4dc9998372456c8e8369767b
 
 # Firebase (if using)
 VITE_FIREBASE_API_KEY=...

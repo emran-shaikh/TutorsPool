@@ -42,7 +42,7 @@ In your Vercel dashboard, add these environment variables:
 
 ```env
 # Security
-JWT_SECRET=your_super_secret_jwt_key_here_make_it_very_long_and_secure
+JWT_SECRET=4792d1dd4dc9998372456c8e8369767b
 NODE_ENV=production
 
 # URLs
