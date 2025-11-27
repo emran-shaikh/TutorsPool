@@ -3263,9 +3263,45 @@
       "amount": 4900,
       "currency": "USD",
       "stripePaymentIntentId": "pi_demo_1764188822616_3wu405z05",
-      "status": "PENDING",
+      "status": "COMPLETED",
       "createdAt": "2025-11-26T20:27:02.616Z",
-      "updatedAt": "2025-11-26T20:27:02.616Z",
+      "updatedAt": "2025-11-26T20:27:04.731Z",
+      "metadata": {
+        "subject": "english",
+        "sessionDate": "2025-11-26T06:00:00.000Z",
+        "platformFee": 490,
+        "tutorAmount": 4410
+      }
+    },
+    {
+      "id": "payment_1764188887117_eusfu6zw0",
+      "bookingId": "booking-172",
+      "studentId": "user-168",
+      "tutorId": "tutor-171",
+      "amount": 4900,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_demo_1764188887116_ejlmcd73l",
+      "status": "COMPLETED",
+      "createdAt": "2025-11-26T20:28:07.117Z",
+      "updatedAt": "2025-11-26T20:28:09.240Z",
+      "metadata": {
+        "subject": "english",
+        "sessionDate": "2025-11-26T06:00:00.000Z",
+        "platformFee": 490,
+        "tutorAmount": 4410
+      }
+    },
+    {
+      "id": "payment_1764219968041_7l3tcpxnt",
+      "bookingId": "booking-172",
+      "studentId": "user-168",
+      "tutorId": "tutor-171",
+      "amount": 4900,
+      "currency": "USD",
+      "stripePaymentIntentId": "pi_demo_1764219968040_2s8piiw78",
+      "status": "PENDING",
+      "createdAt": "2025-11-27T05:06:08.041Z",
+      "updatedAt": "2025-11-27T05:06:08.041Z",
       "metadata": {
         "subject": "english",
         "sessionDate": "2025-11-26T06:00:00.000Z",
@@ -3525,7 +3561,7 @@
       "publishedAt": "2025-11-17T06:47:04.511Z",
       "createdAt": "2025-11-17T06:47:04.511Z",
       "updatedAt": "2025-11-17T06:47:04.511Z",
-      "viewCount": 1,
+      "viewCount": 2,
       "readTime": 1
     },
     {
