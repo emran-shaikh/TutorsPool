@@ -431,11 +431,11 @@ const Booking: React.FC = () => {
           <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
             <PaymentProcessor
               booking={{
-                id: createdBooking.id,
-                subject: selectedSubject,
+                id: createdBooking.id || 'booking_unknown',
+                subject: selectedSubjectData?.name || 'Session',
                 sessionDate: selectedDate,
                 duration: duration,
-                tutorName: tutors?.find(t => t.id === selectedTutor)?.user?.name || 'Tutor',
+                tutorName: selectedTutorData?.name || 'Tutor',
                 amount: totalPrice / 100,
                 currency: 'USD'
               }}
