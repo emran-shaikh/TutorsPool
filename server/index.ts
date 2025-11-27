@@ -64,13 +64,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Debug middleware to log all requests
-app.use((req, res, next) => {
-  if (req.path.includes('/auth/login')) {
-    console.log('[MIDDLEWARE] Login request:', req.method, req.path, req.body);
-  }
-  next();
-});
+// Debug middleware - only log in development
+if (process.env.NODE_ENV !== 'production') {
+  app.use((req, res, next) => {
+    if (req.path.includes('/auth/login')) {
+      console.log('[MIDDLEWARE] Login request:', req.method, req.path, req.body);
+    }
+    next();
+  });
+}
 
 // Initialize sample data
 dataManager.initializeSampleData();

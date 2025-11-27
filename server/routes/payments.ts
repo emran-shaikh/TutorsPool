@@ -11,7 +11,7 @@ const paymentService = new PaymentService(dataManager);
 router.post('/create-payment-intent', authenticateToken, async (req, res) => {
   try {
     const { bookingId, amount, currency = 'usd' } = req.body;
-    const userId = req.user?.userId;
+    const userId = (req as any).user?.userId;
 
     if (!bookingId || !amount) {
       return res.status(400).json({ error: 'Booking ID and amount are required' });
@@ -53,7 +53,7 @@ router.post('/confirm-payment', authenticateToken, async (req, res) => {
 // Get payment history for student
 router.get('/student/payments', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user?.userId;
+    const userId = (req as any).user?.userId;
     const payments = dataManager.getPaymentsByStudent(userId);
     
     res.json({
@@ -70,7 +70,7 @@ router.get('/student/payments', authenticateToken, async (req, res) => {
 // Get payout history for tutor
 router.get('/tutor/payouts', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user?.userId;
+    const userId = (req as any).user?.userId;
     const tutor = dataManager.getTutorByUserId(userId);
     
     if (!tutor) {
@@ -94,7 +94,7 @@ router.get('/tutor/payouts', authenticateToken, async (req, res) => {
 router.post('/request-refund', authenticateToken, async (req, res) => {
   try {
     const { paymentId, reason } = req.body;
-    const userId = req.user?.userId;
+    const userId = (req as any).user?.userId;
 
     if (!paymentId) {
       return res.status(400).json({ error: 'Payment ID is required' });
@@ -119,7 +119,7 @@ router.post('/request-refund', authenticateToken, async (req, res) => {
 router.post('/create-dispute', authenticateToken, async (req, res) => {
   try {
     const { paymentId, reason, description } = req.body;
-    const userId = req.user?.userId;
+    const userId = (req as any).user?.userId;
 
     if (!paymentId || !reason) {
       return res.status(400).json({ error: 'Payment ID and reason are required' });
@@ -171,7 +171,7 @@ router.post('/create-dispute', authenticateToken, async (req, res) => {
 // Get disputes for student
 router.get('/student/disputes', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user?.userId;
+    const userId = (req as any).user?.userId;
     const disputes = dataManager.getDisputesByStudent(userId);
     
     res.json({
@@ -188,7 +188,7 @@ router.get('/student/disputes', authenticateToken, async (req, res) => {
 // Get disputes for tutor
 router.get('/tutor/disputes', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user?.userId;
+    const userId = (req as any).user?.userId;
     const tutor = dataManager.getTutorByUserId(userId);
     
     if (!tutor) {

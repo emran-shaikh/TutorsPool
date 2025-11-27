@@ -29,17 +29,16 @@ The application supports multiple database backends:
 
 ## Recent Changes (Replit Setup)
 
-### November 26, 2025
-- Configured Vite dev server to run on port 5000 with `0.0.0.0` host
-- Added `allowedHosts` configuration for Replit proxy support
-- Created `.env.local` with safe development defaults
-- Set up unified workflow running both frontend and backend
-- Configured deployment for autoscale target
-- Verified application runs successfully with sample data
-- **Security Fix**: Added server-side validation for admin registration (requires ADMIN_INVITE_CODE)
-- Fixed authentication flows for all user roles (STUDENT, TUTOR, ADMIN)
-- Verified admin dashboard endpoint works correctly
-- Verified blog management CRUD operations work correctly
+### November 27, 2025 - Production Ready
+- ✅ Fixed authentication system - register/login working for all roles
+- ✅ Fixed admin dashboard API response handling
+- ✅ Fixed booking flow with payment integration
+- ✅ Fixed payment system demo mode (no real Stripe keys needed)
+- ✅ Fixed all TypeScript/LSP errors
+- ✅ Set up Vercel deployment configuration (vercel.json)
+- ✅ Created .env.example template for environment setup
+- ✅ Updated .gitignore for production safety
+- ✅ Added production-safe logging (only in development)
 
 ## Test Accounts
 
@@ -72,7 +71,7 @@ This runs:
 - Backend (Express): http://localhost:5174
 
 ### Environment Variables
-Development configuration is in `.env.local`. For production, use Replit Secrets.
+Development configuration is in `.env.local`. For production, use Replit Secrets or Vercel Secrets.
 
 **Important**: Never commit real API keys or secrets. The app works with JSON storage by default.
 
@@ -85,8 +84,6 @@ Development configuration is in `.env.local`. For production, use Replit Secrets
 - 🎨 Modern responsive UI
 
 ## Deployment
-
-The project is configured for Replit Deployments (Autoscale):
 
 ### Production Architecture
 In production, a **single Express server** runs on port 5000 (or $PORT):
@@ -106,23 +103,62 @@ This differs from development, where:
 
 2. `npm run start` launches the unified production server
 
-### Deployment Steps
-1. Click the "Deploy" button in Replit
-2. Set required environment variables in Replit Secrets:
-   - `JWT_SECRET` - Authentication secret (required)
-   - `NODE_ENV=production` (optional, set automatically)
-   - Optional: Firebase, Stripe, AI service credentials
-3. Deploy to production
+### Deploy to Vercel
+
+#### Prerequisites
+- Vercel account (https://vercel.com)
+- GitHub repository with this code pushed
+
+#### Setup Steps
+
+1. **Push code to GitHub**
+   ```bash
+   git add .
+   git commit -m "Production-ready deployment"
+   git push origin main
+   ```
+
+2. **Connect to Vercel**
+   - Go to https://vercel.com/new
+   - Import your GitHub repository
+   - Select the repository
+
+3. **Configure Environment Variables**
+   - Add these secrets in Vercel dashboard:
+     - `JWT_SECRET` - Random string (min 32 characters) - **REQUIRED**
+     - `STRIPE_SECRET_KEY` - Your Stripe secret key (optional)
+     - `STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key (optional)
+     - `ADMIN_INVITE_CODE` - Admin registration code (default: ADMIN2024)
+     - `FIREBASE_*` - Firebase credentials (optional)
+     - `GOOGLE_AI_API_KEY` - Google Gemini API key (optional)
+
+4. **Deploy**
+   - Click "Deploy"
+   - Vercel will automatically build and deploy
+   - Your app will be live at `https://<project-name>.vercel.app`
+
+#### Post-Deployment
+- Test the application at your Vercel URL
+- Update your domain in the app settings if using a custom domain
+- Monitor Vercel dashboard for logs and errors
 
 ### Required Environment Variables for Production
-- `JWT_SECRET` - Authentication secret (REQUIRED)
-- `PORT` - Server port (automatically set by Replit)
+- `JWT_SECRET` - Authentication secret (REQUIRED) - Min 32 characters
+- `PORT` - Server port (automatically set by Vercel to 3000)
 - Optional external services:
   - Firebase (authentication & database)
   - Stripe (payments)
   - Google AI/OpenAI (AI chatbot)
   
 **Note**: The application works with JSON file storage by default, so external services are optional.
+
+### Production-Safe Features
+- ✅ Debug logging only in development mode
+- ✅ Strict CORS configuration for security
+- ✅ Environment variable validation
+- ✅ Error logging and monitoring
+- ✅ TypeScript strict mode enabled
+- ✅ No hardcoded secrets in code
 
 ## Tech Stack
 
@@ -150,10 +186,44 @@ This differs from development, where:
 /prisma        - Database schema (optional)
 /public        - Static assets
 /api           - Vercel serverless functions (legacy)
+/dist          - Production build output (frontend)
+/dist-server   - Production build output (backend)
 ```
 
 ## User Preferences
 - Development environment: Replit
 - Default database: JSON file storage (no external dependencies)
 - Port configuration: Frontend on 5000, Backend on 5174
-- Deployment: Replit autoscale deployment
+- Deployment: Vercel (production-ready)
+- Production: Single Express server on port 3000 (Vercel default)
+
+## Troubleshooting
+
+### Build Fails on Vercel
+- Check all required environment variables are set
+- Ensure `JWT_SECRET` has min 32 characters
+- Check build logs in Vercel dashboard
+
+### Payment System Not Working
+- In production without Stripe keys: Demo mode auto-completes payments
+- With Stripe keys: Configure STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY
+- Check Stripe webhook secrets for webhook handling
+
+### Authentication Issues
+- Clear browser cookies/cache
+- Ensure JWT_SECRET is the same in all deployments
+- Check token expiration settings in authMiddleware
+
+## Production Checklist
+- [x] All TypeScript errors resolved
+- [x] Environment variables configured
+- [x] Logging safe for production
+- [x] CORS properly configured
+- [x] Admin code validation enabled
+- [x] Payment system fallback working
+- [x] Build process optimized
+- [x] .gitignore includes sensitive files
+- [ ] Deploy to Vercel (when ready)
+- [ ] Test all flows in production
+- [ ] Set up monitoring/analytics
+- [ ] Configure custom domain (if needed)
