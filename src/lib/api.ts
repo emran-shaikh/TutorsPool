@@ -51,17 +51,47 @@ class ApiClient {
       }
 
       try {
+        console.log('[API.request] Sending request:', {
+          url,
+          method: options.method || 'GET',
+          headers: {
+            ...headers,
+            Authorization: headers.Authorization ? 'Bearer ***redacted***' : undefined,
+          },
+          bodyPreview:
+            typeof options.body === 'string'
+              ? (options.body as string).slice(0, 200)
+              : options.body
+              ? '[non-string body]'
+              : undefined,
+        });
+
         const response = await fetch(url, {
           ...options,
           headers,
         });
 
         if (response.ok) {
-          return response.json();
+          const data = await response.json().catch(() => ({}));
+          console.log('[API.request] Response OK:', {
+            url,
+            status: response.status,
+            ok: response.ok,
+            dataPreview: JSON.stringify(data).slice(0, 300),
+          });
+          return data;
         }
 
         const errorPayload = await response.json().catch(() => ({ error: 'Network error' }));
         const requestError = new Error(errorPayload.error || `HTTP ${response.status}`);
+
+        console.warn('[API.request] Non-OK response received:', {
+          url,
+          method: options.method || 'GET',
+          status: response.status,
+          statusText: response.statusText,
+          errorPayload,
+        });
 
         if (response.status === 401 || response.status === 403) {
           console.log('Authentication error, clearing token');
@@ -76,7 +106,10 @@ class ApiClient {
 
         // For POST/PUT/PATCH requests that get 405, return mock success response
         if ((options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') && response.status === 405) {
-          console.warn(`[API] ${url} returned 405 for ${options.method}. Returning mock success response.`);
+          console.warn(`[API] ${url} returned 405 for ${options.method}. Returning mock success response.`, {
+            endpoint,
+            baseUrl,
+          });
           return {
             success: true,
             message: `${options.method} operation completed (mock response)`,
@@ -89,6 +122,12 @@ class ApiClient {
         if (error instanceof Error && !error.message.includes('HTTP')) {
           console.log('Network error, keeping token:', error.message);
         }
+
+        console.error('[API.request] Fetch threw an error:', {
+          url,
+          method: options.method || 'GET',
+          error,
+        });
 
         lastError = error;
 

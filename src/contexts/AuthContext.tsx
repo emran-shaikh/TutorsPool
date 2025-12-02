@@ -155,14 +155,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const register = async (userData: RegisterData) => {
     try {
+      console.log('[AuthContext.register] Called with data:', {
+        ...userData,
+        adminCode: userData.adminCode ? '***redacted***' : undefined,
+      })
+
       const result = await apiClient.register(userData)
-      console.log('Register response:', result)
+      console.log('[AuthContext.register] Raw API register result:', result)
+
       const normalizedUser = applyUserState(extractUser(result))
-      console.log('User registered successfully:', normalizedUser.role, 'Role value:', normalizedUser.role === 'ADMIN')
+      console.log(
+        '[AuthContext.register] User registered successfully:',
+        {
+          id: normalizedUser.id,
+          email: normalizedUser.email,
+          role: normalizedUser.role,
+          status: normalizedUser.status,
+        }
+      )
+
       return { error: undefined }
     } catch (error) {
-      console.error('Registration error:', error)
-      return { error: error instanceof Error ? error.message : 'Registration failed' }
+      console.error('[AuthContext.register] Registration error caught in context:', error)
+      return {
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Registration failed',
+      }
     }
   }
 

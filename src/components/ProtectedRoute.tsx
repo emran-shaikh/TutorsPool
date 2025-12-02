@@ -11,6 +11,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
   const { user, loading, getDashboardUrl } = useAuth();
   const location = useLocation();
 
+  console.log('ProtectedRoute - Current user:', user);
+  console.log('ProtectedRoute - Loading:', loading);
+  console.log('ProtectedRoute - Required roles:', roles);
+  console.log('ProtectedRoute - Current path:', window.location.pathname);
+
   // Show loading while checking authentication
   if (loading) {
     return (

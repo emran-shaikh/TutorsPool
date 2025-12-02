@@ -27,6 +27,11 @@ const AdminRegistrationForm: React.FC = () => {
     setSubmitting(true);
 
     try {
+      console.log('AdminRegistrationForm: Submitting admin registration with data:', {
+        ...formData,
+        adminCode: formData.adminCode ? '***redacted***' : undefined,
+      });
+
       const { error } = await register({
         name: formData.name,
         email: formData.email,
@@ -37,12 +42,15 @@ const AdminRegistrationForm: React.FC = () => {
         adminCode: formData.adminCode,
       });
 
+      console.log('AdminRegistrationForm: register() completed with error:', error);
+
       if (error) {
         toast({
           title: 'Registration Failed',
           description: error,
           variant: 'destructive',
         });
+        console.error('AdminRegistrationForm: Registration failed with error:', error);
         setSubmitting(false);
       } else {
         toast({
@@ -54,11 +62,11 @@ const AdminRegistrationForm: React.FC = () => {
           const token = localStorage.getItem('token');
           console.log('AdminRegistrationForm: Token available:', token ? 'YES (first 20 chars: ' + token.substring(0, 20) + '...)' : 'NO');
           console.log('Redirecting to admin dashboard');
-          window.location.href = '/admin/dashboard';
+          navigate('/admin/dashboard', { replace: true });
         }, 500);
       }
     } catch (error) {
-      console.error('Admin registration error:', error);
+      console.error('AdminRegistrationForm: Unexpected error during admin registration:', error);
       toast({
         title: 'Registration Failed',
         description: 'An unexpected error occurred. Please try again.',
