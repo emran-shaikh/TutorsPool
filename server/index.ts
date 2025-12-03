@@ -104,42 +104,10 @@ app.use('/api/blog', blogRouter);
 // Payments routes
 app.use('/api/payments', paymentsRouter);
 
-// Admin dashboard (aggregated stats)
-app.get('/api/admin/dashboard', authenticateToken, requireRole(['ADMIN']), (_req, res) => {
-  try {
-    const users = dataManager.getAllUsers();
-    const tutors = dataManager.getAllTutors();
-    const students = dataManager.getAllStudents();
-    const bookings = dataManager.getAllBookings();
-
-    res.json({
-      stats: {
-        totalUsers: users.length,
-        totalTutors: tutors.length,
-        totalStudents: students.length,
-        totalBookings: bookings.length,
-      }
-    });
-  } catch (error) {
-    console.error('Admin dashboard error:', error);
-    res.status(500).json({ error: 'Failed to load dashboard' });
-  }
-});
+// NOTE: Duplicate route removed - using the enhanced dashboard endpoint at line 3117
 
 // User profile update
-app.put('/api/users/profile', authenticateToken, async (req, res) => {
-  try {
-    const userId = req.user?.userId || '';
-    const user = dataManager.getUserById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-
-    dataManager.updateUser(userId, { ...req.body, updatedAt: new Date().toISOString() });
-    res.json({ success: true });
-  } catch (error) {
-    console.error('User update error:', error);
-    res.status(500).json({ error: 'Failed to update profile' });
-  }
-});
+// NOTE: Duplicate route removed - using the enhanced one at line 2958
 
 // Reviews endpoints
 app.post('/api/reviews', authenticateToken, async (req, res) => {
@@ -1194,7 +1162,18 @@ app.get('/api/admin/users', authenticateToken, requireRole(['ADMIN']), async (re
 // Get pending users for approval
 app.get('/api/admin/users/pending', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
   try {
+    console.log('[ADMIN PENDING USERS] Fetching pending users...');
+    const allUsers = dataManager.getAllUsers();
+    console.log('[ADMIN PENDING USERS] Total users:', allUsers.length);
+    console.log('[ADMIN PENDING USERS] Users by status:', {
+      PENDING: allUsers.filter(u => u.status === 'PENDING').length,
+      ACTIVE: allUsers.filter(u => u.status === 'ACTIVE').length,
+      REJECTED: allUsers.filter(u => u.status === 'REJECTED').length,
+    });
+    
     const pendingUsers = dataManager.getPendingUsers();
+    console.log('[ADMIN PENDING USERS] Pending users found:', pendingUsers.length);
+    
     const tutors = dataManager.getAllTutors();
     const students = dataManager.getAllStudents();
     
@@ -1209,6 +1188,7 @@ app.get('/api/admin/users/pending', authenticateToken, requireRole(['ADMIN']), a
       };
     });
 
+    console.log('[ADMIN PENDING USERS] Returning', pendingUsersWithProfiles.length, 'pending users with profiles');
     res.json(pendingUsersWithProfiles);
   } catch (error) {
     console.error('Pending users error:', error);
@@ -1359,24 +1339,35 @@ app.post('/api/admin/users/:userId/activate', authenticateToken, requireRole(['A
 // Enhanced bookings endpoint for admin
 app.get('/api/admin/bookings', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
   try {
+    console.log('[ADMIN BOOKINGS] Fetching all bookings...');
     const bookings = dataManager.getAllBookings();
     const users = dataManager.getAllUsers();
+    const tutors = dataManager.getAllTutors();
+    
+    console.log('[ADMIN BOOKINGS] Total bookings:', bookings.length);
     
     const bookingsWithUsers = bookings.map(booking => {
       const student = users.find(u => u.id === booking.studentId);
-      const tutor = users.find(u => {
-        const tutorProfile = dataManager.getTutorByUserId(u.id);
-        return tutorProfile?.id === booking.tutorId;
-      });
+      const tutorProfile = tutors.find(t => t.id === booking.tutorId);
+      const tutorUser = tutorProfile ? users.find(u => u.id === tutorProfile.userId) : null;
       
       return {
         ...booking,
-        student,
-        tutor
+        student: student ? { 
+          id: student.id,
+          name: student.name, 
+          email: student.email 
+        } : null,
+        tutor: tutorUser ? {
+          id: tutorUser.id,
+          name: tutorUser.name,
+          user: tutorUser
+        } : null
       };
     });
 
-    res.json(bookingsWithUsers);
+    console.log('[ADMIN BOOKINGS] Returning', bookingsWithUsers.length, 'bookings with user data');
+    res.json({ bookings: bookingsWithUsers });
   } catch (error) {
     console.error('Admin bookings error:', error);
     errorLogger.logError(error, { 
@@ -3124,6 +3115,33 @@ app.get('/api/admin/dashboard', authenticateToken, requireRole(['ADMIN']), async
       ? approvedReviews.reduce((sum, review) => sum + review.rating, 0) / approvedReviews.length 
       : 0;
 
+    // Get recent bookings (last 10)
+    const recentBookings = bookings
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 10)
+      .map(booking => {
+        const student = users.find(u => u.id === booking.studentId);
+        // Fix: booking.tutorId should match tutor.id, not tutor.userId
+        const tutor = tutors.find(t => t.id === booking.tutorId);
+        const tutorUser = tutor ? users.find(u => u.id === tutor.userId) : null;
+        return {
+          ...booking,
+          student: student ? { name: student.name, email: student.email } : null,
+          tutor: tutor ? { name: tutorUser?.name || 'Unknown', user: tutorUser } : null
+        };
+      });
+
+    // Get recent users (last 10)
+    const recentUsers = users
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 10);
+
+    // Calculate booking stats
+    const pendingBookings = bookings.filter(b => b.status === 'PENDING' || b.status === 'PENDING_PAYMENT').length;
+    const confirmedBookings = bookings.filter(b => b.status === 'CONFIRMED').length;
+    const completedBookingsCount = completedBookings.length;
+    const cancelledBookings = bookings.filter(b => b.status === 'CANCELLED').length;
+
     res.json({
       totalUsers,
       totalTutors,
@@ -3132,7 +3150,13 @@ app.get('/api/admin/dashboard', authenticateToken, requireRole(['ADMIN']), async
       totalRevenue,
       pendingApprovals,
       activeSessions,
-      averageRating: Math.round(averageRating * 10) / 10
+      averageRating: Math.round(averageRating * 10) / 10,
+      pendingBookings,
+      confirmedBookings,
+      completedBookings: completedBookingsCount,
+      cancelledBookings,
+      recentBookings,
+      recentUsers
     });
   } catch (error) {
     console.error('Admin dashboard error:', error);
@@ -3286,16 +3310,7 @@ app.put('/api/admin/bookings/:bookingId/status', authenticateToken, requireRole(
   }
 });
 
-// Get pending users for admin
-app.get('/api/admin/users/pending', authenticateToken, requireRole(['ADMIN']), async (req, res) => {
-  try {
-    const users = dataManager.getAllUsers().filter(user => user.status === 'PENDING');
-    res.json(users);
-  } catch (error) {
-    console.error('Admin pending users fetch error:', error);
-    res.status(500).json({ error: 'Failed to fetch pending users' });
-  }
-});
+// NOTE: Duplicate route removed - using the one above at line 1195 which includes profiles
 
 // Get all tutors for admin
 app.get('/api/admin/tutors', authenticateToken, requireRole(['ADMIN']), async (req, res) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
@@ -14,6 +14,7 @@ import { AvailabilityManager } from '@/components/tutors/AvailabilityManager';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { TutorPayoutDashboard } from '@/components/payments/TutorPayoutDashboard';
+import ProfilePictureUpload from '@/components/tutors/ProfilePictureUpload';
 import { 
   User, 
   Calendar, 
@@ -43,6 +44,7 @@ const TutorDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
   const [editForm, setEditForm] = useState({
     headline: '',
     bio: '',
@@ -142,6 +144,13 @@ const TutorDashboard: React.FC = () => {
     queryFn: () => apiClient.getTutorProfileByUserId(),
     enabled: !!user,
   });
+
+  // Update avatar URL when profile loads
+  useEffect(() => {
+    if (tutorProfile?.user?.avatarUrl) {
+      setAvatarUrl(tutorProfile.user.avatarUrl);
+    }
+  }, [tutorProfile]);
 
   // Fetch tutor bookings
   const { data: tutorBookings, isLoading: bookingsLoading, refetch: refetchBookings } = useQuery({
@@ -313,7 +322,7 @@ const TutorDashboard: React.FC = () => {
             <div className="flex items-start justify-between">
               <div className="flex items-center space-x-4">
                 <Avatar className="h-16 w-16">
-                  <AvatarImage src={tutorProfile.user?.avatarUrl || ''} />
+                  <AvatarImage src={avatarUrl || tutorProfile.user?.avatarUrl || ''} />
                   <AvatarFallback className="bg-primary text-primary-foreground text-xl">
                     {tutorProfile.user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'T'}
                   </AvatarFallback>
@@ -590,7 +599,28 @@ const TutorDashboard: React.FC = () => {
           </TabsContent>
 
           {/* Profile Tab */}
-          <TabsContent value="profile">
+          <TabsContent value="profile" className="space-y-6">
+            {/* Profile Picture Upload */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Profile Picture</CardTitle>
+                <CardDescription>
+                  Upload or update your profile picture. This will be visible to students on your profile.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ProfilePictureUpload
+                  currentAvatarUrl={tutorProfile.user?.avatarUrl}
+                  userName={tutorProfile.user?.name}
+                  onUploadSuccess={(url) => {
+                    setAvatarUrl(url);
+                    refetchProfile();
+                  }}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Profile Information */}
             <Card>
               <CardHeader>
                 <CardTitle>Profile Information</CardTitle>

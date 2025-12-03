@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Users, GraduationCap, BookOpen, TrendingUp, AlertCircle, ArrowRight } from 'lucide-react';
+import { Shield, Users, GraduationCap, BookOpen, TrendingUp, AlertCircle, ArrowRight, DollarSign, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { adminApi } from '@/lib/api';
 import { Link } from 'react-router-dom';
 
@@ -14,9 +14,12 @@ const AdminDashboard: React.FC = () => {
   const { data: dashboardData, isLoading, error } = useQuery({
     queryKey: ['admin-dashboard'],
     queryFn: adminApi.getDashboard,
+    refetchInterval: 10000, // Refetch every 10 seconds to get updated stats
+    staleTime: 0, // Always consider data stale
   });
 
-  const stats = dashboardData?.stats || {
+  // Server returns stats directly, not nested
+  const stats = dashboardData || {
     totalUsers: 0,
     totalTutors: 0,
     totalStudents: 0,
@@ -25,7 +28,16 @@ const AdminDashboard: React.FC = () => {
     activeSessions: 0,
     completedSessions: 0,
     pendingBookings: 0,
+    pendingApprovals: 0,
+    totalRevenue: 0,
+    confirmedBookings: 0,
+    completedBookings: 0,
+    cancelledBookings: 0,
   };
+
+  // Debug logging
+  console.log('[AdminDashboard] Dashboard data:', dashboardData);
+  console.log('[AdminDashboard] Stats:', stats);
 
   const recentBookings = dashboardData?.recentBookings || [];
   const recentUsers = dashboardData?.recentUsers || [];
@@ -42,10 +54,13 @@ const AdminDashboard: React.FC = () => {
   }
 
   if (error) {
+    console.error('Dashboard error:', error);
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600">Failed to load dashboard data</p>
+          <p className="text-sm text-gray-500 mt-2">{error instanceof Error ? error.message : 'Unknown error'}</p>
+          <Button onClick={() => window.location.reload()} className="mt-4">Retry</Button>
         </div>
       </div>
     );
@@ -72,8 +87,8 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Stats Grid - Row 1 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -82,7 +97,7 @@ const AdminDashboard: React.FC = () => {
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalUsers}</div>
               <p className="text-xs text-muted-foreground">
-                +12% from last month
+                {stats.pendingApprovals} pending approval
               </p>
             </CardContent>
           </Card>
@@ -95,20 +110,7 @@ const AdminDashboard: React.FC = () => {
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalTutors}</div>
               <p className="text-xs text-muted-foreground">
-                +8% from last month
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalStudents}</div>
-              <p className="text-xs text-muted-foreground">
-                +15% from last month
+                {stats.totalStudents} students
               </p>
             </CardContent>
           </Card>
@@ -116,12 +118,80 @@ const AdminDashboard: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Bookings</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <BookOpen className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalBookings}</div>
               <p className="text-xs text-muted-foreground">
-                +23% from last month
+                {stats.activeSessions} active sessions
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">${((stats.totalRevenue || 0) / 100).toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">
+                From {stats.completedBookings || 0} completed bookings
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Stats Grid - Row 2 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Bookings</CardTitle>
+              <Clock className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">{stats.pendingBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Awaiting payment/confirmation
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Confirmed</CardTitle>
+              <CheckCircle className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">{stats.confirmedBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Upcoming sessions
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Completed</CardTitle>
+              <CheckCircle className="h-4 w-4 text-green-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">{stats.completedBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Finished sessions
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Cancelled</CardTitle>
+              <XCircle className="h-4 w-4 text-red-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">{stats.cancelledBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Cancelled bookings
               </p>
             </CardContent>
           </Card>
@@ -208,10 +278,12 @@ const AdminDashboard: React.FC = () => {
                     View Bookings
                   </Button>
                 </Link>
-                <Button variant="outline" className="h-20 flex flex-col">
+                <Link to="/admin/approvals">
+                  <Button variant="outline" className="h-20 flex flex-col w-full">
                   <AlertCircle className="w-6 h-6 mb-2" />
-                  Reports
+                    User Approvals
                 </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -227,24 +299,45 @@ const AdminDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+              {stats.pendingApprovals > 0 && (
+                <Link to="/admin/approvals">
+                  <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg hover:bg-orange-100 cursor-pointer transition">
+                    <div>
+                      <p className="font-medium text-orange-800">Pending User Approvals</p>
+                      <p className="text-sm text-orange-600">{stats.pendingApprovals} users waiting for approval</p>
+                    </div>
+                    <Button size="sm" variant="outline" asChild>
+                      <span>Review <ArrowRight className="h-3 w-3 ml-1" /></span>
+                    </Button>
+                  </div>
+                </Link>
+              )}
+              {stats.pendingBookings > 0 && (
+                <Link to="/admin/bookings">
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg hover:bg-blue-100 cursor-pointer transition">
                 <div>
-                  <p className="font-medium text-orange-800">Pending Tutor Reviews</p>
-                  <p className="text-sm text-orange-600">{stats.pendingReviews} tutors waiting for approval</p>
+                      <p className="font-medium text-blue-800">Pending Bookings</p>
+                      <p className="text-sm text-blue-600">{stats.pendingBookings} bookings need attention</p>
                 </div>
-                <Button size="sm" variant="outline">
-                  Review
+                    <Button size="sm" variant="outline" asChild>
+                      <span>View <ArrowRight className="h-3 w-3 ml-1" /></span>
                 </Button>
               </div>
-              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                </Link>
+              )}
+              {stats.activeSessions > 0 && (
+                <Link to="/admin/bookings">
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg hover:bg-green-100 cursor-pointer transition">
                 <div>
-                  <p className="font-medium text-blue-800">Active Sessions</p>
-                  <p className="text-sm text-blue-600">{stats.activeSessions} tutoring sessions in progress</p>
+                      <p className="font-medium text-green-800">Active Sessions</p>
+                      <p className="text-sm text-green-600">{stats.activeSessions} tutoring sessions in progress</p>
                 </div>
-                <Button size="sm" variant="outline">
-                  Monitor
+                    <Button size="sm" variant="outline" asChild>
+                      <span>Monitor <ArrowRight className="h-3 w-3 ml-1" /></span>
                 </Button>
               </div>
+                </Link>
+              )}
             </div>
           </CardContent>
         </Card>

@@ -28,9 +28,14 @@ const BookingsManagement: React.FC = () => {
   const { data: bookingsData, isLoading, error, refetch } = useQuery({
     queryKey: ['admin-bookings'],
     queryFn: adminApi.getBookings,
+    refetchInterval: 10000, // Refetch every 10 seconds
+    staleTime: 0,
   });
 
-  const bookings = bookingsData?.bookings || [];
+  // Handle both array and object response formats
+  const bookings = Array.isArray(bookingsData) 
+    ? bookingsData 
+    : (bookingsData?.bookings || []);
 
   const handleStatusUpdate = async () => {
     if (!selectedBooking || !newStatus) return;
@@ -333,8 +338,8 @@ const BookingsManagement: React.FC = () => {
                           <div className="flex items-center gap-2">
                             <GraduationCap className="w-4 h-4 text-gray-400" />
                             <div>
-                              <div className="font-medium">{booking.tutor?.user?.name}</div>
-                              <div className="text-sm text-gray-500">{booking.tutor?.headline}</div>
+                              <div className="font-medium">{booking.tutor?.name || booking.tutor?.user?.name || 'Unknown Tutor'}</div>
+                              <div className="text-sm text-gray-500">{booking.tutor?.email || booking.tutor?.user?.email || ''}</div>
                             </div>
                           </div>
                         </td>

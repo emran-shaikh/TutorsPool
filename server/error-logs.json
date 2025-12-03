@@ -4114,5 +4114,77 @@
       "serverTime": "2025-11-26T20:26:15.214Z",
       "processId": 10481
     }
+  },
+  {
+    "id": "info_1764739802919_0y24ibc23",
+    "timestamp": "2025-12-03T05:30:02.919Z",
+    "type": "info",
+    "message": "User user-175 approved by admin user-174",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-174",
+      "targetUserId": "user-175",
+      "serverTime": "2025-12-03T05:30:02.919Z",
+      "processId": 10860
+    }
+  },
+  {
+    "id": "info_1764739816979_vfyx6pjlm",
+    "timestamp": "2025-12-03T05:30:16.979Z",
+    "type": "info",
+    "message": "User user-177 approved by admin user-174",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-174",
+      "targetUserId": "user-177",
+      "serverTime": "2025-12-03T05:30:16.979Z",
+      "processId": 10860
+    }
+  },
+  {
+    "id": "info_1764740139316_glwbtj6n4",
+    "timestamp": "2025-12-03T05:35:39.316Z",
+    "type": "info",
+    "message": "Booking booking-131 status updated to COMPLETED by admin user-174",
+    "context": {
+      "endpoint": "/api/admin/bookings/:bookingId/status",
+      "method": "PUT",
+      "adminId": "user-174",
+      "bookingId": "booking-131",
+      "newStatus": "COMPLETED",
+      "reason": "",
+      "serverTime": "2025-12-03T05:35:39.316Z",
+      "processId": 18880
+    }
+  },
+  {
+    "id": "info_1764740905069_y58gtz714",
+    "timestamp": "2025-12-03T05:48:25.069Z",
+    "type": "info",
+    "message": "User user-185 approved by admin user-174",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-174",
+      "targetUserId": "user-185",
+      "serverTime": "2025-12-03T05:48:25.069Z",
+      "processId": 22628
+    }
+  },
+  {
+    "id": "info_1764740909343_mmwg5yk2y",
+    "timestamp": "2025-12-03T05:48:29.343Z",
+    "type": "info",
+    "message": "User user-183 approved by admin user-174",
+    "context": {
+      "endpoint": "/api/admin/users/:userId/approve",
+      "method": "POST",
+      "adminId": "user-174",
+      "targetUserId": "user-183",
+      "serverTime": "2025-12-03T05:48:29.343Z",
+      "processId": 22628
+    }
   }
 ]

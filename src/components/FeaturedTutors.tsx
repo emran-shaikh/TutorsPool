@@ -30,7 +30,7 @@ interface FeaturedTutorsProps {
   limit?: number;
 }
 
-const FeaturedTutors: React.FC<FeaturedTutorsProps> = ({ tutors = [], isLoading = false, limit = 6 }) => {
+const FeaturedTutors: React.FC<FeaturedTutorsProps> = ({ tutors = [], isLoading = false, limit = 100 }) => {
   const { hasRole } = useAuth();
 
   if (isLoading) {

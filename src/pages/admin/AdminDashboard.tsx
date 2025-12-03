@@ -1,264 +1,347 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button"; // optional, adjust or replace with your button
-import { useAuth } from "@/contexts/AuthContext"; // optional: to logout on 401 if you want
-
-type Booking = {
-  id: string;
-  tutorName?: string;
-  userName?: string;
-  slot?: string;
-  date?: string;
-  status?: string;
-  [key: string]: any;
-};
-
-const TRUNCATE_LENGTH = 1000;
-
-function truncate(s: string, n = TRUNCATE_LENGTH) {
-  if (!s) return "";
-  return s.length > n ? s.slice(0, n) + "… (truncated)" : s;
-}
-
-/**
- * Safely parse a Response as JSON. If the response is HTML (starts with "<!DOCTYPE" or "<html"),
- * return a thrown error containing the raw text so callers can detect it.
- */
-async function parseJsonSafe(res: Response) {
-  // Prefer content-type header if present
-  const contentType = res.headers.get("content-type") || "";
-
-  // Always read as text first to be defensive
-  const text = await res.text();
-
-  // Quick check for HTML pages — common cause of "Unexpected token '<'"
-  const startsWithHtml = /^\s*<(!doctype|html|!)?/i.test(text);
-
-  // If status indicates an error and server returned HTML, throw informative error
-  if (startsWithHtml && !contentType.includes("application/json")) {
-    const err: any = new Error("Server returned HTML instead of JSON");
-    err.type = "html-response";
-    err.status = res.status;
-    err.raw = text;
-    throw err;
-  }
-
-  // Try to parse JSON; if it fails, throw with raw text to help debugging
-  try {
-    const parsed = text ? JSON.parse(text) : {};
-    return parsed;
-  } catch (e) {
-    const err: any = new Error("Invalid JSON from server");
-    err.type = "invalid-json";
-    err.status = res.status;
-    err.raw = text;
-    throw err;
-  }
-}
+import React from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useQuery } from '@tanstack/react-query';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Shield, Users, GraduationCap, BookOpen, TrendingUp, AlertCircle, ArrowRight, DollarSign, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { adminApi } from '@/lib/api';
+import { Link } from 'react-router-dom';
 
 const AdminDashboard: React.FC = () => {
-  const [bookings, setBookings] = React.useState<Booking[] | null>(null);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-  const [serverPreview, setServerPreview] = React.useState<string | null>(null);
-  const [attempts, setAttempts] = React.useState(0);
-  const abortRef = React.useRef<AbortController | null>(null);
+  const { user } = useAuth();
 
-  const navigate = useNavigate();
-  const auth = useAuth?.(); // optional, depends on your project. Use safely.
+  const { data: dashboardData, isLoading, error } = useQuery({
+    queryKey: ['admin-dashboard'],
+    queryFn: adminApi.getDashboard,
+    refetchInterval: 10000, // Refetch every 10 seconds to get updated stats
+    staleTime: 0, // Always consider data stale
+  });
 
-  // Adjust this URL if your API route is different.
-  const BOOKINGS_API = "/api/bookings";
-
-  const fetchBookings = React.useCallback(
-    async (opts?: { force?: boolean }) => {
-      setLoading(true);
-      setError(null);
-      setServerPreview(null);
-
-      // Abort previous request if any
-      if (abortRef.current) {
-        abortRef.current.abort();
-      }
-      const ac = new AbortController();
-      abortRef.current = ac;
-
-      try {
-        const token = localStorage.getItem('token');
-        const res = await fetch(BOOKINGS_API, {
-          method: "GET",
-          signal: ac.signal,
-          headers: {
-            Accept: "application/json, text/*;q=0.8",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-        });
-
-        // Handle common status codes early
-        if (res.status === 401) {
-          // unauthorized — optionally logout or redirect to login
-          setError("Unauthorized. Please login again.");
-          setServerPreview(`HTTP 401 returned from ${BOOKINGS_API}`);
-          if (auth?.logout) {
-            try {
-              auth.logout();
-            } catch (e) {
-              // ignore
-            }
-          }
-          navigate("/login");
-          return;
-        }
-
-        if (res.status >= 500) {
-          // server error — read text for debugging
-          const text = await res.text().catch(() => "");
-          setError(`Server error (${res.status}).`);
-          setServerPreview(truncate(text));
-          return;
-        }
-
-        // Parse safely
-        const data = await parseJsonSafe(res);
-
-        // Optional: normalize data shape
-        if (!data) {
-          setBookings([]);
-        } else if (Array.isArray(data)) {
-          setBookings(data);
-        } else if (data.items && Array.isArray(data.items)) {
-          setBookings(data.items);
-        } else if (data.bookings && Array.isArray(data.bookings)) {
-          setBookings(data.bookings);
-        } else if (data.data && Array.isArray(data.data)) {
-          setBookings(data.data);
-        } else {
-          // If shape unknown, set as empty and show preview
-          setBookings([]);
-          setServerPreview(truncate(JSON.stringify(data, null, 2)));
-          setError("Unexpected response shape from server.");
-        }
-      } catch (err: any) {
-        if (err?.name === "AbortError") {
-          // request was aborted — don't treat as error
-          return;
-        }
-
-        // If we detected HTML returned, err.raw will have the content
-        if (err?.type === "html-response" || err?.type === "invalid-json") {
-          setError(
-            `Backend returned non-JSON (${err?.status ?? "unknown status"}) — see preview for details.`
-          );
-          setServerPreview(truncate(err.raw ?? String(err)));
-        } else {
-          // Generic network / CORS / other error
-          setError(String(err?.message ?? "Network error"));
-          // if raw content is available attach it
-          if (err?.raw) setServerPreview(truncate(err.raw));
-        }
-
-        // allow retry attempts counter
-        setAttempts((a) => a + 1);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [BOOKINGS_API, auth, navigate]
-  );
-
-  React.useEffect(() => {
-    fetchBookings();
-
-    // cleanup on unmount
-    return () => {
-      if (abortRef.current) {
-        abortRef.current.abort();
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // run only once
-
-  const handleRetry = () => {
-    setAttempts(0);
-    fetchBookings({ force: true });
+  // Server returns stats directly, not nested
+  const stats = dashboardData || {
+    totalUsers: 0,
+    totalTutors: 0,
+    totalStudents: 0,
+    totalBookings: 0,
+    pendingReviews: 0,
+    activeSessions: 0,
+    completedSessions: 0,
+    pendingBookings: 0,
+    pendingApprovals: 0,
+    totalRevenue: 0,
+    confirmedBookings: 0,
+    completedBookings: 0,
+    cancelledBookings: 0,
   };
 
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Dashboard</h2>
-        <div className="flex items-center gap-2">
-          <Button onClick={() => fetchBookings({ force: true })} disabled={loading}>
-            Refresh
-          </Button>
-          <Button variant="ghost" onClick={handleRetry} disabled={loading}>
-            Retry
-          </Button>
+  // Debug logging
+  console.log('[AdminDashboard] Dashboard data:', dashboardData);
+  console.log('[AdminDashboard] Stats:', stats);
+
+  const recentBookings = dashboardData?.recentBookings || [];
+  const recentUsers = dashboardData?.recentUsers || [];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading dashboard...</p>
         </div>
       </div>
+    );
+  }
 
-      {loading && (
-        <div className="rounded-md border border-dashed border-gray-200 p-6">
-          <p className="text-sm text-gray-600">Loading bookings…</p>
+  if (error) {
+    console.error('Dashboard error:', error);
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600">Failed to load dashboard data</p>
+          <p className="text-sm text-gray-500 mt-2">{error instanceof Error ? error.message : 'Unknown error'}</p>
+          <Button onClick={() => window.location.reload()} className="mt-4">Retry</Button>
         </div>
-      )}
+      </div>
+    );
+  }
 
-      {error && (
-        <div className="rounded-md border border-red-200 bg-red-50 p-4">
-          <div className="flex items-start justify-between">
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
             <div>
-              <strong className="text-sm text-red-800">Error: </strong>
-              <span className="text-sm text-red-700">{error}</span>
-              {attempts > 0 && (
-                <span className="ml-2 text-xs text-gray-500">Attempts: {attempts}</span>
-              )}
-              {serverPreview && (
-                <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap rounded bg-white p-2 text-xs text-gray-700">
-                  {serverPreview}
-                </pre>
-              )}
+              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                <Shield className="w-8 h-8 text-purple-600" />
+                Admin Dashboard
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Welcome back, {user?.name}! Manage your platform effectively.
+              </p>
             </div>
-            <div className="ml-4 flex-shrink-0">
-              <Button onClick={() => fetchBookings({ force: true })}>Try again</Button>
-            </div>
+            <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+              Admin Access
+            </Badge>
           </div>
         </div>
-      )}
 
-      {!loading && !error && bookings && bookings.length === 0 && (
-        <div className="rounded-md border border-dashed border-gray-200 p-6 text-center">
-          <p className="text-sm text-gray-600">No bookings found.</p>
-        </div>
-      )}
+        {/* Stats Grid - Row 1 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.totalUsers}</div>
+              <p className="text-xs text-muted-foreground">
+                {stats.pendingApprovals} pending approval
+              </p>
+            </CardContent>
+          </Card>
 
-      {!loading && !error && bookings && bookings.length > 0 && (
-        <div className="overflow-x-auto rounded-md border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">ID</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Tutor</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">User</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Date</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Slot</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {bookings.map((b) => (
-                <tr key={b.id}>
-                  <td className="px-4 py-3 text-sm text-gray-700">{b.id}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{b.tutorName ?? "-"}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{b.userName ?? "-"}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{b.date ?? "-"}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{b.slot ?? "-"}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{b.status ?? "-"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Tutors</CardTitle>
+              <GraduationCap className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.totalTutors}</div>
+              <p className="text-xs text-muted-foreground">
+                {stats.totalStudents} students
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Bookings</CardTitle>
+              <BookOpen className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.totalBookings}</div>
+              <p className="text-xs text-muted-foreground">
+                {stats.activeSessions} active sessions
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">${((stats.totalRevenue || 0) / 100).toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">
+                From {stats.completedBookings || 0} completed bookings
+              </p>
+            </CardContent>
+          </Card>
         </div>
-      )}
+
+        {/* Stats Grid - Row 2 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Bookings</CardTitle>
+              <Clock className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">{stats.pendingBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Awaiting payment/confirmation
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Confirmed</CardTitle>
+              <CheckCircle className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">{stats.confirmedBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Upcoming sessions
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Completed</CardTitle>
+              <CheckCircle className="h-4 w-4 text-green-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">{stats.completedBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Finished sessions
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Cancelled</CardTitle>
+              <XCircle className="h-4 w-4 text-red-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">{stats.cancelledBookings || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                Cancelled bookings
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Recent Activities */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Activities</CardTitle>
+              <CardDescription>
+                Latest platform activities and user actions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {recentBookings.slice(0, 5).map((booking) => (
+                  <div key={booking.id} className="flex items-center space-x-4">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">
+                        {booking.student?.name} booked session with {booking.tutor?.name || booking.tutor?.user?.name || 'Unknown'}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(booking.createdAt).toLocaleString()}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {booking.status}
+                    </Badge>
+                  </div>
+                ))}
+                {recentUsers.slice(0, 3).map((user) => (
+                  <div key={user.id} className="flex items-center space-x-4">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">
+                        {user.name} registered as {user.role}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(user.createdAt).toLocaleString()}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {user.role}
+                    </Badge>
+                  </div>
+                ))}
+                {recentBookings.length === 0 && recentUsers.length === 0 && (
+                  <div className="text-center py-4 text-gray-500">
+                    No recent activities
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+              <CardDescription>
+                Common administrative tasks
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <Link to="/admin/users">
+                  <Button variant="outline" className="h-20 flex flex-col w-full">
+                    <Users className="w-6 h-6 mb-2" />
+                    Manage Users
+                  </Button>
+                </Link>
+                <Link to="/admin/tutors">
+                  <Button variant="outline" className="h-20 flex flex-col w-full">
+                    <GraduationCap className="w-6 h-6 mb-2" />
+                    Review Tutors
+                  </Button>
+                </Link>
+                <Link to="/admin/bookings">
+                  <Button variant="outline" className="h-20 flex flex-col w-full">
+                    <BookOpen className="w-6 h-6 mb-2" />
+                    View Bookings
+                  </Button>
+                </Link>
+                <Link to="/admin/approvals">
+                  <Button variant="outline" className="h-20 flex flex-col w-full">
+                    <AlertCircle className="w-6 h-6 mb-2" />
+                    User Approvals
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Alerts */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-orange-500" />
+              System Alerts
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {stats.pendingApprovals > 0 && (
+                <Link to="/admin/approvals">
+                  <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg hover:bg-orange-100 cursor-pointer transition">
+                    <div>
+                      <p className="font-medium text-orange-800">Pending User Approvals</p>
+                      <p className="text-sm text-orange-600">{stats.pendingApprovals} users waiting for approval</p>
+                    </div>
+                    <Button size="sm" variant="outline" asChild>
+                      <span>Review <ArrowRight className="h-3 w-3 ml-1" /></span>
+                    </Button>
+                  </div>
+                </Link>
+              )}
+              {stats.pendingBookings > 0 && (
+                <Link to="/admin/bookings">
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg hover:bg-blue-100 cursor-pointer transition">
+                    <div>
+                      <p className="font-medium text-blue-800">Pending Bookings</p>
+                      <p className="text-sm text-blue-600">{stats.pendingBookings} bookings need attention</p>
+                    </div>
+                    <Button size="sm" variant="outline" asChild>
+                      <span>View <ArrowRight className="h-3 w-3 ml-1" /></span>
+                    </Button>
+                  </div>
+                </Link>
+              )}
+              {stats.activeSessions > 0 && (
+                <Link to="/admin/bookings">
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg hover:bg-green-100 cursor-pointer transition">
+                    <div>
+                      <p className="font-medium text-green-800">Active Sessions</p>
+                      <p className="text-sm text-green-600">{stats.activeSessions} tutoring sessions in progress</p>
+                    </div>
+                    <Button size="sm" variant="outline" asChild>
+                      <span>Monitor <ArrowRight className="h-3 w-3 ml-1" /></span>
+                    </Button>
+                  </div>
+                </Link>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

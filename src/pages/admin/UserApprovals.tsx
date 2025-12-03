@@ -34,6 +34,8 @@ const UserApprovals: React.FC = () => {
   const { data: pendingUsers, isLoading, error, refetch } = useQuery({
     queryKey: ['admin-pending-users'],
     queryFn: adminApi.getPendingUsers,
+    refetchInterval: 5000, // Refetch every 5 seconds to get new registrations
+    staleTime: 0, // Always consider data stale
   });
 
   const handleUserAction = async (action: 'approve' | 'reject' | 'suspend') => {
