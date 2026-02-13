@@ -60,7 +60,7 @@
     "@vercel/analytics": "^1.4.1",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "autoprefixer": "^10.4.20",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
